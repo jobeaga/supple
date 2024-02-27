@@ -17,9 +17,9 @@ class CustomAction extends SuppleAction {
 	public function performAction($table, $get, $post, &$recursion_history = array()){
         global $db;
 
-        // The action is invoked using index.php?action=custom_action
-        // or admin.php?action=custom_action
-        // When needACL == false, the system does not requires a Supple login
+            // The action is invoked using index.php?action=custom_action
+            // or admin.php?action=custom_action
+            // When needACL == false, the system does not requires a Supple login for this action.
 
     }
 }
