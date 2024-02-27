@@ -13,9 +13,16 @@ Access tables and data: suppose you have the table `person` with at least three 
     }(name)
 </ul>
 ```
+Ths list is ordered by name, and filtered by active.
 
 You can also write plain conditions, with no table:
 ```
 <div> $($amount > 0)[You have $amount in your account][Your account is empty] </div>
 ```
 
+Another way of iterating, is defining a number, and going through it:
+```
+$[15](=count)
+
+$count{ Repeat $number ! <br> }
+```
