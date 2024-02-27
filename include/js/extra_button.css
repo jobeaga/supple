@@ -1,0 +1,90 @@
+
+input[type="button"].extra_button {
+    display:none;
+    padding: 0px 10px;
+    border-radius: 50%;
+    position: relative;
+    float: left;
+    margin-left: -40px;
+}
+
+.extra_container {
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    border: 1px solid black;
+    margin-left: 8px;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+}
+
+input[type="button"].extra_button_close {
+    padding: 0 12px;
+    float: right;
+    margin-top: -8px;
+    margin-right: -8px;
+}
+
+.extra_container label {
+    margin-bottom: 0;
+    margin-top: 0.4em;
+}
+
+@media (max-width: 920px) {
+	.listview .fieldcount10 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount10 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 860px) {
+	.listview .fieldcount9 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount9 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 790px) {
+	.listview .fieldcount8 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount8 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 710px) {
+	.listview .fieldcount7 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount7 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 630px) {
+	.listview .fieldcount6 input[type="button"].extra_button {
+        display:inline-block;
+    }.listview .fieldcount6 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 550px) {
+	.listview .fieldcount5 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount5 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 470px) {
+	.listview .fieldcount4 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount4 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 400px) {
+	.listview .fieldcount3 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount3 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 340px) {
+	.listview .fieldcount2 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount2 .post.buttons { padding-left: 40px; }
+}
+@media (max-width: 280px) {
+	.listview .fieldcount1 input[type="button"].extra_button {
+        display:inline-block;
+    }
+    .listview .fieldcount1 .post.buttons { padding-left: 40px; }
+}

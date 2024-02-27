@@ -1,0 +1,214 @@
+$($_get._isajax)[
+
+	$_eval[ SuppleApplication::getScriptName(); ](=script_name)
+
+	$($user_id)[      
+		$($_get.view)[
+			$_viewdefs(id==$_get.view)[ 
+				$_parse[ $template ]
+			]
+		][
+			$_entities(id==$_get.entity)[
+				$_parse[ $template ]
+			]
+		]
+	]
+][<!DOCTYPE html>
+<HTML>
+<HEAD>
+<TITLE> $_config.admin_title </TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+<meta http-equiv="Content-Type" content="text/html; charset=$_config.admin_charset" />
+<link rel="icon" href="templates/admin/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="templates/admin/favicon.ico" type="image/x-icon">
+
+<!-- Estilos !-->
+<LINK HREF="templates/admin/css/skeleton.css" REL="stylesheet" TYPE="text/css">
+<LINK HREF="templates/admin/css/normalize.css" REL="stylesheet" TYPE="text/css">
+<LINK HREF="templates/admin/css/custom.css" REL="stylesheet" TYPE="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Fin Estilos !-->
+
+$($user_id)[
+
+	$users(id==$user_id)
+
+	$($users.dark_mode)[ <LINK HREF="templates/admin/css/dark.css" REL="stylesheet" TYPE="text/css"> ]
+
+	<!-- Scripts !-->
+	$_eval[ SuppleApplication::getJsScripts(); ] 
+	<script type="text/javascript" src="templates/admin/admin.js"></script>
+	<script type="text/javascript" src="include/tinymce/tinymce.min.js"></script>
+	<script type="text/javascript" src="include/highcharts/highcharts.js"></script>
+	<script type="text/javascript" src="include/trumbowyg/trumbowyg.min.js"></script>
+	<link rel="stylesheet" href="include/trumbowyg/ui/trumbowyg.min.css">
+	<!-- Fin Scripts !-->
+
+][
+
+	<!-- Login Scripts -->
+	<script type="text/javascript" src="include/js/login.js?v=2"></script>
+
+]
+
+</HEAD>
+<BODY>
+$_eval[ SuppleApplication::getScriptName(); ](=script_name)
+
+$($user_id)[      
+	$($_get.entity)[$_get.entity][$_config.initial_entity](=_get.entity)
+
+	<script> var metadata = $_eval[ SuppleApplication::getMetadata(); ]; </script>
+	<script> var global = $_eval[ json_encode(SuppleGlobal::getData()); ]; </script>
+	<script> var first_id = {$_entities(view2==0){"$id":"$$table[$id]"$($_nextid)[,]}}; </script>
+	<script> var script_name = '$script_name'; </script>
+	<script> var current_user = $_eval[ json_encode(SuppleApplication::getUserBean()->getData()); ]; </script>
+	<script> var isadmin = current_user.isadmin; </script>
+	<script> var cache = $($_config.cache_tables)[ $_eval[ json_encode(SuppleApplication::getCacheData()); ] ][ {}; ] </script>
+	$($_get.custom_view_id)[
+	<script> var custom_view_id = '$_get.custom_view_id'; </script>
+	]
+	<script> var urls = new Array(); </script>
+
+	<div id="message"></div>
+	<div class="container" id="main">
+	
+		<!--
+		<div class="row titulo">
+			<div class="twelve columns top_info">
+				<IMG SRC="templates/admin/images/admin_logo.gif" />
+				<span>$_config.admin_title</span><br>
+				<a href="$script_name?action=logout&redirect=$script_name">$_lang.LNK_LOGOUT</a><br>
+				$_lang.LBL_HI $users.name
+			</div>
+		</div>
+		-->
+
+		<div class="row menu">
+			<nav>
+			<!-- HOME BUTTON -->
+			<a href="$script_name?entity=$_config.initial_entity" onclick="return menugoto('$_config.initial_entity');">  
+				<img src="templates/admin/images/logo_icon.png" class="logo">
+			</a>
+			
+			<!-- MOBILE USES DROPDOWN -->
+			<select name="menuselector" id="menuselector" onchange="menugo()">
+			</select>
+
+			<!-- DESKTOP USES LISTS -->
+			<ul class="menu" id="ulmenu">
+			</ul>
+			<!-- USER NAME AND LOGOUT -->
+			<span id="current_user_name">$users.name</span>
+			
+			<a href="$script_name?action=logout&redirect=$script_name" id="logout">
+				<img src="templates/admin/images/logout.png" alt="$_lang.LNK_LOGOUT" title="$_lang.LNK_LOGOUT">
+			</a>
+		</nav>
+		
+
+		
+				
+	</div>
+
+	<div id="_prebreadcrumbs"><div id="_breadcrumbs" class="row"></div></div>
+
+	<span id="supple_limbo" style="display:none"></span>
+
+	<div class="row cuerpo">
+		<div class="twelve columns" id="main_body">
+
+			$(1)[
+				
+				<script> loadView("$_get.entity", "$_get.view", $($_get.id)["$_get.id"][undefined], undefined, 0, false, undefined, $_eval[ json_encode(SuppleApplication::getExtraParameters()); ]); </script>
+				
+			][
+				<!-- BWC -->
+				$($isadmin)[<span class="editarentity">$($_get.view)[<a href="$script_name?id=$_get.view&entity=8&view=1">$_lang.LNK_VIEW_DEF</a>] <a href="$script_name?id=$_get.entity&entity=1&view=4">$_lang.LNK_ENTITY_DEF</a></span>]
+				
+				$_entities(id==$_get.entity)[
+					<h1> $title </h1> 
+					$_parse[ $template ]
+				]
+			]
+		
+		</div>
+	</div>
+
+	
+
+	<div class="row pie">
+		<div class="twelve columns">
+			Powered by <a href="http://www.supple.com.ar">Supple</a>
+		</div>
+	</div>
+
+  </div>
+
+  ][
+
+  <script> var metadata = {}; </script>
+  <script> var script_name = '$script_name'; </script>
+  <script>
+	function setLanguage(){
+		var code = document.getElementById('language').value;
+		url = 'admin.php?action=setlanguage&redirect=admin.php&code='+code;
+		document.location.href = url;
+	}
+
+  </script>
+  
+	<!-- LOGIN TEMPLATE -->
+    <div class="container login" id="main" style="display:none">
+		<div class="row titulo">
+			<div class="twelve columns">
+				<h1>$_lang.LBL_LOGIN_TITLE</h1>
+			</div>
+		</div>
+
+		<form action="$script_name?action=login&redirect=$script_name$($_get.entity)[?entity=$_get.entity$($_get.view)[%26view=$_get.view]$($_get.id)[%26id=$_get.id]$($_get.custom_view_id)[%26custom_view_id=$_get.custom_view_id]]" method="post" id="login_form">
+			<div class="row cuerpo">
+				<div class="twelve columns">
+					<select id="language" placeholder="$_lang.LBL_SELECT_LANGUAGE" onchange="setLanguage()"> 
+						<option selected disabled hidden style="display: none" value="">$_lang.LBL_SELECT_LANGUAGE</option>
+						$_languages{
+							<option value="$code" $($code == $_session.language)[selected="selected"]>$name</option>
+						}
+					</select>
+				</div>
+				<div class="twelve columns">
+					<input type="text" name="nombre" value="" placeholder="$_lang.LBL_USER_NAME"> 
+				</div>
+				<div class="twelve columns">
+					<input type="password" name="password" value="" placeholder="$_lang.LBL_PASSWORD"> 
+				</div>
+				<div class="twelve columns">
+					<span class=error>$($loginResult==-1)[$_lang.LBL_WRONG_USER_PASSWORD <br>]</span>
+					<select name="dark_mode" style="width:auto">
+						<option value=""></option>
+						<option value="0">$_lang.LBL_LIGHT_MODE</option>
+						<option value="1">$_lang.LBL_DARK_MODE</option>
+					</select> 
+					<input type="submit" value="$_lang.BTN_LOGIN">
+				</div>
+			</div>
+		</form>
+    </div>
+	<script>
+		document.addEventListener("DOMContentLoaded", (event) => {
+			loginFormInit('login_form');
+		});
+	</script>
+ 
+  ]
+  
+  <div id="_screen_lock" style="">
+	  <img class="loader" src="templates/admin/images/loader.gif">
+	  <div></div>
+  </div>
+</BODY>
+</HTML>
+]

@@ -1,0 +1,62 @@
+body {
+	color:  #eee;
+}
+.menu, .menu li ul, ul.menu ul li div a {
+    background-color: #666666;
+}
+
+#main {
+    background-color: black;
+}
+#_prebreadcrumbs {
+    background-color: #444444;
+}
+.panel {
+    background-color: #333333;
+}
+.cuerpo a, .cuerpo a:hover {
+    color: white;
+}
+input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea, select {
+	background-color: black;
+}
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+	background-color: black;
+}
+.textarea_view {
+    background-color: grey;
+}
+.detailview .relationship_panel .form {
+    background-color: #333;
+}
+.detailview .form, .editview .form {
+	background-color: #333333;
+}
+.pie {
+    background: #111;
+}
+.par:hover, .impar:hover, .listview .record:hover {
+        background-color: rgba(168, 230, 255,0.3);
+}
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+	color: #aaa;
+}
+#dashboard_tabs .tab.selected {
+    background-color: #666;
+    color: white;
+}
+#dashboard_tabs .tab {
+    background-color: #222;
+}
+.masscreate form.record {
+    background-color: #333;
+}
+.richtext {
+    background-color: #666;
+}
+.trumbowyg-editor {
+    background-color: black !important;
+}
+#_breadcrumbs div a {
+    color: white;
+}
