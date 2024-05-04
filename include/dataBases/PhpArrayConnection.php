@@ -10,11 +10,12 @@ class PhpArrayConnection extends SuppleConnection {
 	var $index = array();
 	var $dataBaseName;
 	var $opConversions = array(
-			'/^(.*[^=!])=([^=].*)$/' 	=> '\1 == \2',
+			'/^(.*[^=!><])=([^=].*)$/' 	=> '\1 == \2',
 			'/^(.*)<>(.*)$/' 			=> '\1 != \2',
 			'/([a-zA-Z0-9_%]+)[ ]+LIKE[ ]+([\'"][^\'"]+[\'"])/' 			=> 'php_like_cmp(\1, \2)',
 		);
-	var $simpleConversions = array();		
+	var $simpleConversions = array();
+	var $useCoreData = true;
 	// static $cache = array();
 /*
 	function __construct(){
@@ -114,7 +115,7 @@ class PhpArrayConnection extends SuppleConnection {
 				$type = '_MISS';
 				$tableFile = 'phpArrayDB/'.$this->dataBaseName.'/'.$table.'.php';
 				$coreFile = 'phpArrayDBcore/'.$table.'.php';
-				if (file_exists($coreFile)){
+				if (file_exists($coreFile) && $this->useCoreData){
 					//  1. Get standard data
 					$std_data = readArray($tableFile);
 					//	2. Get core data
@@ -145,6 +146,10 @@ class PhpArrayConnection extends SuppleConnection {
 	}
 
 	function rebuildIndexes($table) {
+		// check for memmory limit
+		if (memory_get_usage() > 200000000){ // 200MB
+			return;
+		}
 		$indexes = $this->possibleIndexes($table);
 		foreach ($indexes as $field){
 			foreach($this->data[$table] as $i => $row){
@@ -192,7 +197,7 @@ class PhpArrayConnection extends SuppleConnection {
 				$coreFile = 'phpArrayDBcore/'.$table.'.php';				
 				// Remove core data that had no changes
 				$data_to_write = $this->data[$table];
-				if (file_exists($coreFile)){
+				if (file_exists($coreFile) && $this->useCoreData){
 					$core_data = readArray($coreFile);
 					foreach ($core_data as $i => $row){
 						$id = $row['id'];

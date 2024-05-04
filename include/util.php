@@ -1371,13 +1371,26 @@ function curlPost($url, $data, $json = true){
 	$ch = curl_init();
 
 	curl_setopt($ch, CURLOPT_URL,$url);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS,
-				http_build_query($data));
+	if (!empty($data)){
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,
+					http_build_query($data));
+	}
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
 	$result = curl_exec ($ch);
+	if (curl_errno($ch)) {
+		$error_msg = curl_error($ch);
+	}
 	curl_close ($ch);
+
+	if (isset($error_msg)) {
+		// echo $error_msg; die();
+	} else {
+		// echo $result; die();
+	}
 
 	if ($json) {
 		return json_decode($result);

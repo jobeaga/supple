@@ -263,6 +263,36 @@ function while_selector(selector, callback){
 	}, 100);
 }
 
+function formatNumber(num, thousands_sep, decimal_sep, is_amount, dollar_sign){
+	var r = num.toString();
+	
+	// decimal separator
+	if (decimal_sep == undefined){
+		r = r.replace('.', global.lang.DECIMAL_SEPARATOR);
+	} else {
+		r = r.replace('.', decimal_sep);
+	}
+	
+	// thousands separator
+	if (thousands_sep == undefined){
+		// TODO: from language
+		r = r.replace(/\B(?=(\d{3})+(?!\d))/g, global.lang.THOUSANDS_SEPARATOR);
+	} else {
+		r = r.replace(/\B(?=(\d{3})+(?!\d))/g, thousands_sep);
+	}	
+
+	// dollar sign
+	if (is_amount != undefined && is_amount == true){
+		if (dollar_sign == undefined){
+			r = global.lang.DOLLAR + r;
+		} else {
+			r = dollar_sign + r;
+		}		
+	}
+
+	return r;
+}
+
 var decodeEntities = (function() {
 	// this prevents any overhead from creating the object each time
 	var element = document.createElement('div');

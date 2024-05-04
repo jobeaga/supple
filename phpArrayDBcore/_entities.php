@@ -118,7 +118,7 @@ $__connectiontypes{&lt;option value=&quot;$value&quot;&gt;$name&lt;/option&gt;}
 &lt;td&gt;&lt;input type=&quot;text&quot; name=dbuser value=&quot;&quot;  style=width:100px&gt;  &lt;/td&gt;
 &lt;td&gt;&lt;input type=&quot;text&quot; name=dbpass value=&quot;&quot;  style=width:100px&gt;&lt;/td&gt;
 &lt;/tr&gt;&lt;/table&gt;
-&lt;input type=submit class=&quot;button button-primary&quot; value=&quot;Migrate Table&quot;&gt;
+&lt;input type=submit class=&quot;button button-primary&quot; value=&quot;Migrate Table&quot; onclick=&quot;show_progress()&quot;&gt;
 
 
 &lt;/p&gt;

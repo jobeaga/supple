@@ -1329,3 +1329,11 @@ input.order_previous {
 .collapsed_panel a, .collapsed_panel input, .collapsed_panel button, .collapsed_panel select {
     pointer-events: all;
 }
+
+/* TAB GROUPS DASHBOARD */
+.tab_group_dashboard {
+    border: 1px solid grey;
+    padding: 1em !important;
+    margin-bottom: 1em;
+    border-radius: 10px;
+}

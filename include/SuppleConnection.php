@@ -7,7 +7,7 @@ class SuppleConnection {
 	// private $cachel1 = array();
 	// private $cachel2 = array();
 	var $opConversions = array(
-		'/^(.*[^=!])=([^=].*)$/' 	=> '\1 == \2',
+		'/^(.*[^=!<>])=([^=].*)$/' 	=> '\1 == \2',
 		'/^(.*)<>(.*)$/' 			=> '\1 != \2',
 		'/([a-zA-Z0-9_%]+)[ ]+LIKE[ ]+([\'"][^\'"]+[\'"])/' 			=> 'php_like_cmp(\1, \2)',
 	);
@@ -236,7 +236,7 @@ class SuppleConnection {
 		foreach ($fieldValues as $i => $fieldValue){
 			if (is_array($fieldValue)) {
 				$fieldValues[$i] = '';
-			} else if (!is_numeric($fieldValue)) {
+			} else /*if (!is_numeric($fieldValue))*/ {
 				$fieldValues[$i] = "'".str_replace("'", "\\'", $fieldValue)."'";
 			}
 			
@@ -286,6 +286,9 @@ class SuppleConnection {
 				}
 				echo "==================================";
 				*/
+
+				// $GLOBALS['log']->fatal($condition);
+				// $GLOBALS['log']->fatal($exp);
 
 				$r = eval("return ($exp);");
 				//echo "$r <br>";

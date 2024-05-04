@@ -40,6 +40,8 @@ class SuppleActionMigrate extends SuppleAction {
 			// Row by row... we don't want to overload the server
 			$result = $source->from($dbtable);
 			$total = $result->getCount();
+			
+			$result = $source->from($dbtable);
 			$count = 0;
 			while ($row = $result->getRow()){
 				unset($row['_previousid']);
@@ -53,7 +55,7 @@ class SuppleActionMigrate extends SuppleAction {
 				}
 				$count++;
 			}
-			
+
 			// New mapping!
 			$this->db->setMappings($post);
 			

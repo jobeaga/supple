@@ -703,7 +703,7 @@ class SuppleField extends SuppleObject {
 	function processFilter_between($field_name, $value, $raw_filter){
 		if (!empty($raw_filter[$field_name."_2_"]) && !empty($value)){
 			$value2 = $raw_filter[$field_name."_2_"];
-			return "$field_name >= '$value' &&  $field_name <= '$value2'";
+			return "($field_name > '$value' || $field_name == '$value') &&  ($field_name < '$value2' || $field_name == '$value2')";
 		} else {
 			return "";
 		}		

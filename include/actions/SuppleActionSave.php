@@ -108,6 +108,10 @@ class SuppleActionSave extends SuppleAction {
 			}
 		}
 
+		// check if a sync is needed
+		//$action = SuppleAction::getAction('syncmirrors');
+		//$action->checkAndPerformIfNeeded();
+
 		return $r;
 
 	}

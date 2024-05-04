@@ -14,7 +14,12 @@ var active_requests = {};
 
 // MENU:
 function menugo() {
-	menugoto(getValue('menuselector'));
+	var entity_id = getValue('menuselector');
+	if (entity_id == ''){
+		renderTabGroup(document.querySelector('#menuselector option:checked').attributes.tab_group_id.value);
+	} else {
+		menugoto(entity_id);
+	}
 }
 
 function menugoto(i, callback) {
@@ -479,17 +484,12 @@ function renderMenu(){
 				var tge = metadata._tab_group_entities[tge_id];
 				if (tge.id_b == tab_group.id){
 					entity = metadata._entities[tge.id_a];
+
 					if ((entity.adminonly == 0 || entity.adminonly == current_user.isadmin) && entity.show == 1){
-						// Check entity permissions: TODO ACL matrix
-						var _permiso = false;
-						for (const ep_id in metadata._entity_permissions){
-							var ep = metadata._entity_permissions[ep_id];
-							if (ep.id_a == current_user.id && ep.id_b == entity.id){
-								_permiso = true;
-							}
-						}
+
 						// RENDER ENTITY ITEM
-						if (_permiso == true || current_user.isadmin == 1){
+						if (current_user.isadmin == 1 || user_has_permission(current_user.id, entity.id)){
+
 							entity_tab_count++;
 							var extra = '';
 							if (entity.view2 == 1){
@@ -510,7 +510,7 @@ function renderMenu(){
 								}
 							}
 
-							// URLS???
+							// URLS
 							urls[entity.id] = script_name + "?entity=" + entity.id + extra;
 
 							var option_selected = '';
@@ -566,8 +566,10 @@ function renderMenu(){
 
 			// RENDER GROUP TAB
 			if (menuselector_content != ''){
-				menuselector_html += '<option>' + tab_group.name + '</option>' + menuselector_content;
-				ulmenu_html += '<li class="menuitem"><a href="#">' + tab_group.name + '</a>' + ulmenu_content + '</li>';
+				var menuitem_js = "renderTabGroup('"+tab_group.id+"')";
+				
+				menuselector_html += '<option value="" tab_group_id="'+ tab_group.id +'">' + tab_group.name + '</option>' + menuselector_content;
+				ulmenu_html += '<li class="menuitem"><a href="javascript:'+menuitem_js+'" onclick="return '+menuitem_js+'">' + tab_group.name + '</a>' + ulmenu_content + '</li>';
 			}
 		}
 	}
@@ -1328,6 +1330,74 @@ function renderLink(label, onclick, button, href, primary, css_class, button_id)
 
 	return '<a href="'+ href +'" onclick="' + onclick + '" class="'+ cls +'" '+extra+'>' + label + '</a>';
 
+}
+
+function renderTabGroup(tab_group_id){
+	var html = '';
+	var tg;
+	
+	if (tab_group_id != '' && metadata._tab_groups[tab_group_id] != undefined){
+		tg = metadata._tab_groups[tab_group_id];
+		// TITLE
+		html += '<h1>'+tg.name+'</h1>';
+		
+		// GROUP ENTITIES:
+		html += '<div class="tab_group_list">';
+		var tge = searchInArray(metadata._tab_group_entities, 'id_b', tab_group_id);
+		for (const tge_id in tge){ 
+			var entity_id = tge[tge_id].id_a;
+			var entity = metadata._entities[entity_id];
+			var entity_url = script_name + '?entity=' + entity.id;
+
+			if (urls[entity.id] != undefined){
+				entity_url = urls[entity.id];
+			}
+			
+			// PERMISSIONS
+			var _permiso = (current_user.isadmin == 1 ||user_has_permission(current_user.id, entity.id));
+
+			// PANEL
+			if (_permiso == true && entity.show == 1){
+				html += '<div class="tab_group_dashboard"><h2><a href="'+entity_url+'" onclick="return menugoto(\'' + entity.id + '\');">'+ entity.name + '</h2>';
+				for (const vb_id in metadata._viewbuttons){
+					var vb = metadata._viewbuttons[vb_id];
+					if (vb.view_id == 2){
+					}
+				}
+				// GENERAL view buttons (if applies)
+				for (const vb_id in metadata._viewbuttons){
+					var vb = metadata._viewbuttons[vb_id];
+					if (vb.view_id == 2){
+						var vv = 'view'+vb.target_view;
+						if (entity[vv] == 1 || vb.target_view == ''){
+							if (vb.js_code == '' || vb.js_code == undefined){
+								html += '<a class="button" href="' + script_name + '?entity='+entity.id;
+								if (vb.target_view != '') html += '&view='+vb.target_view;
+								if (vb.filter != '') html += '&'+vb.filter;
+								html += '" onclick="return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
+							} else {
+								var extra_js = "this_status['main_body'].entity_id='"+ entity.id +"';this_status['main_body'].view_id='"+ vb.target_view+"';this_status['main_body'].filter='"+vb.filter+"';this_status['main_body'].record_id='';";
+								html += '<a class="button" href="javascript:' + extra_js + vb.js_code + '" onclick="' + extra_js + vb.js_code + '">' + vb.label + '</a>';
+							}
+						}
+					}
+				}
+				// Buttons for custom views of THIS entity
+				for (const cb_id in metadata._custom_views){
+					var cb = metadata._custom_views[cb_id];
+					if (cb.view==2 && cb.parent == entity.id){
+						html += '<a class="button" href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
+					}
+				}
+				// ENTITY END:
+				html += '</div>';
+			}
+		}
+		html += '</div>';
+
+	}
+	document.getElementById('main_body').innerHTML = html;
+	return false;
 }
 
 function renderSearch(parent_element_id, entity_id, related_field, related_id) {
@@ -3135,6 +3205,45 @@ function show_message(str, time){
 	}, time);
 }
 
+function show_progress(){
+	var time = 1000;
+	var id = 'message_progress';
+	if (document.getElementById(id) != null){
+		document.getElementById(id).remove();
+	}
+	$('#message').append('<div class="message" id="' + id + '">0%</div>');
+	$('#' + id).show('fade', {}, 500);
+	
+	var i = setInterval(function(){
+		var p = 0;
+		var s = '';
+		var r = {};
+		// fetch progress
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function() {
+			// console.log(this.responseText, this.status);
+			if (this.status == 200){
+				r = JSON.parse(this.responseText);
+				if (typeof(r) != 'undefined' && r.description != undefined && r.progress != undefined){
+					p = parseInt(r.progress);
+					// update on UI
+					document.getElementById(id).innerHTML = r.description + ' ' + p + '%';
+					// terminate
+					if (p == 100){
+						$('#' + id).hide('fade', {}, 500, function(){
+							$('#' + id).remove();
+							clearInterval(i);
+						});
+					}
+				}
+			}
+		}
+		xhttp.open('GET', 'cache/progress.txt');
+		xhttp.send();
+		
+	}, time);
+}
+
 // SUBMIT LOCK
 function submitLockStart(){
 	//submit_lock_count
@@ -3304,7 +3413,7 @@ function dashboardInit(){
 							url += '&' + dash.filter;
 							dash.filter.split("&").forEach(function (part) { var item=part.split("="); js += ','+item[0]+':\''+item[1]+'\''; });
 						}
-						js += + '})'; // cierro la definicion del JS
+						js += '})'; // cierro la definicion del JS
 
 						html = renderLink(dash.title, js, true, url);
 					} else if (dash.entity_id != '' && dash.view_id != ''){
@@ -3417,10 +3526,18 @@ function renderDashboardList(dash_id){
 	var entity = metadata._entities[dash.entity_id];
 	var field_list = [];
 	var dash_order = entity.listview_order;
+	var order_field = '';
 	var execute_data = false;
 
 	if (dash.custom_order != undefined && dash.custom_order.trim() != ''){
 		dash_order = dash.custom_order;
+	}
+
+	// Order field:
+	if (dash_order.slice(-8) == ' REVERSE'){
+		order_field = dash_order.slice(0,-8);
+	} else {
+		order_field = dash_order;
 	}
 
 	metadata._dashboard[dash_id].fields.forEach(function (fid){ 
@@ -3456,6 +3573,12 @@ function renderDashboardList(dash_id){
 			h += '<div class="label post buttons"></div>';
 		}
 		h += '</div>';
+		// ORDER DATA
+		if (dash_order.slice(-8) == ' REVERSE'){
+			data = sortData(data, order_field, true);
+		} else {
+			data = sortData(data, order_field, false);
+		}
 		// RECORDS
 		h += renderDashboardListBody(data, dash_id);
 		// END
@@ -3464,16 +3587,18 @@ function renderDashboardList(dash_id){
 		setHtml('dashboard_panel_' + dash.id, h);
 	};
 
+	
 	// ExecuteData vs getData
 	// getData(table, filter, offset, count, order, callback, isRel)
 	if (execute_data){
 		// executeData always have delay
-		executeData(entity.table, field_list, dash.filter, dash_order, callback);
+		executeData(entity.table, field_list, dash.filter, order_field, callback);
 	} else {
-		getData(entity.table, dash.filter, 0, 100000, dash_order, function (d,t,c){
-			setTimeout(function(){
+		// getData(table, filter, offset, count, order, callback, isRel)
+		getData(entity.table, dash.filter, 0, 100000, order_field, function (d,t,c){
+			while_selector('dashboard_panel_' + dash_id, function(){
 				callback(d,t,c);
-			}, 100); // add little delay, waiting for dashboard_panel_ to exist
+			}); // waiting for dashboard_panel_ to exist
 		}, false);
 	}
 	

@@ -137,7 +137,7 @@ function createRelatedDropdown(element_id, value, related_table, related_field, 
 				filter = filter + '&' + decodeEntities(fixed_filter);
 			}
 		}
-		getData(related_table, filter, 0, 1000, order_field, function(data){
+		getData(related_table, filter, 0, 10000, order_field, function(data){
 			// $('#'+element_id).html('<OPTION value=""> -- '+ global.lang.LBL_NONE+' -- </option>');
 			$('#'+element_id).html('<OPTION value=""></option>');
 			$.each(data, function (i, row){
