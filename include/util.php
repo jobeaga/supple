@@ -1342,11 +1342,12 @@ function formatDate($date, $format = 'd/m/Y', $adjust_offset = true){
 }
 
 function onlyupper($string){
-	$r = '';
+	return preg_replace('/[^A-Z]/', '', $string);
+	/*$r = '';
 	for ($i=0;$i<strlen($string);$i++){
 	  if ($string[$i] == strtoupper($string[$i])) $r .= $string[$i];
 	}
-	return $r;	
+	return $r;*/	
 }
 
 function quoteTrim($string) {

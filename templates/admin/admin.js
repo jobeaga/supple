@@ -520,7 +520,9 @@ function renderMenu(){
 								li_selected = ' class="selected" ';
 							}
 
-							menuselector_content += '<option value="' + entity.id + '"' + option_selected + '> &nbsp;&nbsp; '+ entity.name + ' </option>';
+							if (tab_group.id != '1'){
+								menuselector_content += '<option value="' + entity.id + '"' + option_selected + '> &nbsp;&nbsp; '+ entity.name + ' </option>';
+							}
 
 							ulmenu_content += '<li><a href="'+ script_name +'?entity=' + entity.id + extra + '" onclick="return menugoto(\'' + entity.id + '\');" ' + li_selected + '>' + entity.name +'</a>';
 
@@ -565,12 +567,12 @@ function renderMenu(){
 			ulmenu_content = '<ul id="tabgroup'+tab_group.id+'" ' + xt + '>' + ulmenu_content + '</ul>';
 
 			// RENDER GROUP TAB
-			if (menuselector_content != ''){
+			//if (menuselector_content != ''){
 				var menuitem_js = "renderTabGroup('"+tab_group.id+"')";
 				
 				menuselector_html += '<option value="" tab_group_id="'+ tab_group.id +'">' + tab_group.name + '</option>' + menuselector_content;
 				ulmenu_html += '<li class="menuitem"><a href="javascript:'+menuitem_js+'" onclick="return '+menuitem_js+'">' + tab_group.name + '</a>' + ulmenu_content + '</li>';
-			}
+			//}
 		}
 	}
 	// TO GUI:
@@ -3596,7 +3598,7 @@ function renderDashboardList(dash_id){
 	} else {
 		// getData(table, filter, offset, count, order, callback, isRel)
 		getData(entity.table, dash.filter, 0, 100000, order_field, function (d,t,c){
-			while_selector('dashboard_panel_' + dash_id, function(){
+			while_selector('#dashboard_panel_' + dash_id, function(){
 				callback(d,t,c);
 			}); // waiting for dashboard_panel_ to exist
 		}, false);

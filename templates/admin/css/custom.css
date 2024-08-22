@@ -1336,4 +1336,31 @@ input.order_previous {
     padding: 1em !important;
     margin-bottom: 1em;
     border-radius: 10px;
+    break-inside: avoid-column;
+}
+
+.tab_group_dashboard a {
+	text-decoration: none;
+}
+
+.tab_group_list {
+	column-count: 4;
+}
+
+@media (max-width: 1400px) {
+	.tab_group_list {
+		column-count: 3;
+	}
+}
+
+@media (max-width: 900px) {
+	.tab_group_list {
+		column-count: 2;
+	}
+}
+
+@media (max-width: 700px) {
+	.tab_group_list {
+		column-count: 1;
+	}
 }
