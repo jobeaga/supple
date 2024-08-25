@@ -1,2 +1,1 @@
-<?php $suppleunit_test = array()
-; ?><?php $suppleunit_test[] = array('name' => 'jorge', 'value' => '1', 'id' => '60a83336e4117'); ?><?php $suppleunit_test[] = array('name' => 'error', 'value' => '2', 'id' => '60a83336e440b'); ?>
+<?php $suppleunit_test = array(); ?>
