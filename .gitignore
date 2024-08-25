@@ -1,2 +1,3 @@
 .vscode/
 cache/
+phpArrayDB/default/auth_keys.php

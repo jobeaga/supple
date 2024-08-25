@@ -18,7 +18,7 @@
     'name_es' => 'Usuarios',
     'name_en' => 'Users',
     'date_modified' => '2019-05-21 16:27',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   1 => 
   array (
@@ -133,7 +133,7 @@ $__connectiontypes{&lt;option value=&quot;$value&quot;&gt;$name&lt;/option&gt;}
     'name_es' => 'Mapeo de BD',
     'name_en' => 'DBMappings',
     'date_modified' => '2019-05-20 02:57',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   4 => 
   array (
@@ -187,7 +187,7 @@ $__connectiontypes{&lt;option value=&quot;$value&quot;&gt;$name&lt;/option&gt;}
     'name_es' => 'Tipos de Datos',
     'name_en' => 'DataTypes',
     'date_modified' => '2018-05-12 23:16',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   6 => 
   array (
@@ -225,7 +225,7 @@ $__connectiontypes{&lt;option value=&quot;$value&quot;&gt;$name&lt;/option&gt;}
     'name_es' => 'Campos',
     'name_en' => 'Fields',
     'date_modified' => '2022-04-23 20:21',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'view8' => '0',
     'default_filter' => '',
   ),
@@ -247,7 +247,7 @@ $__connectiontypes{&lt;option value=&quot;$value&quot;&gt;$name&lt;/option&gt;}
     'name_es' => 'Relaciones',
     'name_en' => 'Relationships',
     'date_modified' => '2018-05-12 23:16',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   10 => 
   array (
@@ -267,7 +267,7 @@ $__connectiontypes{&lt;option value=&quot;$value&quot;&gt;$name&lt;/option&gt;}
     'name_es' => 'Vistas de Relaciones',
     'name_en' => 'RelViews',
     'date_modified' => '2019-05-15 20:35',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   11 => 
   array (
@@ -287,7 +287,7 @@ $__connectiontypes{&lt;option value=&quot;$value&quot;&gt;$name&lt;/option&gt;}
     'name_es' => 'Roles',
     'name_en' => 'Roles',
     'date_modified' => '2018-05-12 23:16',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   13 => 
   array (
@@ -331,7 +331,7 @@ $__config{
     'name_es' => 'Configuracion',
     'name_en' => 'Config',
     'date_modified' => '2019-05-20 02:57',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   14 => 
   array (
@@ -351,7 +351,7 @@ $__config{
     'name_es' => 'Extender Vistas',
     'name_en' => 'Extend Views',
     'date_modified' => '2018-05-12 23:16',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   15 => 
   array (
@@ -371,7 +371,7 @@ $__config{
     'name_es' => 'Grupos de Pesta&ntilde;as',
     'name_en' => 'Tab Groups',
     'date_modified' => '2018-05-12 23:16',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   19 => 
   array (
@@ -391,7 +391,7 @@ $__config{
     'name_es' => 'Vistas Custom',
     'name_en' => 'Custom Views',
     'date_modified' => '2020-11-07 00:50',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   18 => 
   array (
@@ -411,7 +411,7 @@ $__config{
     'name_es' => 'SuppleUnit',
     'name_en' => 'SuppleUnit',
     'date_modified' => '2019-05-20 02:58',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   22 => 
   array (
@@ -431,7 +431,7 @@ $__config{
     'name_es' => 'Idiomas',
     'name_en' => 'Languages',
     'date_modified' => '2019-05-20 02:24',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   23 => 
   array (
@@ -451,7 +451,7 @@ $__config{
     'name_es' => 'Parametros de Tipos de Datos',
     'name_en' => 'DataTypes Parameters',
     'date_modified' => '2018-05-12 23:16',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   24 => 
   array (
@@ -471,7 +471,7 @@ $__config{
     'name_es' => 'Tablas',
     'name_en' => 'Tables',
     'date_modified' => '2019-05-20 02:58',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   25 => 
   array (
@@ -491,7 +491,7 @@ $__config{
     'name_es' => 'Campos de Tablas',
     'name_en' => 'Table Fields',
     'date_modified' => '2018-05-12 23:16',
-    'modified_by' => 2,
+    'modified_by' => 1,
   ),
   26 => 
   array (
@@ -510,9 +510,9 @@ $__config{
     'listview_order' => '',
     'template' => '',
     'date_entered' => '2018-05-12 23:16',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2018-05-12 23:16',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 28,
   ),
   28 => 
@@ -532,9 +532,9 @@ $__config{
     'listview_order' => 'order',
     'template' => '',
     'date_entered' => '2020-04-14 21:10',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2020-04-14 21:32',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 30,
   ),
   29 => 
@@ -554,9 +554,9 @@ $__config{
     'listview_order' => 'name',
     'template' => '',
     'date_entered' => '2020-04-22 19:49',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2022-04-23 20:22',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 31,
     'view8' => '0',
     'default_filter' => '',
@@ -578,9 +578,9 @@ $__config{
     'listview_order' => 'order',
     'template' => '',
     'date_entered' => '2020-04-22 20:02',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2020-04-22 20:02',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 32,
   ),
   31 => 
@@ -600,9 +600,9 @@ $__config{
     'listview_order' => '',
     'template' => '',
     'date_entered' => '2020-04-26 18:17',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2020-04-26 18:17',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 33,
   ),
   32 => 
@@ -622,9 +622,9 @@ $__config{
     'listview_order' => 'name',
     'template' => '',
     'date_entered' => '2020-05-17 04:44',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2020-05-17 04:44',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 34,
   ),
   33 => 
@@ -644,9 +644,9 @@ $__config{
     'listview_order' => 'order',
     'template' => '',
     'date_entered' => '2020-05-17 04:46',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2020-05-18 02:32',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 35,
   ),
   34 => 
@@ -667,9 +667,9 @@ $__config{
     'listview_order' => 'order',
     'template' => '',
     'date_entered' => '2021-06-01 03:52',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2021-06-01 06:15',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 36,
   ),
   35 => 
@@ -691,9 +691,9 @@ $__config{
     'default_filter' => '',
     'template' => '',
     'date_entered' => '2021-07-11 01:33',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2021-07-11 01:33',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 39,
   ),
   36 => 
@@ -715,9 +715,9 @@ $__config{
     'default_filter' => '',
     'template' => '',
     'date_entered' => '2022-03-10 14:17',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2022-03-10 14:17',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 40,
   ),
   37 => 
@@ -739,9 +739,9 @@ $__config{
     'default_filter' => '',
     'template' => '',
     'date_entered' => '2022-04-23 20:19',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2022-04-29 15:54',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 41,
   ),
   38 => 
@@ -763,9 +763,9 @@ $__config{
     'default_filter' => '',
     'template' => '',
     'date_entered' => '2022-04-29 15:47',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2022-05-03 03:00',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 42,
   ),
   39 => 
@@ -787,9 +787,9 @@ $__config{
     'default_filter' => '',
     'template' => '',
     'date_entered' => '2022-04-29 15:50',
-    'created_by' => 2,
+    'created_by' => 1,
     'date_modified' => '2022-05-03 03:00',
-    'modified_by' => 2,
+    'modified_by' => 1,
     'id' => 43,
   ),
 ); ?>

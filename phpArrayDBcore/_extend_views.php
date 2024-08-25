@@ -31,7 +31,7 @@ $_viewdefs{
     &lt;td align=center class=&quot;control post buttons&quot;&gt; &lt;a href=&quot;javascript:return delete_do(&#039;$_fields.id&#039;, &#039;_fields&#039;, &#039;2&#039;, &#039;9&#039;)&quot; onclick=&quot;return delete_do(&#039;$_fields.id&#039;, &#039;_fields&#039;, &#039;2&#039;, &#039;9&#039;)&quot; class=&quot;button delete&quot;&gt;$_lang.LNK_DELETE&lt;/a&gt;&lt;/td&gt;
   &lt;/tr&gt; 
 }(order) 
-&lt;/table&gt;', 'parent' => '1', 'id' => 1, 'name_es' => 'Panel de Campos', 'name_en' => 'Fields Panel', 'date_modified' => '2021-06-05 00:36', 'modified_by' => 2, 'type_value' => '', 'view_name' => '', 'position_value' => '', 'parent_name' => '')
+&lt;/table&gt;', 'parent' => '1', 'id' => 1, 'name_es' => 'Panel de Campos', 'name_en' => 'Fields Panel', 'date_modified' => '2021-06-05 00:36', 'modified_by' => 1, 'type_value' => '', 'view_name' => '', 'position_value' => '', 'parent_name' => '')
 ,*/ '1' => array('name' => 'Totales', 'type' => '2', 'view' => '2', 'position' => '1', 'template' => '&lt;!-- TOTALES --&gt;
 &lt;br&gt;&lt;table width=50%&gt;
 &lt;tr&gt;
@@ -149,12 +149,12 @@ $_entities:e{
     &lt;/td&gt;} &lt;/tr&gt;
 }(name)
 &lt;/table&gt;', 'parent' => '13', 'assigned_user_id' => '2', 'date_entered' => '2016-08-03 01:18', 'created_by' => '2', 'date_modified' => '2016-08-05 01:57', 'modified_by' => '2', 'id' => 7)
-, '7' => array('name' => '', 'name_es' => 'Editview JS', 'name_en' => 'Editview JS', 'type' => '1', 'view' => '1', 'position' => '1', 'template' => 'init_columns_editview();', 'parent' => '32', 'date_entered' => '2020-04-22 20:47', 'created_by' => 2, 'date_modified' => '2020-04-22 20:47', 'modified_by' => 2, 'id' => 8)
+, '7' => array('name' => '', 'name_es' => 'Editview JS', 'name_en' => 'Editview JS', 'type' => '1', 'view' => '1', 'position' => '1', 'template' => 'init_columns_editview();', 'parent' => '32', 'date_entered' => '2020-04-22 20:47', 'created_by' => 1, 'date_modified' => '2020-04-22 20:47', 'modified_by' => 1, 'id' => 8)
 )
-; ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Editview JS', 'name_en' => 'Editview JS', 'type' => '1', 'view' => '1', 'position' => '1', 'template' => 'init_filters_editview();', 'parent' => '33', 'date_entered' => '2020-04-26 18:34', 'created_by' => 2, 'date_modified' => '2020-04-26 18:34', 'modified_by' => 2, 'id' => 9); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Detailview JS', 'name_en' => 'Detailview JS', 'type' => '1', 'view' => '4', 'position' => '1', 'template' => 'translateChain(&#039;relationships_chain&#039;);', 'parent' => '32', 'date_entered' => '2020-04-27 22:48', 'created_by' => 2, 'date_modified' => '2020-04-27 22:48', 'modified_by' => 2, 'id' => 10); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Detailview JS', 'name_en' => 'Detailview JS', 'type' => '1', 'view' => '4', 'position' => '1', 'template' => 'translateChain(&#039;relationships_chain&#039;);', 'parent' => '33', 'date_entered' => '2020-04-27 22:50', 'created_by' => 2, 'date_modified' => '2020-04-27 22:50', 'modified_by' => 2, 'id' => 11); ?><?php $_extend_views[] = array('name' => '', 'type' => '0', 'view' => '1', 'position' => '1', 'template' => '&lt;script&gt; 
+; ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Editview JS', 'name_en' => 'Editview JS', 'type' => '1', 'view' => '1', 'position' => '1', 'template' => 'init_filters_editview();', 'parent' => '33', 'date_entered' => '2020-04-26 18:34', 'created_by' => 1, 'date_modified' => '2020-04-26 18:34', 'modified_by' => 1, 'id' => 9); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Detailview JS', 'name_en' => 'Detailview JS', 'type' => '1', 'view' => '4', 'position' => '1', 'template' => 'translateChain(&#039;relationships_chain&#039;);', 'parent' => '32', 'date_entered' => '2020-04-27 22:48', 'created_by' => 1, 'date_modified' => '2020-04-27 22:48', 'modified_by' => 1, 'id' => 10); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Detailview JS', 'name_en' => 'Detailview JS', 'type' => '1', 'view' => '4', 'position' => '1', 'template' => 'translateChain(&#039;relationships_chain&#039;);', 'parent' => '33', 'date_entered' => '2020-04-27 22:50', 'created_by' => 1, 'date_modified' => '2020-04-27 22:50', 'modified_by' => 1, 'id' => 11); ?><?php $_extend_views[] = array('name' => '', 'type' => '0', 'view' => '1', 'position' => '1', 'template' => '&lt;script&gt; 
 jQuery(&#039;#type&#039;).change(populateDataTypeParameters);
 populateDataTypeParameters(); 
-&lt;/script&gt;', 'parent' => '9', 'id' => 3, 'name_es' => 'Par&aacute;metros de Tipos', 'name_en' => 'Type Parameters', 'date_modified' => '2021-01-21 03:14', 'modified_by' => 2, 'view_name' => '', 'parent_name' => ''); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Panel de Campos', 'name_en' => 'Fields Panel', 'type' => '0', 'view' => '4', 'position' => '1', 'template' => '&lt;script&gt;
+&lt;/script&gt;', 'parent' => '9', 'id' => 3, 'name_es' => 'Par&aacute;metros de Tipos', 'name_en' => 'Type Parameters', 'date_modified' => '2021-01-21 03:14', 'modified_by' => 1, 'view_name' => '', 'parent_name' => ''); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Panel de Campos', 'name_en' => 'Fields Panel', 'type' => '0', 'view' => '4', 'position' => '1', 'template' => '&lt;script&gt;
     function renderFieldsPanel(entity_id){
         var html = &#039;&#039;;
         
@@ -248,4 +248,4 @@ populateDataTypeParameters();
     
     var e_id = document.querySelector(&#039;.record&#039;).attributes.record_id.value;
     renderFieldsPanel(e_id);
-&lt;/script&gt;', 'parent' => '1', 'date_entered' => '2024-02-02 10:12', 'created_by' => 2, 'date_modified' => '2024-02-02 13:15', 'modified_by' => 2, 'type_value' => '', 'view_name' => '', 'position_value' => '', 'parent_name' => '', 'id' => 12); ?>
+&lt;/script&gt;', 'parent' => '1', 'date_entered' => '2024-02-02 10:12', 'created_by' => 1, 'date_modified' => '2024-02-02 13:15', 'modified_by' => 1, 'type_value' => '', 'view_name' => '', 'position_value' => '', 'parent_name' => '', 'id' => 12); ?>

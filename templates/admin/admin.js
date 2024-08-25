@@ -1031,12 +1031,30 @@ function renderViewBody(parent_element_id, entity_id, view_id, data, pre_filled,
 	if (checkboxes != undefined){
 		html +=  '<div class="label checkboxes"></div>';
 	}
-	$.each(fields, function (i,f) {
+	for (const i in fields){ 
+		const f = fields[i];
+
 		if (search_result != undefined && f.type == '21') return;  // Do not show order fields on subpanel search
-		var extra = '';
+		let extra = '';
+		let next_f = fields[parseInt(i)+1];
+		let join_with_next = false;
+
+		if (next_f != undefined && next_f.join_with_previous != undefined && next_f.join_with_previous == 1) join_with_next = true;
+
+		// just in case:
+		if (f.join_with_previous == undefined) f.join_with_previous = 0;
+		
 		if (i > 9) extra = ' above10';
-		html +=  '<div class="label label'+ i + extra +'" onclick="sortByField(\'' + f.id + '\', \'' + parent_element_id + '\')">'+ f.label +'</div>';
-	});
+		if (f.join_with_previous == 1){
+			html += ' ';
+		} else {
+			html +=  '<div class="label label'+ i + extra +'" onclick="sortByField(\'' + f.id + '\', \'' + parent_element_id + '\')">';
+		}
+		html += f.label;
+		if (!join_with_next){
+			html += '</div>';
+		}
+	}
 	if (search_result == undefined) html +=  '<div class="label post buttons"></div>';
 	html +=  '</div>';  // END head
 
@@ -1171,16 +1189,33 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 	if (view.records > 1 && row.id != undefined){
 		suffix = suffix + '_' + row.id;
 	} 
-	$.each(fields, function (i,f) {
+	
+	for (const i in fields){ 
+		const f = fields[i];
+
 		if (search_result != undefined && f.type == '21') return; // Do not show order fields on subpanel search
-		var field_html = '';
-		var f_html = '';
-		var extra = '';
+		let field_html = '';
+		let f_html = '';
+		let extra = '';
+		let next_f = fields[parseInt(i)+1];
+		let join_with_next = false;
+
+		if (next_f != undefined && next_f.join_with_previous != undefined && next_f.join_with_previous == 1) join_with_next = true;
+
+		// just in case:
+		if (f.join_with_previous == undefined) f.join_with_previous = 0;
 		
 		if (i > 9) extra += ' above10';
 		if (f.multiple == 1) extra += ' multiple';
 		if (f.required == 1) extra += ' required';
-		f_html += '<div class="field field'+ i + extra + '"><label>'+ f.label +': </label><span class="group">';
+
+		if (f.join_with_previous == 1){
+			// f_html += '<strong>'+ f.label +': </strong>';
+		} else { // this field joins with previous
+			f_html += '<div class="field field'+ i + extra + '">';
+			f_html += '<label>'+ f.label +': </label>';
+			f_html += '<span class="group">';
+		}
 
 		// FIELD!!!
 		field_html =  renderField(f.id, ((view.editable == 1 && editable == 1 && search_result == undefined) || (f.access == 'listedit' && view.id == 2)), row[f.name], suffix, row);
@@ -1202,7 +1237,10 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 			f_html +=  field_html;
 		}
 
-		f_html += '</span></div>';
+		// joining with next
+		if (!join_with_next){
+			f_html += '</span></div>';
+		}		
 
 		// Add it to the right group:
 		var fg = '';
@@ -1213,7 +1251,8 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 			field_groups[fg].fields_html = '';
 		}
 		field_groups[fg].fields_html += f_html;
-	});
+	
+	}
 
 	// ORDER GROUPS:
 	field_groups = Object.values(field_groups).sort(function (a,b){ return a.order - b.order; });
@@ -2286,7 +2325,7 @@ function renderSingleField(field_id, edit, value, suffix, row, db_index){
 				html += '<span class="translation multilanguage"><span class="code">' + (code.substring(1)) + '</span>';
 				if (row != undefined && row[name] != undefined) value = row[name];
 				// MULTI MULTI
-				if (field.multiple == 1 && db_index != undefined && row != undefined){
+				if (field.multiple == 1 && db_index != undefined && row != undefined && row[name] != undefined && row[name][db_index] != undefined){
 					value = row[name][db_index];
 				}
 				if (db_index == 'new') value = '';
@@ -2306,7 +2345,11 @@ function renderSingleField(field_id, edit, value, suffix, row, db_index){
 			if (edit == 1){
 				if (field.required==1) html += "<script>jQuery('#"+ id +"').attr('required', 'required');</script>";
 				if (!empty(field.regex)) html += "<script>jQuery('#"+ id +"').attr('pattern', '"+field.regex+"');</script>";
-				if (!empty(field.placeholder)) html += "<script>jQuery('#"+ id +"').attr('placeholder', '"+field.placeholder+"');</script>";
+				if (empty(field.placeholder)){
+					html += "<script>jQuery('#"+ id +"').attr('placeholder', '"+field.label+"');</script>";
+				} else {
+					html += "<script>jQuery('#"+ id +"').attr('placeholder', '"+field.placeholder+"');</script>";
+				} 
 			}
 		});
 	// END FOREACH
