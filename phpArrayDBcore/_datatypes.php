@@ -217,7 +217,7 @@ $($e._previousid || $e._nextid)[
 <input type=hidden id="_orderprevious{{f.name}}{{record_id}}" value="{{row._previousid}}"> 
 <input type="button" id="_orderbutprevious{{f.name}}{{record_id}}" class="order_previous" onclick="order_swap_previous(&#039;{{record_id}}&#039;, &#039;{{f.name}}&#039;)" {{#xif " this.row._previousid == &#039;&#039; "}}disabled="disabled"{{/xif}}>
 
-<span id="_orderv{{f.name}}{{record_id}}" style="display:none;">{{value}}</span>
+<span id="_orderv{{f.name}}{{record_id}}">{{value}}</span> <!-- style="display:none;" -->
 <input type=hidden id="_order{{f.name}}{{record_id}}" value="{{value}}">
 <input type=hidden id="_ordertable{{f.name}}{{record_id}}" value="{{table}}">
 

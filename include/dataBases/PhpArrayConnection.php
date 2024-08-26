@@ -121,11 +121,30 @@ class PhpArrayConnection extends SuppleConnection {
 					//	2. Get core data
 					$core_data = readArray($coreFile);
 					//  3. MIX! (by id)
-					foreach ($core_data as $i => $row){
-						$this->data[$table][$row['id']] = $row;
-					}
+					/*foreach ($core_data as $i => $row){
+						$this->data[$table][$i] = $row;
+					}*/
+					$this->data[$table] = $core_data;
+					
 					foreach ($std_data as $i => $row){
-						$this->data[$table][$row['id']] = $row;
+						// get index for this info:
+						$index = '';
+						if (isset($row['id'])){
+							foreach ($this->data[$table] as $i => $tr){
+								if (isset($tr['id']) && $tr['id'] == $row['id']){
+									$index = $i;
+								}
+							}
+						}
+						if ($index==''){
+							$this->data[$table][] = $row; // $this->data[$table][$i] = $row; ????
+						} else {
+							// $this->data[$table][$index] = $row;
+							foreach ($row as $f => $v){
+								$this->data[$table][$index][$f] = $v;
+							}
+						}						
+						
 					}
 					//  Do this for all the db types??? (sounds good, doesn't work)
 				} else {
@@ -199,16 +218,33 @@ class PhpArrayConnection extends SuppleConnection {
 				$data_to_write = $this->data[$table];
 				if (file_exists($coreFile) && $this->useCoreData){
 					$core_data = readArray($coreFile);
-					foreach ($core_data as $i => $row){
-						$id = $row['id'];
-						if (isset($this->data[$table][$id]) && $this->data[$table][$id] == $row){
-							unset($data_to_write[$id]);
+					foreach ($core_data as $core_index => $core_row){
+						if (isset($core_row['id'])){
+							$id = $core_row['id'];
+							// search for index of this record:
+							foreach ($data_to_write as $index => $row_to_write){
+								if (isset($row_to_write['id']) && $row_to_write['id'] == $id){
+									// found it!
+									if ($row_to_write == $core_row){
+										// same info:
+										unset($data_to_write[$index]);
+									}
+									// compare field by field:
+									/*
+									foreach ($row_to_write as $field => $value){
+										if ($field != 'id' && isset($core_row[$field]) && $value == $core_row[$field]){
+											unset($data_to_write[$index][$field]);
+										}
+									}
+									*/
+								}
+							}
 						}
 					}
 				}
-				
 				// Write all the data into the file
 				writeArray($tableFile, $data_to_write);
+				
 				if ($this->dataBaseName == 'metadata'){
 					SuppleApplication::getcache()->clearMetadata();
 				}
@@ -325,14 +361,17 @@ class PhpArrayConnection extends SuppleConnection {
 			if ($cond){
 				//$values = $this->updateFields($table, $values, $record);
 				$some = true;
-				$this->setValue($table, $index, $values, false);
+				$update_values = $values;
+				if (!isset($update_values['id']) && isset($record['id'])) $update_values['id'] = $record['id'];
+				$this->setValue($table, $index, $update_values, false);
 				$ids[] = $this->data[$table][$index]['id'];
 			}
 		}
 		
 		// Write the entire file (is this being done twice?)
 		if ($some){
-			$this->saveTableData($table);
+			// its not needed
+			// $this->saveTableData($table);
 		}
 
 		// UPDATE CACHE

@@ -127,7 +127,7 @@
 
 &lt;form method=&quot;POST&quot; action=&quot;admin.php?action=applycorechanges&quot; id=corechanges_contents name=corechanges_contents style=&quot;display:none&quot; enctype=&quot;multipart/form-data&quot; accept-charset=&quot;utf-8&quot;&gt;
     
-    &lt;input type=submit value=&quot;Apply&quot; class=&quot;button-primary&quot;&gt;
+    &lt;input type=submit value=&quot;Apply&quot; class=&quot;button-primary&quot;&gt; &lt;input type=button value=&quot;Accept All&quot; onclick=&quot;setAll(&#039;to_core&#039;)&quot;&gt; &lt;input type=button value=&quot;Revert All&quot; onclick=&quot;setAll(&#039;revert&#039;)&quot;&gt;
     
     &lt;div id=corechanges_list class=&quot;listview form&quot;&gt;
     &lt;/div&gt;
@@ -159,11 +159,15 @@
         document.getElementById(&#039;corechanges_contents&#039;).style.display = &#039;&#039;;
         document.getElementById(&#039;corechanges_list&#039;).innerHTML = html;
     });
+    
+    function setAll(to_status){
+        document.querySelectorAll(&#039;#corechanges_list select&#039;).forEach(function (e){ e.value = to_status; });
+    }
 &lt;/script&gt;',
     'parent' => '41',
     'date_entered' => '2022-04-25 14:56',
     'created_by' => 1,
-    'date_modified' => '2022-04-28 12:21',
+    'date_modified' => '2024-08-25 20:11',
     'modified_by' => 1,
     'type_value' => '',
     'view_value' => '',

@@ -203,28 +203,28 @@ function writeJSSubArray($array){
 function appendArray($filename, $array, $insert = false){
 	$returnvalue = false;
 
-	if (file_exists($filename)){
+	if (!file_exists($filename)){
+		writeArray($filename, array());
+	}
 
-		// get the variable name
-		$i1 = strrpos($filename, '/'); // last occurrence
-		$i2 = strpos($filename, '.'); // first occurrence
-		$variablename = substr($filename, $i1 + 1, $i2 - $i1 - 1);
-		$variablename = str_replace('.', '_', $variablename);
+	// get the variable name
+	$i1 = strrpos($filename, '/'); // last occurrence
+	$i2 = strpos($filename, '.'); // first occurrence
+	$variablename = substr($filename, $i1 + 1, $i2 - $i1 - 1);
+	$variablename = str_replace('.', '_', $variablename);
 
-		// generate the content
+	// generate the content
     if ($insert){
       foreach ($array as $a){
     		$content = '<?php '.appendSubArrayInsert('$'.$variablename, $a).'; ?>';
       }
     } else {
-  		$content = '<?php '.appendSubArray('$'.$variablename, $array).'; ?>';
+  		$content = '<?php '.appendSubArray('$'.$variablename, $array).';  ?>';
     }
 
-		// write the content into the file
-		return appendString($filename, $content);
-	} else {
-		return writeArray($filename, $array);
-	}
+	// write the content into the file
+	return appendString($filename, $content);
+	
 }
 
 function appendSubArray($sub, $array){
@@ -236,6 +236,8 @@ function appendSubArray($sub, $array){
 	} elseif (is_array($array)){
 
 		foreach ($array as $key => $value){
+			if ($returnvalue != '') $returnvalue .= '; ';
+
 			if (is_string($key)) 
 				$returnvalue .= appendSubArray($sub."['$key']", $value);
 			else
@@ -243,11 +245,11 @@ function appendSubArray($sub, $array){
 		}
 
 	} elseif (is_null($array)){
-		$returnvalue = $sub.' = NULL;';
+		$returnvalue = $sub.' = NULL';
 	} elseif (empty($array)) {
-		$returnvalue = $sub." = '';";
+		$returnvalue = $sub." = ''";
 	} else {
-		$returnvalue = $sub." = $array;";
+		$returnvalue = $sub." = $array";
 	}
 
 	return $returnvalue;
