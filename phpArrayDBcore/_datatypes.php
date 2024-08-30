@@ -212,8 +212,17 @@ $($e._previousid || $e._nextid)[
 </span>
 ]', 'js_viewtemplate' => '{{#xif " this.global.current_user.readonly == &#039;1&#039; "}}&nbsp;{{else}}
 
-<span class="order">
+{{#xif " this.view == &#039;2&#039; "}}
+<span class="order" draggable="true" ondragstart="orderDragStart(event, this, &#039;{{record_id}}&#039;, &#039;{{f.name}}&#039; )" ondragend="orderDragEnd()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none">
+    <path d="M4 6H20M4 12H20M4 18H20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg> 
+</span>
+{{/xif}}
 
+{{/xif}} '
+
+/*
 <input type=hidden id="_orderprevious{{f.name}}{{record_id}}" value="{{row._previousid}}"> 
 <input type="button" id="_orderbutprevious{{f.name}}{{record_id}}" class="order_previous" onclick="order_swap_previous(&#039;{{record_id}}&#039;, &#039;{{f.name}}&#039;)" {{#xif " this.row._previousid == &#039;&#039; "}}disabled="disabled"{{/xif}}>
 
@@ -223,10 +232,10 @@ $($e._previousid || $e._nextid)[
 
 <input type=hidden id="_ordernext{{f.name}}{{record_id}}" value="{{row._nextid}}">  
 <input type="button" id="_orderbutnext{{f.name}}{{record_id}}" class="order_next" onclick="order_swap_next(&#039;{{record_id}}&#039;, &#039;{{f.name}}&#039;)"  {{#xif " this.row._nextid == &#039;&#039; "}}disabled="disabled"{{/xif}} > 
+*/
 
-</span>
 
-{{/xif}} ', 'edittemplate' => '<input type="hidden" name="$_name" value="$_value" id="$_name"> $_value', 'js_edittemplate' => '<input type="hidden" name="{{name}}" id="{{id}}"  value="{{value}}"> {{value}}', 'metatemplate' => '', 'id' => 21, 'date_modified' => '2016-12-12 23:14', 'modified_by' => '2')
+, 'edittemplate' => '<input type="hidden" name="$_name" value="$_value" id="$_name"> $_value', 'js_edittemplate' => '<input type="hidden" name="{{name}}" id="{{id}}"  value="{{value}}"> {{value}}', 'metatemplate' => '', 'id' => 21, 'date_modified' => '2016-12-12 23:14', 'modified_by' => '2')
 , '21' => array('typename' => 'IP', 'viewtemplate' => '$_value', 'edittemplate' => '$_value', 'metatemplate' => '$_lang.LBL_IP_DESCRIPTION', 'id' => 22, 'js_viewtemplate' => '<a href="#" onclick="return getIPinfo(&#039;{{value}}&#039;, &#039;{{id}}&#039;)">{{value}}</a> <input type="hidden" name="{{name}}" id="{{id}}" value="{{value}}">', 'js_edittemplate' => '<input type="text" size="15" name="{{name}}" id="{{id}}" value="{{value}}">', 'date_modified' => '2019-04-19 14:24', 'modified_by' => 2)
 , '22' => array('typename' => 'EntityField', 'viewtemplate' => '$($_value)[
   $_fields:rf(id==$_value)[

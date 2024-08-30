@@ -62,4 +62,51 @@ class SuppleFieldOrder extends SuppleField {
 		}
 	}
 
+	public function orderSwapAndShift($table, $from_id, $to_id, $field_name){
+		global $db;
+		$values = array();
+
+		$date_format = 'Y-m-d H:i';
+		$date_offset = SuppleApplication::getconfig()->getValue('gmt_offset');
+		$today = date($date_format, strtotime(gmdate($date_format)) + ($date_offset * 60 * 60));
+
+		// GET VALUES
+		$from_bean = SuppleBean::getBean($table, $from_id);
+		$to_bean = SuppleBean::getBean($table, $to_id);
+		$from_value = $from_bean->$field_name;
+		$to_value = $to_bean->$field_name;
+		$values[$from_id] = $from_value;
+		$values[$to_id] = $to_value;
+
+		if ($from_value < $to_value){
+			$where = "$from_value < $field_name && $field_name < $to_value";
+		} else {
+			$where = "$to_value < $field_name && $field_name < $from_value";
+		}
+		$vs = $db->from($table)->where(array($where => ''))->orderBy($field_name)->getArray();
+		foreach ($vs as $v){
+			$values[$v['id']] = $v[$field_name];
+		}
+
+		// SHIFT values
+		foreach ($values as $id => $v){
+			if ($from_value < $to_value){
+				$values[$id] = $v - 1;
+			} else {
+				$values[$id] = $v + 1;
+			}
+		}
+
+		// SWAP $from_id value
+		$values[$from_id] = $to_value;
+
+		// UPDATE all!
+		foreach ($values as $id => $v){
+			$db->update($table, array($field_name => $v, 'date_modified' => $today), array('id' => $id));
+		}
+
+		// RETURN NEW VALUES
+		return $values;
+	}
+
 }

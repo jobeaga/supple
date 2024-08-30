@@ -1236,7 +1236,14 @@ span.field_group.invisible {
 /* ORDER */
 span.order {
 	white-space: nowrap;
+    background-color: #CCCCCC;
+    display: block;
+    padding: 4px;
+    width: 16px;
+    height: 16px;
+	cursor: move;
 }
+
 span.order span {
 	vertical-align: bottom;
 }

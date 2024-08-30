@@ -460,6 +460,187 @@ function order_swap(from_id, to_id, fname) {
 
 }
 
+var order_drag = {
+	element: null,
+	tr_element: null,
+	record_id: '',
+	value: '',
+	field_name: '',
+	order: '',
+	isReverse: false,
+	tableSelector: ''
+};
+function orderDragStart(ev, element, record_id, field_name){
+	// console.log('DragStart', record_id, value, field_name);
+	// quito el estilo de drag:
+	orderClearStyle();
+
+	order_drag.element = element;
+	order_drag.tr_element = orderGetParentWithClass(element, 'record');
+	order_drag.record_id = record_id;
+	order_drag.field_name = field_name;
+	order_drag.isReverse = orderIsReverse();
+	if (order_drag.isReverse){
+		order_drag.order = orderGetViewOrder().split(' ')[0]; // first half
+	} else {
+		order_drag.order = orderGetViewOrder(); 
+	}
+	order_drag.tableSelector = '.' + order_drag.tr_element.parentElement.className.replaceAll(' ', '.');
+	order_drag.value = orderGetValue(record_id);
+
+	// console.log('DRAGSTART', value);
+}
+
+function orderOnDrag(ev, element, record_id){
+	ev.preventDefault();
+	if (order_drag.element != null){
+		let this_tr = orderGetParentWithClass(element, 'record');
+		// quito estilos a todos los TR
+		orderClearStyle();
+
+		// decido si el elemento está
+		if (this_tr.parentElement == orderGetParentWithClass(order_drag.element, 'record').parentElement){
+
+			// obtengo el value de este elemento
+			let value = orderGetValue(record_id); 
+			let css = '';
+			// compare with order_drag.value
+			// console.log(value, order_drag.value);
+
+			if (parseInt(value) < parseInt(order_drag.value)){
+				if (order_drag.isReverse){
+					css = 'drag_target_bottom';
+				} else {
+					css = 'drag_target_top';
+				}				
+			} else {
+				if (order_drag.isReverse){
+					css = 'drag_target_top';
+				} else {
+					css = 'drag_target_bottom';
+				}				
+			}
+
+			// agrego estilo al TR actual
+			this_tr.classList.add(css);
+
+			// console.log('DRAG', value);
+
+		}
+
+	}
+	
+}
+
+function orderDragStop(ev, element, record_id){
+	ev.preventDefault();
+	
+	if (order_drag.element != null && order_drag.record_id != record_id){
+		let table = orderGetTableName();
+		let source_tr = orderGetParentWithClass(order_drag.element, 'record');
+		let target_tr = orderGetParentWithClass(element, 'record');
+		let source_value = order_drag.value;
+		let target_value = orderGetValue(record_id);
+		let table_element = source_tr.parentElement;
+
+		// invoco reorden
+		executeAction('orderSwapAndShift', 'table='+table+'&source_id='+order_drag.record_id+ '&target_id='+record_id+ '&order='+order_drag.field_name, '', function (response){
+			
+			// on success, acomodo gui
+			if (parseInt(target_value) < parseInt(source_value)){
+				if (order_drag.isReverse){
+					// insertAfter
+					table_element.insertBefore(source_tr, target_tr.nextSibling);
+				} else {
+					table_element.insertBefore(source_tr, target_tr);
+				}
+			} else {
+				if (order_drag.isReverse){
+					table_element.insertBefore(source_tr, target_tr);
+				} else {
+					table_element.insertBefore(source_tr, target_tr.nextSibling);
+				}
+			}
+			// console.log(source_tr, target_tr);		
+			// console.log(response);
+
+			// actualizo cache, sólo elementos existentes en cache.
+			for (const id in response.data){ 
+				
+				if (metadata[table] != undefined && metadata[table][id] != undefined){
+					metadata[table][id][order_drag.order] = response.data[id];
+				} else if (cache[table] != undefined && cache[table][id] != undefined){
+					cache[table][id][order_drag.order] = response.data[id];
+				}
+				
+			}
+
+		}, false /*?*/);
+		
+		// console.log('DRAGSTOP', source_value, target_value);
+	}
+}
+
+function orderDragEnd(){
+	
+	// quito el estilo de drag:
+	orderClearStyle();
+	// "destroy" order_drag
+	order_drag.element = null;
+	
+}
+
+function orderGetViewOrder(){
+	var order = this_status['main_body'].order;
+	if (order == undefined){
+		let entity_id = orderGetEntityId();
+		order = metadata._entities[entity_id].listview_order;
+	}
+	return order;
+}
+
+function orderGetEntityId(){
+	return this_status['main_body'].entity_id;
+}
+
+function orderIsReverse(){
+	let o = orderGetViewOrder();
+	return (o.toUpperCase().split(' ')[1] == 'REVERSE');
+}
+
+function orderGetParentWithClass(element, css){
+	// escalo en los ancestros
+	if (element == null){
+		return null;
+	} else if (element.classList.contains(css)){
+		return element;
+	} else {
+		return orderGetParentWithClass(element.parentElement, css);
+	}
+}
+
+function orderGetValue(id){
+	if (order_drag.element != null){
+		let table = orderGetTableName();
+		if (metadata[table] != undefined && metadata[table][id] != undefined){
+			return metadata[table][id][order_drag.order];
+		} else if (cache[table] != undefined && cache[table][id] != undefined){
+			return cache[table][id][order_drag.order];
+		}
+	}
+	return '';
+}
+
+function orderGetTableName(){
+	let entity_id = orderGetEntityId();
+	return metadata._entities[entity_id].table;
+}
+
+function orderClearStyle(){
+	if (order_drag.element != null){
+		document.querySelectorAll(order_drag.tableSelector + ' .record').forEach(function (tr){ tr.classList.remove('drag_target_bottom'); tr.classList.remove('drag_target_top'); });
+	}
+}
 
 // DATATYPE PARAMETERS:
 function populateDataTypeParameters(){

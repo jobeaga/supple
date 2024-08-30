@@ -1156,7 +1156,12 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 	if (view.editable == 1 && editable == 1 && search_result == undefined){
 		html +=  '<form class="record fieldcount'+fl+'" id="record'+ suffix + id +'" enctype="multipart/form-data" accept-charset="' + global.config.admin_charset + '" entity_id="'+ entity.id +'" record_id="'+ id +'" action="void.php" autocomplete="off">';
 	} else {
-		html +=  '<div class="record fieldcount'+fl+'" id="record'+ id +'" record_id="'+ id +'">';
+		html +=  '<div class="record fieldcount'+fl+'" id="record'+ id +'" record_id="'+ id +'"';
+		if (view.id == 2){
+			// (this, &#039;{{record_id}}&#039;, &#039;{{value}}&#039;, &#039;{{f.name}}&#039; )
+			html += ' ondrop="orderDragStop(event, this, \''+ id +'\')" ondragover="orderOnDrag(event, this, \''+ id +'\')" ';
+		}
+		html += '>';
 	}
 
 	if (form_only == undefined) html +=  '<div class="prev buttons">' + buttons +'</div>';
