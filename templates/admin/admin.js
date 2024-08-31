@@ -11,6 +11,8 @@ var multi_row = {};
 var next_cache = {};
 var prev_cache = {};
 var active_requests = {};
+var urls = {};
+
 
 // MENU:
 function menugo() {
