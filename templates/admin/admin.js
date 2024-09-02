@@ -12,6 +12,7 @@ var next_cache = {};
 var prev_cache = {};
 var active_requests = {};
 var urls = {};
+var ribbon_submenu = {};
 
 
 // MENU:
@@ -515,6 +516,11 @@ function renderMenu(){
 							// URLS
 							urls[entity.id] = script_name + "?entity=" + entity.id + extra;
 
+							ribbon_submenu[entity.id] = '';
+							if (entity.view2 == 1){
+								ribbon_submenu[entity.id] += renderLinkTo(entity.id, '2', '', entity.name, true, true);
+							}
+
 							var option_selected = '';
 							var li_selected = '';
 							if (this_status['main_body'] != undefined && entity.id == this_status['main_body'].entity_id){
@@ -530,31 +536,40 @@ function renderMenu(){
 
 							// SUBMENU: ACTIONS 
 							ulmenu_content += '<div>';
+							var submenu_html;
 							// GENERAL view buttons (if applies)
 							for (const vb_id in metadata._viewbuttons){
+								submenu_html = '';
 								var vb = metadata._viewbuttons[vb_id];
 								if (vb.view_id == 2){
 									var vv = 'view'+vb.target_view;
 									if (entity[vv] == 1 || vb.target_view == ''){
 										if (vb.js_code == '' || vb.js_code == undefined){
-											ulmenu_content += '<a href="' + script_name + '?entity='+entity.id;
-											if (vb.target_view != '') ulmenu_content += '&view='+vb.target_view;
-											if (vb.filter != '') ulmenu_content += '&'+vb.filter;
-											ulmenu_content += '" onclick="return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
+											submenu_html += '<a href="' + script_name + '?entity='+entity.id;
+											if (vb.target_view != '') submenu_html += '&view='+vb.target_view;
+											if (vb.filter != '') submenu_html += '&'+vb.filter;
+											submenu_html += '" onclick="return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
 										} else {
 											var extra_js = "this_status['main_body'].entity_id='"+ entity.id +"';this_status['main_body'].view_id='"+ vb.target_view+"';this_status['main_body'].filter='"+vb.filter+"';this_status['main_body'].record_id='';";
-											ulmenu_content += '<a href="javascript:' + extra_js + vb.js_code + '" onclick="' + extra_js + vb.js_code + '">' + vb.label + '</a>';
+											submenu_html += '<a href="javascript:' + extra_js + vb.js_code + '" onclick="' + extra_js + vb.js_code + '">' + vb.label + '</a>';
 										}
 									}
 								}
+								// ADD
+								ulmenu_content += submenu_html;
+								ribbon_submenu[entity.id] += submenu_html; // ADD TO RIBBON TOO
 							}
 							// Buttons for custom views of THIS entity
 							for (const cb_id in metadata._custom_views){
+								submenu_html = '';
 								var cb = metadata._custom_views[cb_id];
 								if (cb.view==2 && cb.parent == entity.id){
-									ulmenu_content += '<a href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
+									submenu_html += '<a href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
 								}
-							}
+								// ADD
+								ulmenu_content += submenu_html;
+								ribbon_submenu[entity.id] += submenu_html; // ADD TO RIBBON TOO
+							}							
 							// END:
 							ulmenu_content += '</div></li>';
 
@@ -669,6 +684,14 @@ function loadView(entity_id, view_id, record_id, filter, offset, dont_push_state
 
 	document.getElementById('menuselector').value = entity_id;
 
+	// SUBMENU RIBBON
+	if (ribbon_submenu[entity_id] != undefined){
+		document.getElementById('_subribbon').innerHTML = ribbon_submenu[entity_id];
+	} else {
+		document.getElementById('_subribbon').innerHTML = '';
+	}
+	
+
 	if (view_id == '' && record_id == ''){ // OLD ENTITY CUSTOM VIEW!
 		var data = [];
 		renderView(entity_id, view_id, data, record_id, pre_filled, offset, parent_element_id, 1);
@@ -745,13 +768,17 @@ function addBreadcrumb(entity_id, view_id, record_id){
 		if (label.length > bct){
 			label = label.slice(0, bct)+'...';
 		}
+		
+		var html = '<div id="' + bc_id +'"';
 		if (entity.name != undefined && entity.name != ''){
 			label += ' <span class="breadEntityName">' + entity.name + '</span>';
+			html += ' title="' + entity.name +'"';
 		}
+		html += '>';
 		// Remove previous breadcrumbs of same record
 		removeBreadCrumb(entity_id, record_id);
 		// create link
-		var html = '<div id="' + bc_id +'">' + renderLinkTo(entity_id, view_id, record_id, label, false) + '</div>';
+		html += renderLinkTo(entity_id, view_id, record_id, label, false) + '</div>';
 		document.getElementById('_breadcrumbs').innerHTML = html + document.getElementById('_breadcrumbs').innerHTML;
 	});
 }
@@ -1445,6 +1472,8 @@ function renderTabGroup(tab_group_id){
 
 	}
 	document.getElementById('main_body').innerHTML = html;
+	document.getElementById('_subribbon').innerHTML = '';
+
 	return false;
 }
 
