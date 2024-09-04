@@ -3,3 +3,4 @@ cache/
 phpArrayDB/default/auth_keys.php
 phpArrayDB/suppleunit_testing/
 test.php
+supple.log
