@@ -388,6 +388,9 @@ button.ui-multiselect .ui-icon-triangle-1-s {
 	color: #000000; 
 	width:90%; 
 }
+.menu .submenu_actions a:hover { 
+	width:100%; 
+}
 .menu li ul {
 	list-style:none;
 	position: absolute;
