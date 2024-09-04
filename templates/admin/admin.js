@@ -33,7 +33,8 @@ function menugoto(i, callback) {
 		getUrl(menugotourl(i));
 	} else {*/
 		//getUrl(menugotourl(i));
-		loadView(i, view, id, undefined, 0, false, callback);
+	loadView(i, view, id, undefined, 0, false, callback);
+	menuHide();
 	//}
 	return false;
 }
@@ -532,10 +533,21 @@ function renderMenu(){
 								menuselector_content += '<option value="' + entity.id + '"' + option_selected + '> &nbsp;&nbsp; '+ entity.name + ' </option>';
 							}
 
-							ulmenu_content += '<li><a href="'+ script_name +'?entity=' + entity.id + extra + '" onclick="return menugoto(\'' + entity.id + '\');" ' + li_selected + '>' + entity.name +'</a>';
+							ulmenu_content += '<li>';
+
+							// submenu actions count?
+							var submenu_actions_count = getSubmenuActionsCount(entity.id);
+
+							// Expand/collapse arrow
+							if (submenu_actions_count > 0){
+								ulmenu_content += '<span class="expand_submenu_actions" onclick="expand_submenu(\'' + entity.id + '\')">&#8897;</span>';
+							}
+							
+							// Entity button:
+							ulmenu_content += '<a href="'+ script_name +'?entity=' + entity.id + extra + '" onclick="return menugoto(\'' + entity.id + '\');" ' + li_selected + '>' + entity.name +'</a>';
 
 							// SUBMENU: ACTIONS 
-							ulmenu_content += '<div>';
+							ulmenu_content += '<div id="_submenu_actions_' + entity.id + '" class="submenu_actions">';
 							var submenu_html;
 							// GENERAL view buttons (if applies)
 							for (const vb_id in metadata._viewbuttons){
@@ -548,10 +560,10 @@ function renderMenu(){
 											submenu_html += '<a href="' + script_name + '?entity='+entity.id;
 											if (vb.target_view != '') submenu_html += '&view='+vb.target_view;
 											if (vb.filter != '') submenu_html += '&'+vb.filter;
-											submenu_html += '" onclick="return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
+											submenu_html += '" onclick="menuHide(); return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
 										} else {
 											var extra_js = "this_status['main_body'].entity_id='"+ entity.id +"';this_status['main_body'].view_id='"+ vb.target_view+"';this_status['main_body'].filter='"+vb.filter+"';this_status['main_body'].record_id='';";
-											submenu_html += '<a href="javascript:' + extra_js + vb.js_code + '" onclick="' + extra_js + vb.js_code + '">' + vb.label + '</a>';
+											submenu_html += '<a href="javascript: menuHide(); ' + extra_js + vb.js_code + '" onclick="menuHide(); ' + extra_js + vb.js_code + '">' + vb.label + '</a>';
 										}
 									}
 								}
@@ -564,7 +576,7 @@ function renderMenu(){
 								submenu_html = '';
 								var cb = metadata._custom_views[cb_id];
 								if (cb.view==2 && cb.parent == entity.id){
-									submenu_html += '<a href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
+									submenu_html += '<a href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="menuHide(); return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
 								}
 								// ADD
 								ulmenu_content += submenu_html;
@@ -588,13 +600,69 @@ function renderMenu(){
 				var menuitem_js = "renderTabGroup('"+tab_group.id+"')";
 				
 				menuselector_html += '<option value="" tab_group_id="'+ tab_group.id +'">' + tab_group.name + '</option>' + menuselector_content;
-				ulmenu_html += '<li class="menuitem"><a href="javascript:'+menuitem_js+'" onclick="return '+menuitem_js+'">' + tab_group.name + '</a>' + ulmenu_content + '</li>';
+				ulmenu_html += '<li class="menuitem"><a href="javascript:'+menuitem_js+'" onclick="menuHide(); return '+menuitem_js+'">' + tab_group.name + '</a>' + ulmenu_content + '</li>';
 			//}
 		}
 	}
 	// TO GUI:
 	document.getElementById('menuselector').innerHTML = menuselector_html;
 	document.getElementById('ulmenu').innerHTML = ulmenu_html;
+}
+
+function showMenu(){
+	const element = document.getElementById('ulmenu');
+	if (element.style.display == 'block'){
+		menuHide();
+	} else {
+		element.style.display = 'block';
+		let s = element.parentElement.appendChild(document.createElement('span'));
+		s.id = 'menu_backscreen';
+		s.addEventListener('click', function (){
+			menuHide();
+		});
+	}	
+}
+
+function menuHide(){
+	document.getElementById('ulmenu').style.display = '';
+	document.getElementById('menu_backscreen').remove();
+}
+
+function expand_submenu(entity_id){
+	const element_id = '_submenu_actions_'+entity_id;
+	const element = document.getElementById(element_id);
+
+	// close all
+	document.querySelectorAll('.submenu_actions').forEach(function (s){ if (s.id != element_id) s.style.display = ''; });
+
+	if (element.style.display != 'block'){
+		// open this one:
+		element.style.display = 'block';
+	} else {
+		// close this one
+		element.style.display = '';
+	}
+	
+}
+
+function getSubmenuActionsCount(entity_id){
+	var count = 0;
+	for (const vb_id in metadata._viewbuttons){
+		var vb = metadata._viewbuttons[vb_id];
+		if (vb.view_id == 2){
+			var vv = 'view'+vb.target_view;
+			if (entity[vv] == 1 || vb.target_view == ''){
+				count++;
+			}
+		}
+	}
+	for (const cb_id in metadata._custom_views){
+		var cb = metadata._custom_views[cb_id];
+		if (cb.view==2 && cb.parent == entity_id){
+			count++;
+		}
+	}
+	return count;
 }
 
 function loadMetadata(callback){
