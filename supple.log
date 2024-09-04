@@ -1,2 +1,0 @@
-2024-09-04 18:46:19 192.168.0.5 [Warn] - Trying to download non-existent file  TABLE=_languages ID=2 FIELD=flag_thumb - /supple/admin.php?action=download&image=1&id=2&field=flag_thumb&table=_languages 
-2024-09-04 18:46:19 192.168.0.5 [Warn] - Trying to download non-existent file  TABLE=_languages ID=1 FIELD=flag_thumb - /supple/admin.php?action=download&image=1&id=1&field=flag_thumb&table=_languages 
