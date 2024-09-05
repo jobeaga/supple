@@ -1306,6 +1306,8 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 
 		// just in case:
 		if (f.join_with_previous == undefined) f.join_with_previous = 0;
+
+		const field_editable = ((view.editable == 1 && editable == 1 && search_result == undefined) || (f.access == 'listedit' && view.id == 2));
 		
 		if (i > 9) extra += ' above10';
 		if (f.multiple == 1) extra += ' multiple';
@@ -1316,11 +1318,15 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 		} else { // this field joins with previous
 			f_html += '<div class="field field'+ i + extra + '">';
 			f_html += '<label>'+ f.label +': </label>';
-			f_html += '<span class="group">';
+			f_html += '<span class="group" alt="' + f.label + '" title="' + f.label + '"';
+			if (field_editable == false && f.type != '21'){
+				f_html += ' onclick="labelClick(this)" onmouseout="labelMoveOut(this)"';
+			}
+			f_html += '>';
 		}
 
 		// FIELD!!!
-		field_html =  renderField(f.id, ((view.editable == 1 && editable == 1 && search_result == undefined) || (f.access == 'listedit' && view.id == 2)), row[f.name], suffix, row);
+		field_html =  renderField(f.id, field_editable, row[f.name], suffix, row);
 
 		if (i == 0 && (view.editable == 0 || editable == 0) && view.id != '4') { // first!
 			if (search_result == undefined){
@@ -1431,6 +1437,21 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 		html +=  '</div>';
 	}
 	return html;
+}
+
+function labelClick(element){
+	if (element.classList.contains('show_title')){
+		element.classList.remove('show_title');
+	} else {
+		element.classList.add('show_title');
+	}
+	document.querySelectorAll('.show_title').forEach(function (e){ 
+		if (e != element) e.classList.remove('show_title'); 
+	});
+}
+
+function labelMoveOut(element){
+	element.classList.remove('show_title');
 }
 
 function renderCancelButton(parent_element_id){
