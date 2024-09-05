@@ -1256,7 +1256,19 @@ span.breadEntityName {
 	.breadEntityName {
 		display: none;
 	}
+
 	
+}
+
+@media (max-width: 600px) {
+
+	.dashboard_panel {
+		width: 95%;
+	}
+	.dashboard_content {
+		height: auto;
+		max-height: 500px;
+	}
 }
 
 @media (max-width: 400px) {
@@ -1269,13 +1281,7 @@ span.breadEntityName {
 		max-width: 90%;
 		overflow: hidden;
 	}
-	.dashboard_panel {
-		width: 95%;
-	}
-	.dashboard_content {
-		height: auto;
-		max-height: 500px;
-	}
+	
 }
 
 .detailview div.nav_panel.top, .editview div.nav_panel.top {
