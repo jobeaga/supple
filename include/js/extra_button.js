@@ -1,5 +1,7 @@
 
 function extra_button_click(button, record_id){
+    // remove previous extras:
+    document.querySelectorAll('.extra_button_close').forEach(function (b){ b.click(); });
     // console.log(button);
     var fields = document.querySelectorAll('#record'+record_id+' .field');
     var cont = document.createElement('div');
@@ -9,16 +11,19 @@ function extra_button_click(button, record_id){
     cont.style.top = p.top+'px';
     cont.style.right = (window.innerWidth - p.left)+'px';
     cont.id = 'extra_container'+record_id;
-    // console.log(cont);
-    document.body.append(cont);    
+    
+    var c = 0;
+    fields.forEach(function (f){ if (f.offsetParent === null) c++; });
 
-    fields.forEach(function (f){
-        if (f.offsetParent === null){
-            // console.log(f.innerHTML);
-            cont.appendChild(f);
-            // alert('no-visible ' + f.id);
-        }
-    });
+    if (c > 0){
+        // Append container and contents
+        document.body.append(cont);    
+        fields.forEach(function (f){
+            if (f.offsetParent === null){
+                cont.appendChild(f);
+            }
+        });
+    }
     
 }
 

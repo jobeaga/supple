@@ -60,3 +60,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 #_breadcrumbs div a {
     color: white;
 }
+div.extra_container  {
+    background-color: black;
+    border: 1px solid grey;
+}

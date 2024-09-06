@@ -776,13 +776,16 @@ span.search_buttons {
 	content: attr(title);
     padding: 6px;
     border: 1px solid black;
-    top: 22px;
-    right: 0;
+    /*top: 22px;
+    right: 0;*/
     background: white;
-    position: relative;
+    position: absolute;
     z-index: 10;
     font-size: 1em;
     color: #333;
+	white-space: nowrap;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
 /* VIEWS */
