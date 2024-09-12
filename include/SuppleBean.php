@@ -137,6 +137,8 @@ class SuppleBean extends SuppleObject {
 			$ids = SuppleApplication::getdb()->update($this->tableName(), $data, array('id' => $this->id));
 
 			if (empty($ids)) {
+				// new with ID:
+				$data['id'] = $this->id;
 				$this->id = SuppleApplication::getdb()->insert($this->tableName(), $data);	
 			}
 			
