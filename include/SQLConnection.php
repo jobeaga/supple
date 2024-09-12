@@ -498,7 +498,7 @@ class SQLResultset extends SuppleResultset {
 			$query .= " LIMIT ".$this->limitStart.", ".$this->limitCount;
 		}
 		
-		$GLOBALS['log']->fatal($query);
+		//$GLOBALS['log']->fatal($query);
 		//echo "$query \n";
 
 		return $query;
