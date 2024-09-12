@@ -560,7 +560,7 @@ function renderMenu(){
 											submenu_html += '<a href="' + script_name + '?entity='+entity.id;
 											if (vb.target_view != '') submenu_html += '&view='+vb.target_view;
 											if (vb.filter != '') submenu_html += '&'+vb.filter;
-											submenu_html += '" onclick="menuHide(); return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
+											submenu_html += '" onclick="return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
 										} else {
 											var extra_js = "this_status['main_body'].entity_id='"+ entity.id +"';this_status['main_body'].view_id='"+ vb.target_view+"';this_status['main_body'].filter='"+vb.filter+"';this_status['main_body'].record_id='';";
 											submenu_html += '<a href="javascript: menuHide(); ' + extra_js + vb.js_code + '" onclick="menuHide(); ' + extra_js + vb.js_code + '">' + vb.label + '</a>';
@@ -625,7 +625,10 @@ function showMenu(){
 
 function menuHide(){
 	document.getElementById('ulmenu').style.display = '';
-	document.getElementById('menu_backscreen').remove();
+	if (document.getElementById('menu_backscreen') != null){
+		document.getElementById('menu_backscreen').remove();
+	}
+	
 }
 
 function expand_submenu(entity_id){
@@ -1499,6 +1502,8 @@ function renderLink(label, onclick, button, href, primary, css_class, button_id)
 function renderTabGroup(tab_group_id){
 	var html = '';
 	var tg;
+
+	menuHide();
 	
 	if (tab_group_id != '' && metadata._tab_groups[tab_group_id] != undefined){
 		tg = metadata._tab_groups[tab_group_id];
