@@ -363,7 +363,13 @@ class PhpArrayConnection extends SuppleConnection {
 				$some = true;
 				$update_values = $values;
 				if (!isset($update_values['id']) && isset($record['id'])) $update_values['id'] = $record['id'];
-				$this->setValue($table, $index, $update_values, false);
+				$index_in_file = $this->getIndexOnTable($table, $update_values['id']);
+				if ($index_in_file === ''){
+					$this->setValue($table, $index, $update_values, false);
+				} else {
+					$this->setValue($table, $index_in_file, $update_values, false);
+				}
+				
 				$ids[] = $this->data[$table][$index]['id'];
 			}
 		}
@@ -379,6 +385,20 @@ class PhpArrayConnection extends SuppleConnection {
 		$cache->unset_ram_all('phparray_getarray_'.$table);
 
 		return $ids;
+	}
+
+	function getIndexOnTable($table, $id){
+		$r = '';
+		$filename = 'phpArrayDB/'.$this->dataBaseName.'/'.$table.'.php';
+		if (file_exists($filename)){
+			$contents = readArray($filename, $table);
+			foreach ($contents as $index => $row){
+				if (isset($row['id']) && $row['id'] == $id){
+					return $index;
+				}
+			}
+		}
+		return $r;
 	}
 
 	function delete($table, $filter){
