@@ -145,8 +145,10 @@ $__connectiontypes{&lt;option value=&quot;$value&quot;&gt;$name&lt;/option&gt;}
     'show' => '1',
     'template' => '
 
-<a id="dashboard_add_button" href="admin.php?entity=36&amp;view=1&amp;1=0" onclick="return nav_viewbutton(&#039;1&#039;, &#039;36&#039;)" class="button button-primary" style="float:right;margin-top: 6px;height: 30px;margin-bottom: 0;">+</a>
-<a id="dashboard_edit_button" href="admin.php?entity=36&amp;view=2" onclick="return loadView(&#039;36&#039;, &#039;2&#039;)" class="button button-primary" style="float:right;margin-top: 6px;height: 30px;margin-bottom: 0;"><img src="templates/admin/images/edit_white.png"></a>
+<span id="dashboard_control_buttons">
+  <a id="dashboard_add_button" href="admin.php?entity=36&amp;view=1&amp;1=0" onclick="return nav_viewbutton(&#039;1&#039;, &#039;36&#039;)" class="button button-primary"><svg width="20px" height="20px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 1H6V6L1 6V10H6V15H10V10H15V6L10 6V1Z" fill="#FFFFFF"/></svg></a>
+  <a id="dashboard_edit_button" href="admin.php?entity=36&amp;view=2" onclick="return loadView(&#039;36&#039;, &#039;2&#039;)" class="button button-primary"><svg width="20px" height="20px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.29289 3.70711L1 11V15H5L12.2929 7.70711L8.29289 3.70711Z" fill="#FFFFFF"/><path d="M9.70711 2.29289L13.7071 6.29289L15.1716 4.82843C15.702 4.29799 16 3.57857 16 2.82843C16 1.26633 14.7337 0 13.1716 0C12.4214 0 11.702 0.297995 11.1716 0.828428L9.70711 2.29289Z" fill="#FFFFFF"/></svg></a>
+</span>
 
 <div id="dashboard_tabs"></div>
 <span id="dashboard_buttons"></span>

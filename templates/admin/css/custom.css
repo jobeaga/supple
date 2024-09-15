@@ -886,9 +886,9 @@ span.search_buttons {
 	.listview div .buttons {
 		width: 2%;
 	}
-	#dashboard_tabs {
+	/*#dashboard_tabs {
 		margin-top: 36px;
-	}
+	}*/
 }
 
 @media (max-width: 920px) {
@@ -1092,9 +1092,9 @@ div#searchform_expand span {
 	content: ' ';
     position: absolute;
     margin-right: 0px;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, grey 10%, grey);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, grey 14%, grey);
     height: 38px;
-    width: 120px;
+    width: 130px;
     right: 0;
     z-index: 0;
     margin-top: -38px;
@@ -1118,6 +1118,10 @@ div#searchform_expand span {
     cursor: pointer;
     box-sizing: border-box;
 	font-size: 11px;
+}
+
+#_subribbon a:last-child {
+	margin-right: 120px;
 }
 
 /* BREAD CRUMBS */
@@ -1164,8 +1168,18 @@ span.breadEntityName {
 }
 
 /* DASHBOARD */
+#dashboard_control_buttons {
+	display: block;
+	text-align: right;
+}
+#dashboard_control_buttons a {
+    margin-top: 6px;
+    height: 30px;
+    margin-bottom: 0;
+    padding: 3px 8px;
+}
 #dashboard_tabs {
-	padding: 8px 0 0 8px;
+	padding: 4px 0 0 8px;
     border-bottom: solid 1px grey;
 }
 #dashboard_tabs .tab {
