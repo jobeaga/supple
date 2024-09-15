@@ -131,7 +131,7 @@ class PhpArrayConnection extends SuppleConnection {
 						$index = '';
 						if (isset($row['id'])){
 							foreach ($this->data[$table] as $i => $tr){
-								if (isset($tr['id']) && $tr['id'] == $row['id']){
+								if (isset($tr['id']) && $tr['id'] == $row['id'] && strlen($tr['id']) == strlen($row['id'])){
 									$index = $i;
 								}
 							}
@@ -361,16 +361,29 @@ class PhpArrayConnection extends SuppleConnection {
 			if ($cond){
 				//$values = $this->updateFields($table, $values, $record);
 				$some = true;
-				$update_values = $values;
-				if (!isset($update_values['id']) && isset($record['id'])) $update_values['id'] = $record['id'];
-				$index_in_file = $this->getIndexOnTable($table, $update_values['id']);
-				if ($index_in_file === ''){
-					$this->setValue($table, $index, $update_values, false);
-				} else {
-					$this->setValue($table, $index_in_file, $update_values, false);
+				// UPDATE VALUES: only values changing
+				$update_values = array();
+				foreach ($values as $k => $v){
+					if ($record[$k] != $v || strlen($record[$k]) != strlen($v)){
+						$update_values[$k] = $v;
+					}
 				}
-				
-				$ids[] = $this->data[$table][$index]['id'];
+				if (count($update_values) > 0){
+					// ADD ID to update. ID is needed when there is a core table
+					if (!isset($update_values['id']) && isset($record['id'])) $update_values['id'] = $record['id'];
+					// get index				
+					$index_in_file = $this->getIndexOnTable($table, $update_values['id']);
+
+					if ($index_in_file === ''){
+						$this->setValue($table, $index, $update_values, false);
+					} else {
+						unset($update_values['id']);
+						$this->setValue($table, $index_in_file, 
+						$update_values, false);
+					}
+					// return id of updated records:
+					$ids[] = $this->data[$table][$index]['id'];
+				}
 			}
 		}
 		
@@ -393,7 +406,7 @@ class PhpArrayConnection extends SuppleConnection {
 		if (file_exists($filename)){
 			$contents = readArray($filename, $table);
 			foreach ($contents as $index => $row){
-				if (isset($row['id']) && $row['id'] == $id){
+				if (isset($row['id']) && $row['id'] == $id && strlen($row['id']) == strlen($id)){
 					return $index;
 				}
 			}

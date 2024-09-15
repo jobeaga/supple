@@ -30,10 +30,13 @@ class Entity extends SuppleBean {
 
 		$is_new = empty($this->id);
 
+		unset($this->needs_async_validation);
+
 		$r = parent::save();
 
 		if ($is_new){
 			$this->createBasicFields();
+			$this->_update_metadata = true;
 		}
 
 		return $r;

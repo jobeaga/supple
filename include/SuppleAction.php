@@ -14,6 +14,7 @@ abstract class SuppleAction extends SuppleObject {
 	public $name = '';
 	public $domain = 'global'; // global = everybody can, user = any logged user can, table = needs to have permission and depends on table
 	public $needACL = true;
+	public $update_metadata = false;
 	
 	function __construct(){
 
@@ -103,7 +104,12 @@ abstract class SuppleAction extends SuppleObject {
 	
 		if (SuppleApplication::prepareValues('table', $table, $post, $get)){
 	
-			return $this->performWith($table, $get, $post);
+			$r = $this->performWith($table, $get, $post);
+
+			$r['update_metadata'] = $this->update_metadata;
+			if ($this->update_metadata) SuppleApplication::getcache()->updateMetadata();
+
+			return $r;
 
 		}
 	

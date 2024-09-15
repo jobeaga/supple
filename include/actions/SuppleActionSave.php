@@ -39,6 +39,10 @@ class SuppleActionSave extends SuppleAction {
 		$r['id'] = $bean->id;
 		$r['record'] = $bean->getData();
 
+		if ($bean->_update_metadata){
+			$this->update_metadata = true;
+		}
+
 		// UPLOAD FILES
 		// TODO: REMOVE FILES (file remove happens on record elimination)
 		if ($_FILES) {

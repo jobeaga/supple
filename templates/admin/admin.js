@@ -2928,7 +2928,14 @@ function save_do(form, table, record_id, callback) {
 		// UPDATE CACHE
 		updateCache(table, response.id, response.record);
 
-		if (callback != undefined) callback(response);
+		if (response.update_metadata){
+			console.log('UPDATE METADATA');
+			loadMetadata(function (){
+				if (callback != undefined) callback(response);
+			});			
+		} else {
+			if (callback != undefined) callback(response);
+		}	
 
 	};
 
