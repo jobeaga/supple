@@ -1976,7 +1976,7 @@ function renderRelationship(rel_id, record_id, r_entity_id, rel_table, field_a, 
 		}
 
 		// Subpanel Placeholder
-		html += '<span id="relationship_'+ rel_id +'" class="relationship_panel listview"><img class="loader" src="templates/admin/images/loader.gif"></span>';
+		html += '<span id="relationship_'+ rel_id +'" class="relationship_panel listview"><span class="loader"></span></span>';
 		
 		// AND RENDER
 		render_do();
@@ -2686,7 +2686,7 @@ function renderCustomView(parent_element_id, custom_view_id, entity_id, view_id,
 			html += custom_view.template;
 		} else {
 			// Placeholder for parsed content
-			html += '<span id="'+ parent_element_id + '_custom_view"><img class="loader" src="templates/admin/images/loader.gif"></span>';
+			html += '<span id="'+ parent_element_id + '_custom_view"><span class="loader"></span></span>';
 		}
 
 		$('#'+parent_element_id).html(html);
@@ -2709,7 +2709,7 @@ function renderCustomEntity(parent_element_id, entity_id){
 		html +=  '<span class="editarentity">' + renderLinkTo('1', '4', entity_id, global.lang.LNK_ENTITY_DEF, false, false) + '</span>';
 	}
 	// Placeholder for parsed content
-	html += '<span id="'+ parent_element_id + '_custom_view"><img class="loader" src="templates/admin/images/loader.gif"></span>';
+	html += '<span id="'+ parent_element_id + '_custom_view"><span class="loader"></span></span>';
 	$('#'+parent_element_id).html(html);
 	
 	if (metadata._entities[entity_id].template.indexOf('$') >= 0){
@@ -3156,7 +3156,7 @@ function reload_do(parent_element_id){
 	var pre_filled = this_status[parent_element_id].pre_filled;
 	var order = this_status[parent_element_id].order;
 
-	document.getElementById(parent_element_id).innerHTML = '<img class="loader" src="templates/admin/images/loader.gif">';
+	document.getElementById(parent_element_id).innerHTML = '<span class="loader"></span>';
 
 	// clear cache? (for all tables?)
 	cache = {};
@@ -3623,7 +3623,7 @@ function dashboardInit(){
 				} else if (dash.type == 'widget'){
 					html += '<div class="dashboard_widget" id="widget_'+ dash.id +'">'
 					if (dash.widget.indexOf('$') >= 0){
-						html += '<img class="loader" src="templates/admin/images/loader.gif" style="height: 32px">';
+						html += '<span class="loader" style="height:32px;"></span>';
 						renderParsed('_dashboard', 'widget', dash.id, dash.entity_id, dash.view_id, '', 'widget_'+dash.id, true);
 					} else {
 						html += dash.widget;
@@ -3648,15 +3648,15 @@ function dashboardInit(){
 							} else if (cv.type == 1){
 								// PARSE TEMPLATE
 								renderParsed('_custom_views', 'template', cv.id, cv.parent, dash.view_id, '', 'dashboard_panel_' + dash.id, true, undefined);
-								html += '<img class="loader" src="templates/admin/images/loader.gif">';
+								html += '<span class="loader"></span>';
 							}
 						} else if (dash.entity_id != '' && dash.view_id != ''){
 							// LOAD VIEW
 							loadView(dash.entity_id, dash.view_id, '', dash.filter, 0, true, undefined, {}, 'dashboard_panel_' + dash.id);
-							html += '<img class="loader" src="templates/admin/images/loader.gif">';
+							html += '<span class="loader"></span>';
 						} else if (dash.widget.trim() != ''){ // TODO: TRIM!
 							if (dash.widget.indexOf('$') >= 0){
-								html += '<img class="loader" src="templates/admin/images/loader.gif" style="height: 32px">';
+								html += '<span class="loader" style="height:32px;"></span>';
 								renderParsed('_dashboard', 'widget', dash.id, dash.entity_id, dash.view_id, '', 'dashboard_panel_'+dash.id, true);
 							} else {
 								html += dash.widget;
@@ -3666,13 +3666,13 @@ function dashboardInit(){
 						if (dash.entity_id != ''){
 							// RENDER LIST
 							renderDashboardList(dash.id);
-							html += '<img class="loader" src="templates/admin/images/loader.gif">';
+							html += '<span class="loader"></span>';
 						}
 					} else if (dash.type == 'chart'){
 						if (dash.entity_id != ''){
 							// RENDER LIST
 							renderDashboardChart(dash.id);
-							html += '<img class="loader" src="templates/admin/images/loader.gif">';
+							html += '<span class="loader"></span>';
 						}
 					}
 					html += '</div></div>';

@@ -228,7 +228,7 @@
     'name_en' => 'Update Metadata Cache',
     'type' => '0',
     'view' => '2',
-    'template' => '&lt;img class=&quot;loader&quot; src=&quot;templates/admin/images/loader.gif&quot;&gt;
+    'template' => '<span class="loader"></span>
 &lt;script&gt;
     updateMetadataCache(0, function (){
         loadMetadata(function (){

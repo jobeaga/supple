@@ -76,22 +76,11 @@ $($user_id)[
 	<div id="message"></div>
 	<div class="container" id="main">
 	
-		<!--
-		<div class="row titulo">
-			<div class="twelve columns top_info">
-				<IMG SRC="templates/admin/images/admin_logo.gif" />
-				<span>$_config.admin_title</span><br>
-				<a href="$script_name?action=logout&redirect=$script_name">$_lang.LNK_LOGOUT</a><br>
-				$_lang.LBL_HI $users.name
-			</div>
-		</div>
-		-->
-
 		<div class="row menu">
 			<nav>
 			<!-- HOME BUTTON -->
 			<a href="$script_name?entity=$_config.initial_entity" onclick="return menugoto('$_config.initial_entity');">  
-				<img src="templates/admin/images/logo_icon.png" class="logo">
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="logo"><path d="M0 0 C2.31 0 4.62 0 7 0 C7 2.31 7 4.62 7 7 C8.98 7 10.96 7 13 7 C13 4.69 13 2.38 13 0 C15.31 0 17.62 0 20 0 C20 2.31 20 4.62 20 7 C21.32 7 22.64 7 24 7 C24 9.31 24 11.62 24 14 C14.76 14 5.52 14 -4 14 C-4 11.69 -4 9.38 -4 7 C-2.68 7 -1.36 7 0 7 C0 4.69 0 2.38 0 0 Z " fill="#FFFFFF" transform="translate(6,16)"/><path d="M0 0 C2.31 0 4.62 0 7 0 C7 2.31 7 4.62 7 7 C4.69 7 2.38 7 0 7 C0 4.69 0 2.38 0 0 Z " fill="#FFFFFF" transform="translate(6,2)"/><path d="M0 0 C1.98 0 3.96 0 6 0 C6 2.31 6 4.62 6 7 C4.02 7 2.04 7 0 7 C0 4.69 0 2.38 0 0 Z " fill="#FFFFFF" transform="translate(13,9)"/></svg>
 			</a>
 			
 			<!-- OLD: MOBILE USES DROPDOWN -->
@@ -112,7 +101,7 @@ $($user_id)[
 			<span id="current_user_name">$users.name</span>
 			
 			<a href="$script_name?action=logout&redirect=$script_name" id="logout">
-				<img src="templates/admin/images/logout.png" alt="$_lang.LNK_LOGOUT" title="$_lang.LNK_LOGOUT">
+				<svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" alt="$_lang.LNK_LOGOUT" title="$_lang.LNK_LOGOUT"><path d="M12 7V12M8 8.99951C7.37209 9.83526 7 10.8742 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 10.8742 16.6279 9.83526 16 8.99951M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 			</a>
 		</nav>
 		
@@ -214,8 +203,8 @@ $($user_id)[
  
   ]
   
-  <div id="_screen_lock" style="">
-	  <img class="loader" src="templates/admin/images/loader.gif">
+  <div id="_screen_lock">
+	  <span class="loader"></span>
 	  <div></div>
   </div>
 </BODY>

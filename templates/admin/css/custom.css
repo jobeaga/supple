@@ -15,6 +15,10 @@ a.button img {
     vertical-align: text-bottom;
 }
 
+h1 {
+	margin: 0.6em 0 0.4em;
+}
+
 h2 {
 	font-size: 1.8em;
 }
@@ -38,11 +42,19 @@ textarea {
 	margin-bottom: 0.5em;
 }
 
+/* LOADER STYLE */
 .loader {
     display: block;
     margin: 0 auto;
 	max-width: 100%;
 	text-align: center;
+	width: 256px;
+	height: 256px;
+}
+
+.loader:after {
+	content: url('data:image/svg+xml,%3Csvg width="256px" height="256px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"%3E%3Cg%3E%3Cpath fill="none" d="M0 0h24v24H0z"/%3E%3Cpath d="M12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-7-7V3z"/%3E%3C/g%3E%3C/svg%3E ');
+
 }
 
 .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
@@ -319,31 +331,6 @@ button.ui-multiselect .ui-icon-triangle-1-s {
 	height: 32px;
 }
 
-
-/*
-.titulo {
-	background: #9f0000 URL("../images/admin_back.gif") repeat-x;
-    background: -webkit-linear-gradient(#b50202, #440000); 
-    background: -o-linear-gradient(#b50202, #440000); 
-    background: -moz-linear-gradient(#b50202, #440000); 
-    background: linear-gradient(#b50202, #440000); 
-    color: #FFFFFF; 
-}
-
-.titulo .top_info {
-	text-align: right;
-}
-
-.titulo .top_info img {
-	float: left;
-}
-
-.titulo .top_info span {
-	font-size: 1.4em;
-	font-weight: bold;
-}
-*/
-
 .menu {
 	background: black;
 	text-align: left;
@@ -493,6 +480,9 @@ nav #hambutton svg {
 	/*.menu nav select { display: inline-block; }*/
 	.menu nav #hambutton { display: inline-block; }
 	#_subribbon { display: block !important; }
+	a.viewbutton7 {
+		top: 85px;
+	}
 	/* MOBILE MENU*/
 	#ulmenu {
 		position: fixed;
@@ -705,7 +695,7 @@ span.search_buttons {
 	z-index: 100;
 }
 
-#_screen_lock img {
+#_screen_lock img, #_screen_lock .loader {
     z-index: 10;
     position: absolute;
     top: 50%;
@@ -730,6 +720,43 @@ span.search_buttons {
     transform: translate(-66%, -30%);
     text-align: center;
 }
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+	from {
+	  -webkit-transform: translate(-50%,-50%) rotate(0deg);
+	  -o-transform: translate(-50%,-50%) rotate(0deg);
+	  transform: translate(-50%,-50%) rotate(0deg);
+	}
+	to {
+	  -webkit-transform: translate(-50%,-50%) rotate(360deg);
+	  -o-transform: translate(-50%,-50%) rotate(360deg);
+	  transform: translate(-50%,-50%) rotate(360deg);
+	}
+  }
+  @keyframes rotating {
+	from {
+	  -ms-transform: translate(-50%,-50%) rotate(0deg);
+	  -moz-transform: translate(-50%,-50%) rotate(0deg);
+	  -webkit-transform: translate(-50%,-50%) rotate(0deg);
+	  -o-transform: translate(-50%,-50%) rotate(0deg);
+	  transform: translate(-50%,-50%) rotate(0deg);
+	}
+	to {
+	  -ms-transform: translate(-50%,-50%) rotate(360deg);
+	  -moz-transform: translate(-50%,-50%) rotate(360deg);
+	  -webkit-transform: translate(-50%,-50%) rotate(360deg);
+	  -o-transform: translate(-50%,-50%) rotate(360deg);
+	  transform: translate(-50%,-50%) rotate(360deg);
+	}
+  }
+  .loader {
+	-webkit-animation: rotating 2s linear infinite;
+	-moz-animation: rotating 2s linear infinite;
+	-ms-animation: rotating 2s linear infinite;
+	-o-animation: rotating 2s linear infinite;
+	animation: rotating 2s linear infinite;
+  }
+
 
 .pie {
 	background: #000000;
@@ -869,11 +896,13 @@ span.search_buttons {
 
 /* REFRESH RELOAD BUTTON */
 .viewbutton7 {
-    font-size: 1.2em;
-    padding: 0 10px;
+	font-size: 1em;
+    padding: 0px 15px;
     position: absolute;
-    right: 10px;
+    right: 3px;
     top: 80px;
+    height: 30px;
+    line-height: 30px;
 }
 
 @media (max-width: 640px) {
@@ -1170,7 +1199,7 @@ span.breadEntityName {
 /* DASHBOARD */
 #dashboard_control_buttons {
 	display: block;
-	text-align: right;
+    float: right;
 }
 #dashboard_control_buttons a {
     margin-top: 6px;
@@ -1179,7 +1208,7 @@ span.breadEntityName {
     padding: 3px 8px;
 }
 #dashboard_tabs {
-	padding: 4px 0 0 8px;
+	padding: 8px 0 0 8px;
     border-bottom: solid 1px grey;
 }
 #dashboard_tabs .tab {
@@ -1279,6 +1308,14 @@ span.breadEntityName {
 
 @media (max-width: 600px) {
 
+	#dashboard_control_buttons {
+		display: block;
+		text-align: right;
+		float: none;
+	}
+	#dashboard_tabs {
+		padding: 4px 0 0 8px;
+	}
 	.dashboard_panel {
 		width: 95%;
 	}
