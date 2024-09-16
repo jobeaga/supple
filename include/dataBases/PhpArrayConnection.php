@@ -130,9 +130,9 @@ class PhpArrayConnection extends SuppleConnection {
 						// get index for this info:
 						$index = '';
 						if (isset($row['id'])){
-							foreach ($this->data[$table] as $i => $tr){
+							foreach ($this->data[$table] as $j => $tr){
 								if (isset($tr['id']) && $tr['id'] == $row['id'] && strlen($tr['id']) == strlen($row['id'])){
-									$index = $i;
+									$index = $j;
 								}
 							}
 						}
