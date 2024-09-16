@@ -1992,47 +1992,49 @@ function renderRelationshipDropdownSelector(rel_id, record_id, rel_table, r_enti
 	
 	$.each(search, function (i, search_id){
 		var search_field = metadata._fields[search_id];
-		html += search_field.label + ': ';
-		html += '<select id="relsearch_'+ rel_id + '_' + search_id + '"><option value="">'+ global.lang.LBL_NONE + '</option>';
-		html += '</select> <input type=button id="relselect_'+ rel_id + '_' + search_id +'" value="'+ global.lang.LBL_SELECT +'" class="button-primary search_button"><br>';
-		// GENERATE DROPDOWN
-		while_selector('#relsearch_'+ rel_id + '_' + search_id, function(){
-			getData(rent.table, filter, 0, 100, search_field.name, function (data){
-				$.each(data, function (i,e){
-					$('#relsearch_'+ rel_id + '_' + search_id).append('<option value="'+e['id']+'">'+e[search_field.name]+'</option>');
-				});
-			}, true);
-		});
-		// SELECT BUTTON CLICK HANDLER
-		while_selector('#relselect_'+ rel_id + '_' + search_id, function(){
-			$('#relselect_'+ rel_id + '_' + search_id).click(function(){
-				// if selected element is not empty relate!
-				selected_id = $('#relsearch_'+ rel_id + '_' + search_id).val();
-				selected_count = $('#relationship_'+ rel_id +' .record').length;
-				if (selected_id != '' && (selected_count < limit || limit == 0 || limit == '') && $('#relationship_'+ rel_id +' .record#record'+ selected_id).length == 0){
-					if (type == 1){
-						// use link_do
-						if (side == 'id_a'){
-							link_do(rel_table, record_id, selected_id, function(){
-								// UPDATE SUBPANEL
-								render_do();
-							});
+		if (search_field != undefined){
+			html += search_field.label + ': ';
+			html += '<select id="relsearch_'+ rel_id + '_' + search_id + '"><option value="">'+ global.lang.LBL_NONE + '</option>';
+			html += '</select> <input type=button id="relselect_'+ rel_id + '_' + search_id +'" value="'+ global.lang.LBL_SELECT +'" class="button-primary search_button"><br>';
+			// GENERATE DROPDOWN
+			while_selector('#relsearch_'+ rel_id + '_' + search_id, function(){
+				getData(rent.table, filter, 0, 100, search_field.name, function (data){
+					$.each(data, function (i,e){
+						$('#relsearch_'+ rel_id + '_' + search_id).append('<option value="'+e['id']+'">'+e[search_field.name]+'</option>');
+					});
+				}, true);
+			});
+			// SELECT BUTTON CLICK HANDLER
+			while_selector('#relselect_'+ rel_id + '_' + search_id, function(){
+				$('#relselect_'+ rel_id + '_' + search_id).click(function(){
+					// if selected element is not empty relate!
+					selected_id = $('#relsearch_'+ rel_id + '_' + search_id).val();
+					selected_count = $('#relationship_'+ rel_id +' .record').length;
+					if (selected_id != '' && (selected_count < limit || limit == 0 || limit == '') && $('#relationship_'+ rel_id +' .record#record'+ selected_id).length == 0){
+						if (type == 1){
+							// use link_do
+							if (side == 'id_a'){
+								link_do(rel_table, record_id, selected_id, function(){
+									// UPDATE SUBPANEL
+									render_do();
+								});
+							} else {
+								link_do(rel_table, selected_id, record_id, function(){
+									// UPDATE SUBPANEL
+									render_do();
+								});
+							}
 						} else {
-							link_do(rel_table, selected_id, record_id, function(){
+							// use save_do
+							save_do(field_a + '=' + encodeURIComponent(row[field_b]), rent.table, selected_id, function(){
 								// UPDATE SUBPANEL
 								render_do();
 							});
 						}
-					} else {
-						// use save_do
-						save_do(field_a + '=' + encodeURIComponent(row[field_b]), rent.table, selected_id, function(){
-							// UPDATE SUBPANEL
-							render_do();
-						});
 					}
-				}
+				});
 			});
-		});
+		}
 	});
 	html += '</div>';
 	return html;
