@@ -364,7 +364,7 @@ class PhpArrayConnection extends SuppleConnection {
 				// UPDATE VALUES: only values changing
 				$update_values = array();
 				foreach ($values as $k => $v){
-					if ($record[$k] != $v || strlen($record[$k]) != strlen($v)){
+					if ($record[$k] != $v || (!is_array($v) && !is_array($record[$k]) && strlen($record[$k]) != strlen($v))){
 						$update_values[$k] = $v;
 					}
 				}
