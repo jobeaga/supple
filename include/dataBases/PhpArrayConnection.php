@@ -361,36 +361,19 @@ class PhpArrayConnection extends SuppleConnection {
 			if ($cond){
 				//$values = $this->updateFields($table, $values, $record);
 				$some = true;
-				// UPDATE VALUES: only values changing
-				$update_values = array();
 				foreach ($values as $k => $v){
-					if ($record[$k] != $v || (!is_array($v) && !is_array($record[$k]) && strlen($record[$k]) != strlen($v))){
-						$update_values[$k] = $v;
-					}
+					$this->data[$table][$index][$k] = $v;
 				}
-				if (count($update_values) > 0){
-					// ADD ID to update. ID is needed when there is a core table
-					if (!isset($update_values['id']) && isset($record['id'])) $update_values['id'] = $record['id'];
-					// get index				
-					$index_in_file = $this->getIndexOnTable($table, $update_values['id']);
-
-					if ($index_in_file === ''){
-						$this->setValue($table, $index, $update_values, false);
-					} else {
-						unset($update_values['id']);
-						$this->setValue($table, $index_in_file, 
-						$update_values, false);
-					}
-					// return id of updated records:
-					$ids[] = $this->data[$table][$index]['id'];
-				}
+				// return id of updated records:
+				$ids[] = $this->data[$table][$index]['id'];
+				
 			}
 		}
 		
 		// Write the entire file (is this being done twice?)
 		if ($some){
 			// its not needed
-			// $this->saveTableData($table);
+			$this->saveTableData($table);
 		}
 
 		// UPDATE CACHE
