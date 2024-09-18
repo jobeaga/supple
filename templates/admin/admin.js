@@ -35,6 +35,7 @@ function menugoto(i, callback) {
 		//getUrl(menugotourl(i));
 	loadView(i, view, id, undefined, 0, false, callback);
 	menuHide();
+	showRibbon(i);
 	//}
 	return false;
 }
@@ -563,7 +564,7 @@ function renderMenu(){
 											submenu_html += '" onclick="return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
 										} else {
 											var extra_js = "this_status['main_body'].entity_id='"+ entity.id +"';this_status['main_body'].view_id='"+ vb.target_view+"';this_status['main_body'].filter='"+vb.filter+"';this_status['main_body'].record_id='';";
-											submenu_html += '<a href="javascript: menuHide(); ' + extra_js + vb.js_code + '" onclick="menuHide(); ' + extra_js + vb.js_code + '">' + vb.label + '</a>';
+											submenu_html += '<a href="javascript: menuHide();showRibbon(\'' + entity.id + '\'); ' + extra_js + vb.js_code + '" onclick="menuHide(); showRibbon(\'' + entity.id + '\'); ' + extra_js + vb.js_code + '">' + vb.label + '</a>';
 										}
 									}
 								}
@@ -576,7 +577,7 @@ function renderMenu(){
 								submenu_html = '';
 								var cb = metadata._custom_views[cb_id];
 								if (cb.view==2 && cb.parent == entity.id){
-									submenu_html += '<a href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="menuHide(); return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
+									submenu_html += '<a href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
 								}
 								// ADD
 								ulmenu_content += submenu_html;
@@ -621,6 +622,15 @@ function showMenu(){
 			menuHide();
 		});
 	}	
+}
+
+function showRibbon(entity_id){
+	// SUBMENU RIBBON
+	if (ribbon_submenu[entity_id] != undefined){
+		document.getElementById('_subribbon').innerHTML = ribbon_submenu[entity_id];
+	} else {
+		document.getElementById('_subribbon').innerHTML = '';
+	}
 }
 
 function menuHide(){
@@ -755,13 +765,7 @@ function loadView(entity_id, view_id, record_id, filter, offset, dont_push_state
 
 	document.getElementById('menuselector').value = entity_id;
 
-	// SUBMENU RIBBON
-	if (ribbon_submenu[entity_id] != undefined){
-		document.getElementById('_subribbon').innerHTML = ribbon_submenu[entity_id];
-	} else {
-		document.getElementById('_subribbon').innerHTML = '';
-	}
-	
+	showRibbon(entity_id);
 
 	if (view_id == '' && record_id == ''){ // OLD ENTITY CUSTOM VIEW!
 		var data = [];
@@ -1504,6 +1508,7 @@ function renderTabGroup(tab_group_id){
 	var tg;
 
 	menuHide();
+	showRibbon('');
 	
 	if (tab_group_id != '' && metadata._tab_groups[tab_group_id] != undefined){
 		tg = metadata._tab_groups[tab_group_id];
@@ -3492,6 +3497,10 @@ function nav_cancel(parent_element_id) {
 
 function nav_viewbutton(button_id, entity_id) {
 	var button = metadata._viewbuttons[button_id];
+
+	menuHide();
+	showRibbon(entity_id);
+
 	if (button.target_view != ''){
 		loadView(entity_id, button.target_view, '', button.filter);
 	} else if (button.target_action != '') {
@@ -3503,6 +3512,9 @@ function nav_viewbutton(button_id, entity_id) {
 }
 
 function nav_customviewbutton(parent_element_id, custom_view_id, entity_id, view_id, record_id) {
+
+	menuHide();
+	showRibbon(entity_id);
 
 	renderCustomView(parent_element_id, custom_view_id, entity_id, '5', record_id, {custom_view_id:custom_view_id});
 
