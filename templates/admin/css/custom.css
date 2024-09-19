@@ -44,12 +44,15 @@ textarea {
 
 /* LOADER STYLE */
 .loader {
-    display: block;
+    display: inline-block;
     margin: 0 auto;
 	max-width: 100%;
 	text-align: center;
 	width: 256px;
 	height: 256px;
+	position: relative;
+    left: 50%;
+    top: 128px;
 }
 
 .loader:after {
@@ -1242,6 +1245,10 @@ span.breadEntityName {
 	overflow: scroll;
 	height: 320px;
 	padding: 8px;
+}
+
+.dashboard_panel .listview div .field {
+    overflow-wrap: anywhere;
 }
 
 .dashboard_widget {

@@ -3637,7 +3637,7 @@ function dashboardInit(){
 				} else if (dash.type == 'widget'){
 					html += '<div class="dashboard_widget" id="widget_'+ dash.id +'">'
 					if (dash.widget.indexOf('$') >= 0){
-						html += '<span class="loader" style="height:32px;"></span>';
+						html += '<span class="loader"></span>';
 						renderParsed('_dashboard', 'widget', dash.id, dash.entity_id, dash.view_id, '', 'widget_'+dash.id, true);
 					} else {
 						html += dash.widget;
@@ -3670,7 +3670,7 @@ function dashboardInit(){
 							html += '<span class="loader"></span>';
 						} else if (dash.widget.trim() != ''){ // TODO: TRIM!
 							if (dash.widget.indexOf('$') >= 0){
-								html += '<span class="loader" style="height:32px;"></span>';
+								html += '<span class="loader"></span>';
 								renderParsed('_dashboard', 'widget', dash.id, dash.entity_id, dash.view_id, '', 'dashboard_panel_'+dash.id, true);
 							} else {
 								html += dash.widget;
