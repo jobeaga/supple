@@ -3598,6 +3598,10 @@ function dashboardInit(){
 				dlimit++;
 				
 				var html = '';
+				var html_extra = '';
+				if (dash.style != undefined){
+					html_extra = ' style="'+ dash.style +'"';
+				}
 				if (dash.type == 'button'){
 					if (dash.custom_view_id != ''){
 						var cv = metadata._custom_views[dash.custom_view_id];
@@ -3635,7 +3639,7 @@ function dashboardInit(){
 					}
 					appendHtml('dashboard_buttons', html);
 				} else if (dash.type == 'widget'){
-					html += '<div class="dashboard_widget" id="widget_'+ dash.id +'">'
+					html += '<div class="dashboard_widget" id="widget_'+ dash.id +'"'+ html_extra +'>'
 					if (dash.widget.indexOf('$') >= 0){
 						html += '<span class="loader"></span>';
 						renderParsed('_dashboard', 'widget', dash.id, dash.entity_id, dash.view_id, '', 'widget_'+dash.id, true);
@@ -3645,7 +3649,7 @@ function dashboardInit(){
 					html += '</div>';
 					appendHtml('dashboard_widgets', html);
 				} else {
-					html = '<div class="dashboard_panel"><div class="dashboard_title">'+dash.title+'<a href="' + script_name + '?entity=36&amp;view=1&amp;id=' + dash.id + '" onclick="return loadView(\'36\', \'1\', \''+ dash.id +'\', \'\', 0, false, undefined, {});" class="button button-primary" style="float:right; margin-top: -3px">' + global.lang.BTN_EDIT + '</a>';
+					html = '<div class="dashboard_panel"'+ html_extra +'><div class="dashboard_title">'+dash.title+'<a href="' + script_name + '?entity=36&amp;view=1&amp;id=' + dash.id + '" onclick="return loadView(\'36\', \'1\', \''+ dash.id +'\', \'\', 0, false, undefined, {});" class="button button-primary" style="float:right; margin-top: -3px">' + global.lang.BTN_EDIT + '</a>';
 
 					if (dash.custom_view_id != ''){
 						html += '<a href="admin.php?entity='+dash.entity_id+'&amp;view=5&amp;custom_view_id='+dash.custom_view_id+'" onclick="return nav_customviewbutton(\'main_body\', \''+dash.custom_view_id+'\', \''+dash.entity_id+'\', \'2\', \'\')" class="button" style="float:right; margin-top: -3px">FULL</a>';

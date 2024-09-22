@@ -8291,4 +8291,5 @@
     'type_typename' => '',
     'id' => 1093,
   ),
-); ?>
+); ?><?php 
+$_fields[] = array('name' => 'style', 'label' => '', 'label_es' => 'Estilo css', 'label_en' => 'CSS Style', 'parent' => '36', 'default_value' => '', 'required' => '0', 'access' => '', 'autoincrement' => '0', 'multilanguage' => '0', 'multiple' => '0', 'unique' => '0', 'regex' => '', 'view1' => '1', 'view2' => '0', 'view3' => '1', 'view4' => '1', 'view5' => '0', 'view6' => '0', 'view7' => '0', 'view8' => '1', 'join_with_previous' => '0', 'placeholder' => 'display:block', 'field_group' => '', 'type' => '1', 'size' => '40', 'date_entered' => '2024-09-19 11:37', 'created_by' => 1, 'date_modified' => '2024-09-19 11:37', 'modified_by' => 1, 'order' => 268, 'parent_name' => '', 'access_value' => '', 'field_group_label' => '', 'type_typename' => '', 'id' => '601'); ?>
