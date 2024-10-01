@@ -212,8 +212,8 @@ $($e._previousid || $e._nextid)[
 </span>
 ]', 'js_viewtemplate' => '{{#xif " this.global.current_user.readonly == &#039;1&#039; "}}&nbsp;{{else}}
 
-{{#xif " this.view == &#039;2&#039; "}}
-<span class="order" draggable="true" ondragstart="orderDragStart(event, this, &#039;{{record_id}}&#039;, &#039;{{f.name}}&#039; )" ondragend="orderDragEnd()">
+{{#xif " this.view == &#039;2&#039; || this.id_suffix != &#039;&#039; "}}
+<span class="order" draggable="true" ondragstart="orderDragStart(event, this, &#039;{{record_id}}&#039;, &#039;{{f.name}}&#039;, &#039;{{e.id}}&#039; )" ondragend="orderDragEnd()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none">
     <path d="M4 6H20M4 12H20M4 18H20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg> 

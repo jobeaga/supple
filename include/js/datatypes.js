@@ -281,7 +281,7 @@ function copyToClipboardValue(element_id){
 	
 }
 
-// ORDER DATATYPE:
+// ORDER DATATYPE: old
 function order_swap_next(id, fname) {
 	var order_next_id;
 	order_next_id = $('#_ordernext'+fname+id).val();
@@ -460,6 +460,7 @@ function order_swap(from_id, to_id, fname) {
 
 }
 
+// ORDER DATATYPE: new
 var order_drag = {
 	element: null,
 	tr_element: null,
@@ -470,12 +471,13 @@ var order_drag = {
 	isReverse: false,
 	tableSelector: ''
 };
-function orderDragStart(ev, element, record_id, field_name){
+function orderDragStart(ev, element, record_id, field_name, entity_id){
 	// console.log('DragStart', record_id, value, field_name);
 	// quito el estilo de drag:
 	orderClearStyle();
 
 	order_drag.element = element;
+	order_drag.entity_id = entity_id;
 	order_drag.tr_element = orderGetParentWithClass(element, 'record');
 	order_drag.record_id = record_id;
 	order_drag.field_name = field_name;
@@ -591,16 +593,22 @@ function orderDragEnd(){
 }
 
 function orderGetViewOrder(){
-	var order = this_status['main_body'].order;
-	if (order == undefined){
-		let entity_id = orderGetEntityId();
-		order = metadata._entities[entity_id].listview_order;
+	let entity_id = orderGetEntityId();
+	var order;
+	if (this_status['main_body'].order != undefined && this_status['main_body'].entity_id == entity_id){
+		order = this_status['main_body'].order; // list order
+	} else {
+		order = metadata._entities[entity_id].listview_order; // default and subpanel order
 	}
 	return order;
 }
 
 function orderGetEntityId(){
-	return this_status['main_body'].entity_id;
+	if (order_drag.entity_id != undefined){
+		return order_drag.entity_id;
+	} else {
+		return this_status['main_body'].entity_id;
+	}	
 }
 
 function orderIsReverse(){

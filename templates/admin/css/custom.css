@@ -862,6 +862,11 @@ span.search_buttons {
 	vertical-align: middle;
 	width: 10%;
 }
+
+.listview div .label.checkboxcolumn, .listview div .field.checkboxcolumn {
+	width: 3%;
+}
+
 .listview div .field label {
 	display: none;
 }

@@ -157,77 +157,106 @@ populateDataTypeParameters();
 &lt;/script&gt;', 'parent' => '9', 'id' => 3, 'name_es' => 'Par&aacute;metros de Tipos', 'name_en' => 'Type Parameters', 'date_modified' => '2021-01-21 03:14', 'modified_by' => 1, 'view_name' => '', 'parent_name' => ''); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Panel de Campos', 'name_en' => 'Fields Panel', 'type' => '0', 'view' => '4', 'position' => '1', 'template' => '&lt;script&gt;
     function renderFieldsPanel(entity_id){
         var html = &#039;&#039;;
+        const fields_entity_id = &#039;9&#039;;
+        const fields_relationship_id = &#039;8&#039;;
+        const view_count = Object.keys(metadata._viewdefs).length;
+        const field_count = Math.min(10, view_count+5);
         
-        // HEADER:
-        html += &#039;&lt;h2&gt;&#039;+metadata._entities[9].name+&#039;&lt;/h2&gt;&#039;;
-        html += &#039;&lt;input type=button class=button value=&quot;&#039;+global.lang.LBL_ADD_FIELDS+&#039;&quot; onclick=&quot;&#039; + &quot;loadView(&#039;9&#039;, &#039;1&#039;, &#039;&#039;, &#039;&#039;, 0, false, undefined, {parent:&#039;&quot;+ entity_id + &quot;&#039;}); this_status[&#039;main_body&#039;].return = {record_id:&#039;&quot;+ entity_id +&quot;&#039;, entity_id:&#039;1&#039;}; &quot;+ &#039;&quot;&gt;&#039;;
-        html += &#039;&lt;table id=meta_data class=&quot;listview&quot;&gt;&lt;tr&gt;&lt;th&gt; &#039;;
-        html += getFieldProp(&#039;9&#039;, &#039;order&#039;, &#039;label&#039;);
-        html += &#039; &lt;/th&gt;&lt;th align=left&gt; &#039;;
-        html += getFieldProp(&#039;9&#039;, &#039;name&#039;, &#039;label&#039;);
-        html += &#039; &lt;/th&gt;&lt;th align=left class=extra&gt; &#039;;
-        html += getFieldProp(&#039;9&#039;, &#039;label&#039;, &#039;label&#039;);
-        html += &#039; &lt;/th&gt;&lt;th class=extra&gt; &#039;;
-        html += getFieldProp(&#039;9&#039;, &#039;type&#039;, &#039;label&#039;);
-        html += &#039;&lt;/th&gt;&lt;th class=&quot;desktop&quot; width=&quot;4%&quot;&gt; Req &lt;/th&gt;&#039;;
+        // TITLE:
+        html += &#039;&lt;h2&gt;&#039;+metadata._entities[fields_entity_id].name+&#039;&lt;/h2&gt;&#039;;
+        html += &#039;&lt;input type=button class=button value=&quot;&#039;+global.lang.LBL_ADD_FIELDS+&#039;&quot; onclick=&quot;&#039; + &quot;loadView(&#039;&quot;+fields_entity_id+&quot;&#039;, &#039;1&#039;, &#039;&#039;, &#039;&#039;, 0, false, undefined, {parent:&#039;&quot;+ entity_id + &quot;&#039;}); this_status[&#039;main_body&#039;].return = {record_id:&#039;&quot;+ entity_id +&quot;&#039;, entity_id:&#039;1&#039;}; &quot;+ &#039;&quot;&gt;&#039;;
         
+        html += &#039;&lt;span id=&quot;relationship_&#039;+fields_relationship_id+&#039;&quot; class=&quot;relationship_panel listview&quot;&gt;&#039;;
+        html += &#039;&lt;form id=&quot;meta_data&quot; class=&quot;listview form&quot; entity_id=&quot;&#039;+fields_entity_id+&#039;&quot; record_id=&quot;undefined&quot; action=&quot;void.php&quot; autocomplete=&quot;off&quot;&gt;&#039;;
+        
+        // HEADER START
+        html += &#039;&lt;div class=&quot;head fieldcount&#039;+field_count+&#039;&quot;&gt;&#039;; 
+        html += &#039;&lt;div class=&quot;label prev buttons&quot;&gt;Cantidad &lt;/div&gt;&#039;;
+        html += &#039;&lt;div class=&quot;label label0&quot;&gt; &#039; + getFieldProp(fields_entity_id, &#039;order&#039;, &#039;label&#039;) + &#039; &lt;/div&gt;&#039;;
+        html += &#039;&lt;div class=&quot;label label1&quot;&gt; &#039; + getFieldProp(fields_entity_id, &#039;name&#039;, &#039;label&#039;) + &#039; &lt;/div&gt;&#039;;
+        html += &#039;&lt;div class=&quot;label label2&quot;&gt; &#039; + getFieldProp(fields_entity_id, &#039;label&#039;, &#039;label&#039;) + &#039; &lt;/div&gt;&#039;;
+        html += &#039;&lt;div class=&quot;label label3&quot;&gt; &#039; + getFieldProp(fields_entity_id, &#039;type&#039;, &#039;label&#039;) + &#039; &lt;/div&gt;&#039;;
+        html += &#039;&lt;div class=&quot;label label4 checkboxcolumn&quot;&gt; Req &lt;/div&gt;&#039;;
+        var field_n = 5;
         for (const v in metadata._viewdefs){
             var vd = metadata._viewdefs[v];
-            html += &#039;&lt;th class=&quot;desktop&quot; width=&quot;4%&quot; title=&quot;&#039; + vd.name + &#039;&quot;&gt;&#039;;
+            html += &#039;&lt;div class=&quot;label checkboxcolumn&quot; title=&quot;&#039; + vd.name + &#039;&quot;&gt;&#039;;
             html += onlyupper(vd.name);
-            html += &#039;&lt;/th&gt;&#039;;
+            html += &#039;&lt;/div&gt;&#039;;
+            field_n++;
         }
-        
-        html += &#039;&lt;th&gt;&#039;+global.lang.LBL_GROUP+&#039;&lt;/th&gt;&#039;;
-        html += &#039;&lt;th class=control width=&quot;1%&quot;&gt; &#039;+global.lang.LBL_DELETE+&#039; &lt;/th&gt;&lt;/tr&gt;&#039;;
+        html += &#039;&lt;div class=&quot;label label&#039; + field_n + &#039;&quot;&gt; &#039;+global.lang.LBL_GROUP+&#039; &lt;/div&gt;&#039;;
+        html += &#039;&lt;div class=&quot;label post buttons&quot;&gt;Cantidad &lt;/div&gt;&#039;;
+        html += &#039;&lt;/div&gt;&#039;; 
+        // HEADER END
         
         // BODY: FIELDS in order
         getMetadata(&#039;_fields&#039;, 0, 1000, &#039;order&#039;, function (fields){
             
+            var field_label;
+            
             for (const e of fields){
-                html += &#039;&lt;tr class=&quot;record&quot; id=&quot;record&#039;+e.id+&#039;&quot;&gt;&#039;;
-                html += &#039;&lt;td align=center&gt; &#039;;
-                // ORDER!
-                html += renderBasicSingleField(&#039;162&#039;, 0, e.order, e.id, e.id, e, &#039;order&#039;);
+                var field_id = e.id;
+                field_label = &#039;&#039;;
+                field_n = 0;
                 
-                html += &#039;&lt;/td&gt;&#039;;
-                html += &#039;&lt;td&gt; &lt;a href=&quot;admin.php?entity=9&amp;id=&#039;+e.id+&#039;&amp;view=1&quot; onclick=&quot;&#039; + &quot;return loadView(&#039;9&#039;, &#039;1&#039;, &#039;&quot;+e.id+&quot;&#039;);&quot; + &#039;&quot; &gt;&#039; + e.name + &#039;&lt;/a&gt;&lt;/td&gt;&#039;;
-                html += &#039;&lt;td class=extra&gt;&#039;+e.label+&#039;&lt;/td&gt;&#039;;
-                html += &#039;&lt;td align=center class=extra&gt;&#039;+e.type_typename+&#039;&lt;/td&gt;&#039;;
-                html += &#039;&lt;td align=center class=desktop&gt;  &lt;input type=checkbox onchange=&quot;if (this.checked) {v=1} else {v=0};save_do(&#039; + &quot;required=&#039;+v, &#039;_fields&#039;, &#039;&quot;+ e.id+ &quot;&#039;)&quot; + &#039;&quot; value=1&#039;;
-                if (e.required == 1) html += &#039; CHECKED&#039;;
-                html += &#039;&gt;&lt;/td&gt;&#039;;
+                html += &#039;&lt;div class=&quot;record fieldcount&#039;+field_count+&#039;&quot;  id=&quot;record&#039;+field_id+&#039;&quot; record_id=&quot;&#039;+field_id+&#039;&quot; ondrop=&quot;orderDragStop(event, this, &#039;+ &quot;&#039;&quot; + field_id + &quot;&#039;&quot; + &#039;)&quot;  ondragover=&quot;orderOnDrag(event, this, &#039;+ &quot;&#039;&quot; + field_id + &quot;&#039;&quot; + &#039;)&quot;&gt;&#039;;
+                html += &#039;&lt;div class=&quot;prev buttons&quot;&gt;&lt;/div&gt;&#039;;
+                
+                html += renderFieldCell(renderBasicSingleField(&#039;162&#039;, 0, e.order, e.id, e.id, e, &#039;order&#039;), &#039;order&#039;, field_n);
+                field_n++;
+                
+                html += renderFieldCell(&#039;&lt;a href=&quot;admin.php?entity=&#039;+fields_entity_id+&#039;&amp;id=&#039;+e.id+&#039;&amp;view=1&quot; onclick=&quot;&#039; + &quot;return loadView(&#039;&quot;+fields_entity_id+&quot;&#039;, &#039;1&#039;, &#039;&quot;+e.id+&quot;&#039;);&quot; + &#039;&quot; &gt;&#039; + e.name + &#039;&lt;/a&gt;&#039;, &#039;name&#039;, field_n);
+                field_n++;
+  
+                html += renderFieldCell(e.label, &#039;label&#039;, field_n);
+                field_n++;
+                
+                html += renderFieldCell(e.type_typename, &#039;type&#039;, field_n);
+                field_n++;
+                
+                var req_content = &#039;&lt;input type=checkbox onchange=&quot;if (this.checked) {v=1} else {v=0};save_do(&#039; + &quot;required=&#039;+v, &#039;_fields&#039;, &#039;&quot;+ e.id+ &quot;&#039;)&quot; + &#039;&quot; value=1&#039;;
+                if (e.required == 1) req_content += &#039; CHECKED&#039;;
+                req_content += &#039;&gt;&#039;;
+                html +=  renderFieldCell(req_content, &#039;required&#039;, field_n, &#039;checkboxcolumn&#039;);
+                field_n++;
                 
                 // views:
                 for (const v in metadata._viewdefs){
                     var vd = metadata._viewdefs[v];
                     var checked = e[&#039;view&#039; + vd.id];
                     
-                    html += &#039;&lt;td class=&quot;desktop&quot;&gt; &lt;input type=checkbox onchange=&quot;if (this.checked) {v=1} else {v=0};&#039;+&quot; save_do(&#039;view&quot; + vd.id +&quot;=&#039;+v, &#039;_fields&#039;, &#039;&quot;+e.id+&quot;&#039;) &quot;+&#039;&quot; value=1&#039;;
+                    html += &#039;&lt;div class=&quot;field checkboxcolumn&quot;&gt;&lt;label&gt;&#039;+vd.name+&#039;: &lt;/label&gt;&lt;span class=&quot;group&quot; alt=&quot;&#039;+vd.name+&#039;&quot; title=&quot;&#039;+vd.name+&#039;&quot; onclick=&quot;labelClick(this)&quot; onmouseout=&quot;labelMoveOut(this)&quot;&gt;&#039;;
+                    
+                    html += &#039;&lt;input type=checkbox onchange=&quot;if (this.checked) {v=1} else {v=0};&#039;+&quot; save_do(&#039;view&quot; + vd.id +&quot;=&#039;+v, &#039;_fields&#039;, &#039;&quot;+e.id+&quot;&#039;) &quot;+&#039;&quot; value=1&#039;;
                     if (checked == 1) html += &#039; CHECKED&#039;;
-                    html += &#039;&gt; &lt;/td&gt;&#039;;
+                    html += &#039;&gt; &lt;/span&gt;&lt;/div&gt;&#039;;
+                    field_n++;
                 }
                 
                 // field_group
-                html += &#039;&lt;td&gt;&lt;select onchange=&quot;&#039; + &quot;save_do(&#039;field_group=&#039;+this.value, &#039;_fields&#039;, &#039;&quot; + e.id + &quot;&#039;)&quot; + &#039;&quot; style=&quot;width: 86px;&quot;&gt;&lt;option value=&quot;&quot;&gt;&lt;/option&gt;&#039;;
+                var group_content = &#039;&lt;select onchange=&quot;&#039; + &quot;save_do(&#039;field_group=&#039;+this.value, &#039;_fields&#039;, &#039;&quot; + e.id + &quot;&#039;)&quot; + &#039;&quot; style=&quot;width: 86px;&quot;&gt;&lt;option value=&quot;&quot;&gt;&lt;/option&gt;&#039;;
                 var fgs = sortData(searchInArray(metadata._field_groups, &#039;entity_id&#039;, entity_id), &#039;order&#039;, false)
                 for (const g of fgs){
-                    html += &#039;&lt;option value=&quot;&#039;+g.id+&#039;&quot; &#039;;
-                    if (g.id == e.field_group) html += &#039;selected=selected&#039;;
-                    html += &#039;&gt;&#039; + g.label + &#039;&lt;/option&gt;&#039;;
+                    group_content += &#039;&lt;option value=&quot;&#039;+g.id+&#039;&quot; &#039;;
+                    if (g.id == e.field_group) group_content += &#039;selected=selected&#039;;
+                    group_content += &#039;&gt;&#039; + g.label + &#039;&lt;/option&gt;&#039;;
                 }
-                html += &#039;&lt;/select&gt;&lt;/td&gt;&#039;;
+                group_content += &#039;&lt;/select&gt;&#039;;
+                html += renderFieldCell(group_content, &#039;field_group&#039;, field_n);
+                field_n++;
+                
                 
                 // edit/delete
-                html += &#039;&lt;td align=center class=&quot;control post buttons&quot;&gt; &lt;a href=&quot;&#039; + &quot;javascript:return delete_do(&#039;&quot;+e.id+&quot;&#039;, &#039;_fields&#039;, &#039;2&#039;, &#039;9&#039;)&quot;+&#039;&quot; onclick=&quot;&#039; + &quot;return delete_do(&#039;&quot;+e.id+&quot;&#039;, &#039;_fields&#039;, &#039;2&#039;, &#039;9&#039;)&quot; + &#039;&quot; class=&quot;button delete&quot;&gt;&#039; + global.lang.LNK_DELETE + &#039;&lt;/a&gt;&lt;/td&gt;&#039;;
+                html += &#039;&lt;div class=&quot;post buttons&quot;&gt; &lt;a href=&quot;&#039; + &quot;javascript:return delete_do(&#039;&quot;+e.id+&quot;&#039;, &#039;_fields&#039;, &#039;2&#039;, &#039;9&#039;)&quot;+&#039;&quot; onclick=&quot;&#039; + &quot;return delete_do(&#039;&quot;+e.id+&quot;&#039;, &#039;_fields&#039;, &#039;2&#039;, &#039;9&#039;)&quot; + &#039;&quot; class=&quot;button delete&quot;&gt;&#039; + global.lang.LNK_DELETE + &#039;&lt;/a&gt;&lt;/div&gt;&#039;;
                 
-                html += &#039;&lt;/tr&gt;&#039;;
+                html += &#039;&lt;/div&gt;&#039;;
 
             }
             
         }, &#039;parent=&#039;+entity_id)
         
-        html += &#039;&lt;/table&gt;&#039;;
+        html += &#039;&lt;/form&gt;&#039;;
         // APPEND:
         var e = document.querySelector(&#039;.subpanels&#039;);
         var n = document.createElement(&#039;SPAN&#039;); 
@@ -244,6 +273,19 @@ populateDataTypeParameters();
     
     function onlyupper(string){
         return string.replace(/[a-z]+/, &#039;&#039;).replace(/[a-z]+/, &#039;&#039;).replace(/[a-z]+/, &#039;&#039;);
+    }
+    
+    function renderFieldCell(content, field_name, field_n, css_class){
+        var html = &#039;&#039;;
+        var field_label = getFieldProp(&#039;9&#039;, field_name, &#039;label&#039;);
+        var css_extra_class = &#039;&#039;;
+        if (css_class != undefined){
+            css_extra_class = &#039; &#039; + css_class;
+        }
+        html += &#039;&lt;div class=&quot;field field&#039;+field_n+css_extra_class+&#039;&quot;&gt;&lt;label&gt;&#039;+field_label+&#039;: &lt;/label&gt;&lt;span class=&quot;group&quot; alt=&quot;&#039;+field_label+&#039;&quot; title=&quot;&#039;+field_label+&#039;&quot; onclick=&quot;labelClick(this)&quot; onmouseout=&quot;labelMoveOut(this)&quot;&gt;&#039;;
+        html += content;
+        html += &#039;&lt;/span&gt;&lt;/div&gt;&#039;;
+        return html;
     }
     
     var e_id = document.querySelector(&#039;.record&#039;).attributes.record_id.value;
