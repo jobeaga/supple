@@ -330,6 +330,10 @@ button.ui-multiselect .ui-icon-triangle-1-s {
     line-height: 28px;
 }
 
+#menuitem_logout {
+	display: none;
+}
+
 #logout img {
 	height: 32px;
 }
@@ -481,7 +485,23 @@ nav #hambutton svg {
 	}
 	.menu nav  ul     { display: none; }
 	/*.menu nav select { display: inline-block; }*/
-	.menu nav #hambutton { display: inline-block; }
+	.menu nav #hambutton { 
+		display: inline-block; 
+		position: absolute;
+		right: 0;
+		width: initial;
+		top: 0;
+		z-index: 100;
+		padding: 10px 14px 1px;
+		line-height: 53px;
+		height: 41px;
+	}
+	#logout {
+		display: none;
+	}
+	#menuitem_logout {
+		display: block;
+	}
 	#_subribbon { display: block !important; }
 	a.viewbutton7 {
 		top: 85px;

@@ -605,6 +605,9 @@ function renderMenu(){
 			//}
 		}
 	}
+	// LOGOUT:
+	ulmenu_html += '<li class="menuitem" id="menuitem_logout"><a href="'+script_name+'?action=logout&redirect='+script_name+'" alt="'+global.lang.LNK_LOGOUT+'" title="'+global.lang.LNK_LOGOUT+'"><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;"><path d="M12 7V12M8 8.99951C7.37209 9.83526 7 10.8742 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 10.8742 16.6279 9.83526 16 8.99951M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> '+global.lang.LNK_LOGOUT+'</a></li>';
+
 	// TO GUI:
 	document.getElementById('menuselector').innerHTML = menuselector_html;
 	document.getElementById('ulmenu').innerHTML = ulmenu_html;
