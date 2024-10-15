@@ -716,6 +716,8 @@ function loadView(entity_id, view_id, record_id, filter, offset, dont_push_state
 	if (view_id == undefined) return false;
 	if (entity_id == undefined) return false;
 
+	showRibbon(entity_id);
+
 	if (view_id != '' || record_id != ''){ 
 		// REDIRECT TO...
 		if (entity['view' + view_id] == 0){
@@ -2665,6 +2667,8 @@ function renderCustomView(parent_element_id, custom_view_id, entity_id, view_id,
 		getUrl(url);
 
 	} else {
+
+		showRibbon(entity_id);
 
 		var html = '';
 
