@@ -554,7 +554,7 @@ function renderMenu(){
 							for (const vb_id in metadata._viewbuttons){
 								submenu_html = '';
 								var vb = metadata._viewbuttons[vb_id];
-								if (vb.view_id == 2){
+								if (vb.view_id == 2 && entity.view2 == 1){
 									var vv = 'view'+vb.target_view;
 									if (entity[vv] == 1 || vb.target_view == ''){
 										if (vb.js_code == '' || vb.js_code == undefined){
@@ -665,7 +665,8 @@ function getSubmenuActionsCount(entity_id){
 	var count = 0;
 	for (const vb_id in metadata._viewbuttons){
 		var vb = metadata._viewbuttons[vb_id];
-		if (vb.view_id == 2){
+		var entity = metadata._entities[entity_id];
+		if (vb.view_id == 2 && entity.view2 == 1){
 			var vv = 'view'+vb.target_view;
 			if (entity[vv] == 1 || vb.target_view == ''){
 				count++;
@@ -1538,15 +1539,11 @@ function renderTabGroup(tab_group_id){
 			// PANEL
 			if (_permiso == true && entity.show == 1){
 				html += '<div class="tab_group_dashboard"><h2><a href="'+entity_url+'" onclick="return menugoto(\'' + entity.id + '\');">'+ entity.name + '</h2>';
-				for (const vb_id in metadata._viewbuttons){
-					var vb = metadata._viewbuttons[vb_id];
-					if (vb.view_id == 2){
-					}
-				}
 				// GENERAL view buttons (if applies)
 				for (const vb_id in metadata._viewbuttons){
 					var vb = metadata._viewbuttons[vb_id];
-					if (vb.view_id == 2){
+					var entity = metadata._entities[entity_id];
+					if (vb.view_id == 2 && entity.view2 == 1){
 						var vv = 'view'+vb.target_view;
 						if (entity[vv] == 1 || vb.target_view == ''){
 							if (vb.js_code == '' || vb.js_code == undefined){
