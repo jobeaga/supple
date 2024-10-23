@@ -1835,25 +1835,34 @@ function renderNavButtons(parent_element_id, offset, _previousid, _nextid, count
 function renderExtendViews(entity_id, view_id, position, record_id){
 	var html = '';
 	var extend_views = searchInArray(searchInArray(searchInArray(metadata._extend_views, 'parent', entity_id), 'view', view_id), 'position', position);
+	// TODO: SORT
 
 	if (Object.keys(extend_views).length > 0) {
-		html +=  '<span id="extend_views'+ position +'" class="extend_view"></span>';
+		// START 'extend_views'+ position
+		html +=  '<span id="extend_views'+ position +'" class="extend_view">'; 
+		// TODO: enclose each extend_view in a single span. For renderParsed place a  inside initially.
 		$.each(extend_views, function (i, extend){
+			// START 'extend_view'+ extend.id
+			html +=  '<span id="extend_view'+ extend.id +'">'; 
 			if (extend.type == 0){
 				// HTML
-				while_selector('#extend_views'+ position, function (){
-					$('#extend_views'+ position).append(extend.template);
+				while_selector('#extend_view'+ extend.id, function (){
+					$('#extend_view'+ extend.id).append(extend.template);
 				});
 			} else if (extend.type == 1){
 				// JAVASCRIPT
-				while_selector('#extend_views'+ position, function (){
-					$('#extend_views'+ position).append('<script>'+ extend.template+'</script>');
+				while_selector('#extend_view'+ extend.id, function (){
+					$('#extend_view'+ extend.id).append('<script>'+ extend.template+'</script>');
 				});
 			} else if (extend.type == 2){
+				html += '<span class="loader"></span>'; // LOADER
 				// RENDER SERVER SIDE
-				renderParsed('_extend_views', 'template', extend.id, entity_id, view_id, record_id, 'extend_views'+ position);
+				renderParsed('_extend_views', 'template', extend.id, entity_id, view_id, record_id, 'extend_view'+ extend.id, true);
 			}
+			html +=  '</span>'; // END 'extend_view'+ extend.id
+			
 		});
+		html +=  '</span>'; // END 'extend_views'+ position
 	}
 
 	return html;
