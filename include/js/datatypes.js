@@ -105,15 +105,27 @@ function createOptions(element_id, list_id, selected){
 }
 
 function translateOptions(element_id, list_id, selected){
+	$('#'+element_id).html(translateValue(list_id, selected));
+}
+
+function translateValueFromList(list_name, value){
+	var lists = searchInArray(metadata._dropdown_lists, 'name', list_name);
+	for (const l in lists){ 
+		return translateValue(lists[l].id, value);
+	}
+	return '';
+}
+
+function translateValue(list_id, value){
 	var options = searchInArray(metadata._dropdown_options, 'list', list_id);
 	options = sortData(options, 'order'); // Converts to Array
 	var r = '';
 	$(options).each(function (i,e){
-		if (e.key == selected){
+		if (e.key == value){
 			r = e.value;
 		} 
 	});
-	$('#'+element_id).html(r);
+	return r;
 }
 
 function createRelatedDropdown(element_id, value, related_table, related_field, order_field, filter_from, filter_to, fixed_filter){
