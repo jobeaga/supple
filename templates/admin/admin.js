@@ -485,111 +485,120 @@ function renderMenu(){
 			menuselector_content = '';
 			ulmenu_content = '';
 			entity_tab_count = 0;
-			for (const tge_id in metadata._tab_group_entities){  // TODO: order by ENTITY order
+
+			// Gather entities, and sort them by order
+			var tab_group_entities = [];
+			for (const tge_id in metadata._tab_group_entities){  
 				var tge = metadata._tab_group_entities[tge_id];
 				if (tge.id_b == tab_group.id){
-					entity = metadata._entities[tge.id_a];
+					tab_group_entities.push(metadata._entities[tge.id_a]);
+				}
+			}
+			tab_group_entities = sortData(tab_group_entities, 'order', false);
+			
+			// Render each entity
+			for (let entity of tab_group_entities){
 
-					if ((entity.adminonly == 0 || entity.adminonly == current_user.isadmin) && entity.show == 1){
+				if ((entity.adminonly == 0 || entity.adminonly == current_user.isadmin) && entity.show == 1){
 
-						// RENDER ENTITY ITEM
-						if (current_user.isadmin == 1 || user_has_permission(current_user.id, entity.id)){
+					// RENDER ENTITY ITEM
+					if (current_user.isadmin == 1 || user_has_permission(current_user.id, entity.id)){
 
-							entity_tab_count++;
-							var extra = '';
-							if (entity.view2 == 1){
-								extra += '&view=2';
+						entity_tab_count++;
+						var extra = '';
+						if (entity.view2 == 1){
+							extra += '&view=2';
+						} else {
+							if (first_id[entity.id] == undefined){
+								if (entity.view1 == 1){
+									extra += '&view=1';
+								} // else?
 							} else {
-								if (first_id[entity.id] == undefined){
-									if (entity.view1 == 1){
-										extra += '&view=1';
-									} // else?
+								if (entity.view4 == 1){
+									extra += '&view=4&id='+first_id[entity.id];
 								} else {
-									if (entity.view4 == 1){
-										extra += '&view=4&id='+first_id[entity.id];
-									} else {
-										if (entity.view1 == 1){
-											extra += '&view=1&id='+first_id[entity.id];
-										} // else?
-									}
+									if (entity.view1 == 1){
+										extra += '&view=1&id='+first_id[entity.id];
+									} // else?
 								}
 							}
-
-							// URLS
-							urls[entity.id] = script_name + "?entity=" + entity.id + extra;
-
-							ribbon_submenu[entity.id] = '';
-							if (entity.view2 == 1){
-								ribbon_submenu[entity.id] += renderLinkTo(entity.id, '2', '', entity.name, true, true);
-							}
-
-							var option_selected = '';
-							var li_selected = '';
-							if (this_status['main_body'] != undefined && entity.id == this_status['main_body'].entity_id){
-								option_selected = ' selected="selected" ';
-								li_selected = ' class="selected" ';
-							}
-
-							if (tab_group.id != '1'){
-								menuselector_content += '<option value="' + entity.id + '"' + option_selected + '> &nbsp;&nbsp; '+ entity.name + ' </option>';
-							}
-
-							ulmenu_content += '<li>';
-
-							// submenu actions count?
-							var submenu_actions_count = getSubmenuActionsCount(entity.id);
-
-							// Expand/collapse arrow
-							if (submenu_actions_count > 0){
-								ulmenu_content += '<span class="expand_submenu_actions" onclick="expand_submenu(\'' + entity.id + '\')">&#8897;</span>';
-							}
-							
-							// Entity button:
-							ulmenu_content += '<a href="'+ script_name +'?entity=' + entity.id + extra + '" onclick="return menugoto(\'' + entity.id + '\');" ' + li_selected + '>' + entity.name +'</a>';
-
-							// SUBMENU: ACTIONS 
-							ulmenu_content += '<div id="_submenu_actions_' + entity.id + '" class="submenu_actions">';
-							var submenu_html;
-							// GENERAL view buttons (if applies)
-							for (const vb_id in metadata._viewbuttons){
-								submenu_html = '';
-								var vb = metadata._viewbuttons[vb_id];
-								if (vb.view_id == 2 && entity.view2 == 1){
-									var vv = 'view'+vb.target_view;
-									if (entity[vv] == 1 || vb.target_view == ''){
-										if (vb.js_code == '' || vb.js_code == undefined){
-											submenu_html += '<a href="' + script_name + '?entity='+entity.id;
-											if (vb.target_view != '') submenu_html += '&view='+vb.target_view;
-											if (vb.filter != '') submenu_html += '&'+vb.filter;
-											submenu_html += '" onclick="return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
-										} else {
-											var extra_js = "this_status['main_body'].entity_id='"+ entity.id +"';this_status['main_body'].view_id='"+ vb.target_view+"';this_status['main_body'].filter='"+vb.filter+"';this_status['main_body'].record_id='';";
-											submenu_html += '<a href="javascript: menuHide();showRibbon(\'' + entity.id + '\'); ' + extra_js + vb.js_code + '" onclick="menuHide(); showRibbon(\'' + entity.id + '\'); ' + extra_js + vb.js_code + '">' + vb.label + '</a>';
-										}
-									}
-								}
-								// ADD
-								ulmenu_content += submenu_html;
-								ribbon_submenu[entity.id] += submenu_html; // ADD TO RIBBON TOO
-							}
-							// Buttons for custom views of THIS entity
-							for (const cb_id in metadata._custom_views){
-								submenu_html = '';
-								var cb = metadata._custom_views[cb_id];
-								if (cb.view==2 && cb.parent == entity.id){
-									submenu_html += '<a href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
-								}
-								// ADD
-								ulmenu_content += submenu_html;
-								ribbon_submenu[entity.id] += submenu_html; // ADD TO RIBBON TOO
-							}							
-							// END:
-							ulmenu_content += '</div></li>';
-
 						}
 
+						// URLS
+						urls[entity.id] = script_name + "?entity=" + entity.id + extra;
+
+						ribbon_submenu[entity.id] = '';
+						if (entity.view2 == 1){
+							ribbon_submenu[entity.id] += renderLinkTo(entity.id, '2', '', entity.name, true, true);
+						}
+
+						var option_selected = '';
+						var li_selected = '';
+						if (this_status['main_body'] != undefined && entity.id == this_status['main_body'].entity_id){
+							option_selected = ' selected="selected" ';
+							li_selected = ' class="selected" ';
+						}
+
+						if (tab_group.id != '1'){
+							menuselector_content += '<option value="' + entity.id + '"' + option_selected + '> &nbsp;&nbsp; '+ entity.name + ' </option>';
+						}
+
+						ulmenu_content += '<li>';
+
+						// submenu actions count?
+						var submenu_actions_count = getSubmenuActionsCount(entity.id);
+
+						// Expand/collapse arrow
+						if (submenu_actions_count > 0){
+							ulmenu_content += '<span class="expand_submenu_actions" onclick="expand_submenu(\'' + entity.id + '\')">&#8897;</span>';
+						}
+						
+						// Entity button:
+						ulmenu_content += '<a href="'+ script_name +'?entity=' + entity.id + extra + '" onclick="return menugoto(\'' + entity.id + '\');" ' + li_selected + '>' + entity.name +'</a>';
+
+						// SUBMENU: ACTIONS 
+						ulmenu_content += '<div id="_submenu_actions_' + entity.id + '" class="submenu_actions">';
+						var submenu_html;
+						// GENERAL view buttons (if applies)
+						for (const vb_id in metadata._viewbuttons){
+							submenu_html = '';
+							var vb = metadata._viewbuttons[vb_id];
+							if (vb.view_id == 2 && entity.view2 == 1){
+								var vv = 'view'+vb.target_view;
+								if (entity[vv] == 1 || vb.target_view == ''){
+									if (vb.js_code == '' || vb.js_code == undefined){
+										submenu_html += '<a href="' + script_name + '?entity='+entity.id;
+										if (vb.target_view != '') submenu_html += '&view='+vb.target_view;
+										if (vb.filter != '') submenu_html += '&'+vb.filter;
+										submenu_html += '" onclick="return nav_viewbutton(\'' + vb.id + "', '" + entity.id + '\')">' + vb.label + '</a>';
+									} else {
+										var extra_js = "this_status['main_body'].entity_id='"+ entity.id +"';this_status['main_body'].view_id='"+ vb.target_view+"';this_status['main_body'].filter='"+vb.filter+"';this_status['main_body'].record_id='';";
+										submenu_html += '<a href="javascript: menuHide();showRibbon(\'' + entity.id + '\'); ' + extra_js + vb.js_code + '" onclick="menuHide(); showRibbon(\'' + entity.id + '\'); ' + extra_js + vb.js_code + '">' + vb.label + '</a>';
+									}
+								}
+							}
+							// ADD
+							ulmenu_content += submenu_html;
+							ribbon_submenu[entity.id] += submenu_html; // ADD TO RIBBON TOO
+						}
+						// Buttons for custom views of THIS entity
+						for (const cb_id in metadata._custom_views){
+							submenu_html = '';
+							var cb = metadata._custom_views[cb_id];
+							if (cb.view==2 && cb.parent == entity.id){
+								submenu_html += '<a href="' + script_name + '?entity='+entity.id+'&view=5&custom_view_id='+cb.id+'" onclick="return nav_customviewbutton(\'main_body\', \''+cb.id+'\', \''+entity.id+'\', \'2\', \'\')">' + cb.name + '</a>';
+							}
+							// ADD
+							ulmenu_content += submenu_html;
+							ribbon_submenu[entity.id] += submenu_html; // ADD TO RIBBON TOO
+						}							
+						// END:
+						ulmenu_content += '</div></li>';
+
 					}
+
 				}
+
 			}
 
 			xt = '';

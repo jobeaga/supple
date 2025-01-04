@@ -43,9 +43,14 @@ function setHtml(target, html){
 
 function appendHtml(target, html){
 	if (target != ''){
+		// TODO:
 		/*var e = document.getElementById(target);
 		if (e != undefined && e != null){
 			e.innerHTML += html;
+			// Execute ALL code: execute only new code. Use supple_limbo
+			// document.getElementById('supple_limbo').innerHTML = html;
+			// document.getElementById('supple_limbo').querySelectorAll('script').querySelectorAll('script').forEach(function (s){ eval(s.text);});
+			// document.getElementById('supple_limbo').innerHTML = '';
 		}*/
 		$('#'+target).append(html);
 	}

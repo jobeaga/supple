@@ -130,6 +130,34 @@ class Entity extends SuppleBean {
 
 	}
 
+	// ON REMOVE don't forget to remove _fields, _tab_group_entities related to this entity, _extend_views, _custom_views, _relationships and _entity_permissions
+	function remove(){
+		global $db;
+		// TODO: get this info from relationships table
+		$tables_fields = array(
+			'_fields' => 'parent',
+			'_tab_group_entities' => 'id_a',
+			'_extend_views' => 'parent',
+			'_custom_views' => 'parent',
+			'_relationships' => array('id_a','id_b'),
+			'_entity_permissions' => 'id_b'
+		);
+		// remove related records on tables
+		if (!empty($this->id)){
+			foreach ($tables_fields as $table => $field){
+				if (is_array($field)){
+					foreach ($field as $f){
+						$a = $db->from($table)->where(array($f => $this->id))->getArray();	
+					}
+				} else {
+					$a = $db->from($table)->where(array($field => $this->id))->getArray();
+				}
+			}
+		}
+		// REMOVE this record
+        $r = parent::remove();
+	}
+
 	function needsAsyncValidation(){
 		// TODO Indicates wether the entity (the entity itself, and all its fields) needs to execute async validation before submit.
 		$r = false;
