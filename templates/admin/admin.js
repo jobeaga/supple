@@ -1168,8 +1168,9 @@ function renderViewBody(parent_element_id, entity_id, view_id, data, pre_filled,
 			html += ' ';
 		} else {
 			html +=  '<div class="label label'+ i + extra +'" onclick="sortByField(\'' + f.id + '\', \'' + parent_element_id + '\')">';
+			html += f.label;
 		}
-		html += f.label;
+				
 		if (!join_with_next){
 			html += '</div>';
 		}
