@@ -3122,7 +3122,7 @@ function addUniqueListener(element_id, field_name, table, entity_id, record_id){
 function save_field(element_id, field_name, table, record_id){
 	var e = document.getElementById(element_id);
 	var p = e.parentNode;
-	while (p.classList.contains('field') == false && p != null){
+	while (p.classList != undefined && p.classList.contains('field') == false && p != null){
 		p = p.parentNode;
 	}
 	var value = p.querySelector('[name=' + field_name + ']').value;

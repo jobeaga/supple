@@ -656,6 +656,14 @@ class PhpArrayResultset extends SuppleResultset {
 										$functionResults[$field] = $row[$field];
 									}
 									break;
+								case 'min':
+									if (isset($functionResults[$field])){
+										if ($functionResults[$field] > $row[$field])
+											$functionResults[$field] = $row[$field];
+									} else {
+										$functionResults[$field] = $row[$field];
+									}
+									break;
 								case 'avg':
 									if (isset($functionResults[$field])){
 										$functionResults[$field] = (($functionResults[$field] * $avgCount) + $row[$field]) / ($avgCount + 1);

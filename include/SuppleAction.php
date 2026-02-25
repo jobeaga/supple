@@ -106,7 +106,7 @@ abstract class SuppleAction extends SuppleObject {
 	
 			$r = $this->performWith($table, $get, $post);
 
-			$r['update_metadata'] = $this->update_metadata;
+			if (is_array($r)) $r['update_metadata'] = $this->update_metadata;
 			if ($this->update_metadata) SuppleApplication::getcache()->updateMetadata();
 
 			return $r;

@@ -1294,6 +1294,14 @@ span.breadEntityName {
 }
 
 @media (max-width: 900px) {
+	.listview span.group:has(> select.boolean_dropdown ) {
+		display: block;
+		overflow: hidden;
+		width: 45px;
+		border-right: 1px solid #d1d1d1;
+		height: 30px;
+		border-radius: 4px;
+	}
 
 	.detailview .field label, .editview .field label { 
 		display: block; 

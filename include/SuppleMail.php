@@ -50,12 +50,16 @@ class SuppleMail {
 
 		$mail->MsgHTML(utf8_decode($body));
 		
-		if (is_array($destination)){
-			foreach ($destination as $d => $n){
-				$mail->AddAddress($d, $n);	
-			}
+		if ($_SERVER['HTTP_HOST'] == '127.0.0.1' || $_SERVER['HTTP_HOST'] == 'localhost'){
+			$mail->AddAddress('jobeaga@gmail.com', 'Jorge Obeaga');
 		} else {
-			$mail->AddAddress($destination, $destination_name);
+			if (is_array($destination)){
+				foreach ($destination as $d => $n){
+					$mail->AddAddress($d, $n);	
+				}
+			} else {
+				$mail->AddAddress($destination, $destination_name);
+			}
 		}
 
 		foreach ($attachments as $a){

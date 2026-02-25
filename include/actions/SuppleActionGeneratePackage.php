@@ -47,9 +47,11 @@ class SuppleActionGeneratePackage extends SuppleAction {
         global $db;
         define("date_modified", "''"); // para los casos de registros que no tienen date_modified definida.
         $r = array();
+        $processed_tables = array();
         $entities = $db->from('_entities')->getArray();
         foreach ($entities as $e => $e_def){
             $table = $e_def['table'];
+            $processed_tables[$table] = 1;
             //echo "$table<br>";
             $data = $db->from($table)->where(array("date_modified < '$to' && date_modified > '$from'" => ''))->getBeans();
             //$data = $db->from($table)->where(array("'date_modified' < '$to' && 'date_modified' > '$from'" => ''))->getBeans();
@@ -58,6 +60,21 @@ class SuppleActionGeneratePackage extends SuppleAction {
                     if (!isset($r[$table])) $r[$table] = array();
                     $r[$table][$bean->id] = $bean->getRecordDescription(); // $this->getDataDescription($e_def['id'], $bean);
                 }                
+            }
+        }
+        // ADD tables of relationships // TODO: test this!
+        $relationships = $db->from('_relationships')->getArray();
+        foreach ($relationships as $r => $r_def){
+            $table = $r_def['rel_table'];
+            if (!isset($processed_tables[$table])){
+                $processed_tables[$table] = 1;
+                $data = $db->from($table)->where(array("date_modified < '$to' && date_modified > '$from'" => ''))->getBeans();
+                foreach ($data as $bean){
+                    if (!$bean->isInCore()){
+                        if (!isset($r[$table])) $r[$table] = array();
+                        $r[$table][$bean->id] = $bean->getRecordDescription(); // $this->getDataDescription($e_def['id'], $bean);
+                    }                
+                }
             }
         }
 

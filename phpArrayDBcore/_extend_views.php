@@ -1,38 +1,11 @@
-<?php $_extend_views = array(/*'0' => array('name' => '', 'type' => '2', 'view' => '4', 'position' => '1', 'template' => '&lt;h2&gt; $_entities(id==9)[$name] &lt;/h2&gt;
-
-&lt;input type=button class=button value=&quot;$_lang.LBL_ADD_FIELDS&quot; onclick=&quot;loadView(&#039;9&#039;, &#039;1&#039;, &#039;&#039;, &#039;&#039;, 0, false, undefined, {parent:&#039;$_get.id&#039;}); this_status[&#039;main_body&#039;].return = {record_id:&#039;$_get.id&#039;, entity_id:&#039;1&#039;};&quot;&gt;
-&lt;table id=meta_data class=&quot;listview&quot;&gt;
-  &lt;tr&gt;&lt;th&gt; $_fields(parent==9&&name==&#039;order&#039;)[$label] &lt;/th&gt;&lt;th align=left&gt; $_fields(parent==9&&name==&#039;name&#039;)[$label] &lt;/th&gt;&lt;th align=left class=extra&gt; $_fields(parent==9&&name==&#039;label&#039;)[$label] &lt;/th&gt;&lt;th class=extra&gt; $_fields(parent==9&&name==&#039;type&#039;)[$label] &lt;/th&gt;&lt;th class=&quot;desktop&quot; width=&quot;4%&quot;&gt; Req &lt;/th&gt;
-
-$_viewdefs{
-&lt;th class=&quot;desktop&quot; width=&quot;4%&quot; title=&quot;$name&quot;&gt;$_eval[onlyupper(&#039;$name&#039;)]&lt;/th&gt;
-}
-
-<th>$_lang.LBL_GROUP</th>
-
-&lt;th class=control width=&quot;1%&quot;&gt; $_lang.LBL_DELETE &lt;/th&gt;&lt;/tr&gt;
-
-$_fields:e(parent==$_get.id){
-  &lt;tr class=&quot;record&quot; id=&quot;record$_fields.id&quot;&gt;
-    &lt;td align=center&gt; ${order}(=_name) ${$order}(=_value) ${_fields}(=_entitytable) $_datatypes:d(id==21)[ $_parse[ $d.viewtemplate ] ]&lt;/td&gt;
-    &lt;td&gt; &lt;a href=&quot;admin.php?entity=9&id=$_fields.id&view=1&quot; onclick=&quot;return loadView(&#039;9&#039;, &#039;1&#039;, &#039;$_fields.id&#039;);&quot; &gt;
-             $_fields.name
-           &lt;/a&gt;
-    &lt;/td&gt;
-    &lt;td class=extra&gt;$_fields.label&lt;/td&gt;
-    &lt;td align=center class=extra&gt;$_datatypes(id==$_fields.type)[$typename]&lt;/td&gt;
-    &lt;td align=center class=desktop&gt;  &lt;input type=checkbox onchange=&quot;if (this.checked) {v=1} else {v=0};save_do(&#039;required=&#039;+v, &#039;_fields&#039;, &#039;$_fields.id&#039;)&quot; value=1 $($_fields.required==1)[CHECKED]&gt;&lt;/td&gt;
-$_viewdefs{
-&lt;td class=&quot;desktop&quot;&gt; $[_fields.view$_viewdefs.id](=checked) &lt;input type=checkbox onchange=&quot;if (this.checked) {v=1} else {v=0};save_do(&#039;view$_viewdefs.id=&#039;+v, &#039;_fields&#039;, &#039;$_fields.id&#039;)&quot; value=1 $($$checked==1)[CHECKED]&gt;  &lt;/td&gt;
-}
-
-<td><select onchange="save_do(&#039;field_group=&#039;+this.value, &#039;_fields&#039;, &#039;$_fields.id&#039;)" style="width: 86px;"><option value=""></option>$_field_groups:g(entity_id==$_get.id){<option value="$g.id" $($g.id==$_fields.field_group)[selected=selected]>$g.label</option>}(order)</select></td>
-
-    &lt;td align=center class=&quot;control post buttons&quot;&gt; &lt;a href=&quot;javascript:return delete_do(&#039;$_fields.id&#039;, &#039;_fields&#039;, &#039;2&#039;, &#039;9&#039;)&quot; onclick=&quot;return delete_do(&#039;$_fields.id&#039;, &#039;_fields&#039;, &#039;2&#039;, &#039;9&#039;)&quot; class=&quot;button delete&quot;&gt;$_lang.LNK_DELETE&lt;/a&gt;&lt;/td&gt;
-  &lt;/tr&gt; 
-}(order) 
-&lt;/table&gt;', 'parent' => '1', 'id' => 1, 'name_es' => 'Panel de Campos', 'name_en' => 'Fields Panel', 'date_modified' => '2021-06-05 00:36', 'modified_by' => 1, 'type_value' => '', 'view_name' => '', 'position_value' => '', 'parent_name' => '')
-,*/ '1' => array('name' => 'Totales', 'type' => '2', 'view' => '2', 'position' => '1', 'template' => '&lt;!-- TOTALES --&gt;
+<?php $_extend_views = array (
+  1 => 
+  array (
+    'name' => 'Totales',
+    'type' => '2',
+    'view' => '2',
+    'position' => '1',
+    'template' => '&lt;!-- TOTALES --&gt;
 &lt;br&gt;&lt;table width=50%&gt;
 &lt;tr&gt;
   &lt;th&gt;Passed&lt;/th&gt;
@@ -47,8 +20,19 @@ $_viewdefs{
   &lt;th&gt;Time&lt;/th&gt;
   &lt;td&gt;$__tests{$time}(+time)&lt;/td&gt;
 &lt;/tr&gt;
-&lt;/table&gt;', 'parent' => '20', 'id' => 2, 'name_es' => 'Totales', 'name_en' => 'Totales')
-, '2' => array('name' => '', 'type' => '2', 'view' => '1', 'position' => '1', 'template' => '&lt;div class=&quot;panel container&quot; style=&quot;display:none&quot; id=&quot;parameters&quot;&gt;
+&lt;/table&gt;',
+    'parent' => '20',
+    'id' => 2,
+    'name_es' => 'Totales',
+    'name_en' => 'Totales',
+  ),
+  2 => 
+  array (
+    'name' => '',
+    'type' => '2',
+    'view' => '1',
+    'position' => '1',
+    'template' => '&lt;div class=&quot;panel container&quot; style=&quot;display:none&quot; id=&quot;parameters&quot;&gt;
 $_datatypes_parameters:f{
 &lt;div class=&quot;field parameter&quot; parent=&quot;$f.parent&quot;&gt; 
 $[$f.name](=_name) 
@@ -60,26 +44,42 @@ $($_get.id)[$_fields(id==$_get.id)[$$f.name]][$f.default_value](=_value)
 &lt;script&gt; 
 jQuery(&#039;#type&#039;).change(populateDataTypeParameters);
 populateDataTypeParameters(); 
-&lt;/script&gt;', 'parent' => '9', 'id' => 3, 'name_es' => 'Par&aacute;metros de Tipos', 'name_en' => 'Type Parameters', 'date_modified' => '2018-07-29 23:12', 'modified_by' => 2)
-, '3' => array('name' => 'Parameters Parameters', 'type' => '2', 'view' => '1', 'position' => '1', 'template' => '&lt;div class=&quot;panel container&quot; style=&quot;display:none&quot; id=&quot;parameters&quot;&gt;
-$_datatypes_parameters:f{
-&lt;div class=&quot;view row parameter&quot; parent=&quot;$f.parent&quot;&gt; 
-&lt;div class=&quot;view three columns label&quot;&gt;$f.label&lt;/div&gt;
-&lt;div class=&quot;view nine columns&quot;&gt;
-$[$f.name](=_name) 
-$($_get.id)[$_datatypes_parameters(id==$_get.id)[$$f.name]][$f.default_value](=_value)
-$_datatypes(id==$type)[
-  $_parse{$edittemplate}
-]
-&lt;/div&gt;
-&lt;/div&gt;
-}(parent)
-&lt;/div&gt;
-&lt;script&gt; 
+&lt;/script&gt;',
+    'parent' => '9',
+    'id' => 3,
+    'name_es' => 'Par&aacute;metros de Tipos',
+    'name_en' => 'Type Parameters',
+    'date_modified' => '2018-07-29 23:12',
+    'modified_by' => 2,
+  ),
+  3 => 
+  array (
+    'name' => '',
+    'type' => '2',
+    'view' => '1',
+    'position' => '1',
+    'template' => '&lt;script&gt; 
 jQuery(&#039;#type&#039;).change(populateDataTypeParameters);
 populateDataTypeParameters(); 
-&lt;/script&gt;', 'parent' => '25', 'id' => 4, 'name_es' => 'Par&aacute;metros de Par&aacute;metros', 'name_en' => 'Parameters Parameters')
-, '4' => array('name' => 'Table Data', 'type' => '2', 'view' => '4', 'position' => '1', 'template' => '&lt;h2&gt;Raw Table Data&lt;/h2&gt;
+&lt;/script&gt;',
+    'parent' => '25',
+    'id' => 4,
+    'name_es' => 'Par&aacute;metros de Par&aacute;metros',
+    'name_en' => 'Parameters Parameters',
+    'type_value' => '',
+    'view_name' => '',
+    'position_value' => '',
+    'parent_name' => '',
+    'date_modified' => '2025-01-20 20:16',
+    'modified_by' => '677732240efb9',
+  ),
+  4 => 
+  array (
+    'name' => 'Table Data',
+    'type' => '2',
+    'view' => '4',
+    'position' => '1',
+    'template' => '&lt;h2&gt;Raw Table Data&lt;/h2&gt;
 First 50 rows
 $__tables(id == $_get.id)[$name](=_table)
 
@@ -99,8 +99,19 @@ $_eval[&#039;$__fields.table&#039; . &#039;.&#039; . &#039;$__fields.name&#039;]
 &lt;/tr&gt;
 }(0,50)
 &lt;/table&gt;
-&lt;/div&gt;', 'parent' => '26', 'id' => 5, 'name_es' => 'Informaci&oacute;n de la Tabla', 'name_en' => 'Table Data')
-, '5' => array('name' => 'Traducir', 'type' => '2', 'view' => '4', 'position' => '1', 'template' => '&lt;div class=&quot;panel container&quot;&gt;
+&lt;/div&gt;',
+    'parent' => '26',
+    'id' => 5,
+    'name_es' => 'Informaci&oacute;n de la Tabla',
+    'name_en' => 'Table Data',
+  ),
+  5 => 
+  array (
+    'name' => 'Traducir',
+    'type' => '2',
+    'view' => '4',
+    'position' => '1',
+    'template' => '&lt;div class=&quot;panel container&quot;&gt;
   &lt;div class=&quot;impar view row&quot;&gt;
     &lt;div class=&quot;view three columns label&quot;&gt;$_lang.LBL_TRANSLATE&lt;/div&gt;
     &lt;div class=&quot;view nine columns&quot;&gt;&lt;select name=&quot;trans_entity&quot; id=&quot;trans_entity&quot;&gt;
@@ -131,8 +142,21 @@ $_eval[&#039;$__fields.table&#039; . &#039;.&#039; . &#039;$__fields.name&#039;]
     &lt;/form&gt;
   ]
 &lt;/div&gt;
-  ', 'parent' => '24', 'name_es' => 'Traducir', 'name_en' => 'Translate', 'id' => 6)
-, '6' => array('name' => 'Matriz de Permisos', 'name_es' => 'Matriz de Permisos', 'name_en' => 'Permission Matrix', 'type' => '2', 'view' => '4', 'position' => '1', 'template' => '&lt;br&gt;&lt;h2&gt;$name&lt;/h2&gt;
+  ',
+    'parent' => '24',
+    'name_es' => 'Traducir',
+    'name_en' => 'Translate',
+    'id' => 6,
+  ),
+  6 => 
+  array (
+    'name' => 'Matriz de Permisos',
+    'name_es' => 'Matriz de Permisos',
+    'name_en' => 'Permission Matrix',
+    'type' => '2',
+    'view' => '4',
+    'position' => '1',
+    'template' => '&lt;br&gt;&lt;h2&gt;$name&lt;/h2&gt;
 &lt;table&gt;
 &lt;tr&gt;&lt;th&gt;Entity&lt;/th&gt; $__actions(domain == &#039;table&#039; && needACL){&lt;th style=&quot;text-align:center&quot;&gt;$actionName&lt;/th&gt;}&lt;/tr&gt;
 
@@ -148,13 +172,107 @@ $_entities:e{
         &lt;/select&gt;
     &lt;/td&gt;} &lt;/tr&gt;
 }(name)
-&lt;/table&gt;', 'parent' => '13', 'assigned_user_id' => '2', 'date_entered' => '2016-08-03 01:18', 'created_by' => '2', 'date_modified' => '2016-08-05 01:57', 'modified_by' => '2', 'id' => 7)
-, '7' => array('name' => '', 'name_es' => 'Editview JS', 'name_en' => 'Editview JS', 'type' => '1', 'view' => '1', 'position' => '1', 'template' => 'init_columns_editview();', 'parent' => '32', 'date_entered' => '2020-04-22 20:47', 'created_by' => 1, 'date_modified' => '2020-04-22 20:47', 'modified_by' => 1, 'id' => 8)
-)
-; ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Editview JS', 'name_en' => 'Editview JS', 'type' => '1', 'view' => '1', 'position' => '1', 'template' => 'init_filters_editview();', 'parent' => '33', 'date_entered' => '2020-04-26 18:34', 'created_by' => 1, 'date_modified' => '2020-04-26 18:34', 'modified_by' => 1, 'id' => 9); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Detailview JS', 'name_en' => 'Detailview JS', 'type' => '1', 'view' => '4', 'position' => '1', 'template' => 'translateChain(&#039;relationships_chain&#039;);', 'parent' => '32', 'date_entered' => '2020-04-27 22:48', 'created_by' => 1, 'date_modified' => '2020-04-27 22:48', 'modified_by' => 1, 'id' => 10); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Detailview JS', 'name_en' => 'Detailview JS', 'type' => '1', 'view' => '4', 'position' => '1', 'template' => 'translateChain(&#039;relationships_chain&#039;);', 'parent' => '33', 'date_entered' => '2020-04-27 22:50', 'created_by' => 1, 'date_modified' => '2020-04-27 22:50', 'modified_by' => 1, 'id' => 11); ?><?php $_extend_views[] = array('name' => '', 'type' => '0', 'view' => '1', 'position' => '1', 'template' => '&lt;script&gt; 
+&lt;/table&gt;',
+    'parent' => '13',
+    'assigned_user_id' => '2',
+    'date_entered' => '2016-08-03 01:18',
+    'created_by' => '2',
+    'date_modified' => '2016-08-05 01:57',
+    'modified_by' => '2',
+    'id' => 7,
+  ),
+  7 => 
+  array (
+    'name' => '',
+    'name_es' => 'Editview JS',
+    'name_en' => 'Editview JS',
+    'type' => '1',
+    'view' => '1',
+    'position' => '1',
+    'template' => 'init_columns_editview();',
+    'parent' => '32',
+    'date_entered' => '2020-04-22 20:47',
+    'created_by' => 1,
+    'date_modified' => '2020-04-22 20:47',
+    'modified_by' => 1,
+    'id' => 8,
+  ),
+  8 => 
+  array (
+    'name' => '',
+    'name_es' => 'Editview JS',
+    'name_en' => 'Editview JS',
+    'type' => '1',
+    'view' => '1',
+    'position' => '1',
+    'template' => 'init_filters_editview();',
+    'parent' => '33',
+    'date_entered' => '2020-04-26 18:34',
+    'created_by' => 1,
+    'date_modified' => '2020-04-26 18:34',
+    'modified_by' => 1,
+    'id' => 9,
+  ),
+  9 => 
+  array (
+    'name' => '',
+    'name_es' => 'Detailview JS',
+    'name_en' => 'Detailview JS',
+    'type' => '1',
+    'view' => '4',
+    'position' => '1',
+    'template' => 'translateChain(&#039;relationships_chain&#039;);',
+    'parent' => '32',
+    'date_entered' => '2020-04-27 22:48',
+    'created_by' => 1,
+    'date_modified' => '2020-04-27 22:48',
+    'modified_by' => 1,
+    'id' => 10,
+  ),
+  10 => 
+  array (
+    'name' => '',
+    'name_es' => 'Detailview JS',
+    'name_en' => 'Detailview JS',
+    'type' => '1',
+    'view' => '4',
+    'position' => '1',
+    'template' => 'translateChain(&#039;relationships_chain&#039;);',
+    'parent' => '33',
+    'date_entered' => '2020-04-27 22:50',
+    'created_by' => 1,
+    'date_modified' => '2020-04-27 22:50',
+    'modified_by' => 1,
+    'id' => 11,
+  ),
+  11 => 
+  array (
+    'name' => '',
+    'type' => '0',
+    'view' => '1',
+    'position' => '1',
+    'template' => '&lt;script&gt; 
 jQuery(&#039;#type&#039;).change(populateDataTypeParameters);
 populateDataTypeParameters(); 
-&lt;/script&gt;', 'parent' => '9', 'id' => 3, 'name_es' => 'Par&aacute;metros de Tipos', 'name_en' => 'Type Parameters', 'date_modified' => '2021-01-21 03:14', 'modified_by' => 1, 'view_name' => '', 'parent_name' => ''); ?><?php $_extend_views[] = array('name' => '', 'name_es' => 'Panel de Campos', 'name_en' => 'Fields Panel', 'type' => '0', 'view' => '4', 'position' => '1', 'template' => '&lt;script&gt;
+&lt;/script&gt;',
+    'parent' => '9',
+    'id' => 3,
+    'name_es' => 'Par&aacute;metros de Tipos',
+    'name_en' => 'Type Parameters',
+    'date_modified' => '2021-01-21 03:14',
+    'modified_by' => 1,
+    'view_name' => '',
+    'parent_name' => '',
+  ),
+  12 => 
+  array (
+    'name' => '',
+    'name_es' => 'Panel de Campos',
+    'name_en' => 'Fields Panel',
+    'type' => '0',
+    'view' => '4',
+    'position' => '1',
+    'template' => '&lt;script&gt;
     function renderFieldsPanel(entity_id){
         var html = &#039;&#039;;
         const fields_entity_id = &#039;9&#039;;
@@ -290,4 +408,16 @@ populateDataTypeParameters();
     
     var e_id = document.querySelector(&#039;.record&#039;).attributes.record_id.value;
     renderFieldsPanel(e_id);
-&lt;/script&gt;', 'parent' => '1', 'date_entered' => '2024-02-02 10:12', 'created_by' => 1, 'date_modified' => '2024-02-02 13:15', 'modified_by' => 1, 'type_value' => '', 'view_name' => '', 'position_value' => '', 'parent_name' => '', 'id' => 12); ?>
+&lt;/script&gt;',
+    'parent' => '1',
+    'date_entered' => '2024-02-02 10:12',
+    'created_by' => 1,
+    'date_modified' => '2024-02-02 13:15',
+    'modified_by' => 1,
+    'type_value' => '',
+    'view_name' => '',
+    'position_value' => '',
+    'parent_name' => '',
+    'id' => 12,
+  ),
+); ?>
