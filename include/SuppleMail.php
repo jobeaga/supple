@@ -51,7 +51,7 @@ class SuppleMail {
 		$mail->MsgHTML(utf8_decode($body));
 		
 		if ($_SERVER['HTTP_HOST'] == '127.0.0.1' || $_SERVER['HTTP_HOST'] == 'localhost'){
-			$mail->AddAddress('jobeaga@gmail.com', 'Jorge Obeaga');
+			// $mail->AddAddress('developer@example.com', 'Dev Name');
 		} else {
 			if (is_array($destination)){
 				foreach ($destination as $d => $n){
