@@ -153,6 +153,19 @@
     'order' => 10,
     'id' => 10,
   ),
+  array (
+    'list' => 4,
+    'key' => '5',
+    'value' => '',
+    'value_es' => 'CustomView',
+    'value_en' => 'CustomView',
+    'date_entered' => '2020-05-18 02:29',
+    'created_by' => 1,
+    'date_modified' => '2020-05-18 02:29',
+    'modified_by' => 1,
+    'order' => 611,
+    'id' => 611,
+  ),
   11 => 
   array (
     'list' => 5,

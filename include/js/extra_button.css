@@ -15,6 +15,7 @@ input[type="button"].extra_button {
     border: 1px solid black;
     margin-left: 8px;
     box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+    max-width: 80%;
 }
 
 input[type="button"].extra_button_close {
@@ -34,6 +35,7 @@ input[type="button"].extra_button_close {
         display:inline-block;
     }
     .listview .fieldcount10 .post.buttons { padding-left: 40px; }
+    .extra_container { right: 5% !important; }
 }
 @media (max-width: 860px) {
 	.listview .fieldcount9 input[type="button"].extra_button {

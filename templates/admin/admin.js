@@ -480,7 +480,16 @@ function renderMenu(){
 
 	for (const tab_group of tab_groups_order){
 		// var tab_group = metadata._tab_groups[tab_group_id];
-		if (tab_group.adminonly == 0 || tab_group.adminonly == current_user.isadmin){
+		// COUNT entities of this group
+		var count_tg_entities = 0;
+		for (const tge_id in metadata._tab_group_entities){  
+			var tge = metadata._tab_group_entities[tge_id];
+			if ((tge.id_b == tab_group.id) && (current_user.isadmin == 1 || user_has_permission(current_user.id, tge.id_a))){
+				count_tg_entities++;
+			}
+		}
+		// and go on...
+		if (count_tg_entities > 0 && (tab_group.adminonly == 0 || tab_group.adminonly == current_user.isadmin)){
 			// RENDER TAB CONTENT
 			menuselector_content = '';
 			ulmenu_content = '';
@@ -1122,7 +1131,7 @@ function autoload_next(){
 }
 
 $(window).scroll(function() {
-	if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+	if($(window).scrollTop() + $(window).height() > $(document).height() - 120) {
 		autoload_next();
 	}
  });
