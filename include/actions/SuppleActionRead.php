@@ -147,7 +147,17 @@ class SuppleActionRead extends SuppleAction {
 
 			$q->limits($offset, $count);
 
-			if (!empty($filter)){ $q->where($filter); }
+			if (!empty($filter)){ 
+				// replace vars
+				$new_filter = array();
+				$t = new SuppleTemplate();
+				foreach ($filter as $fl => $fr){
+					$fl = $t->parseString($fl);
+					$new_filter[$fl] = $t->parseString($fr);
+				}
+				// apply filter
+				$q->where($new_filter); 
+			}
 
 			if (!empty($order)){ $q->orderBy($order); }
 

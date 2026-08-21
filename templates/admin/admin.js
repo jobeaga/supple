@@ -3067,7 +3067,9 @@ function addOnchangeListener(element_id, field_name, table, record_id){
 	var e = document.getElementById(element_id);
 	var saveCallback = function (){
 		// TODO: validate unique?
-		save_field(element_id, field_name, table, record_id);
+		if (record_id != undefined && record_id != 'undefined'){
+			save_field(element_id, field_name, table, record_id);
+		}		
 	};
 	if (e != null){
 		if (e.tagName == 'SELECT'){
