@@ -473,6 +473,8 @@ class PhpArrayResultset extends SuppleResultset {
 	}
 
 	function getArray($sort = true){
+
+		$allTime = SuppleApplication::getlog()->getStartTime();
 		
 		$key = array( 
 			$this->table,
@@ -497,8 +499,6 @@ class PhpArrayResultset extends SuppleResultset {
 
 		} else {
 	
-			$allTime = SuppleApplication::getlog()->getStartTime();
-
 			$startTime = SuppleApplication::getlog()->getStartTime();
 
 			$this->resultSet = array();

@@ -397,6 +397,7 @@ class SuppleResultset {
 	var $limitStart;
 	var $limitCount;
 	var $reverse;
+	var $random;
 	
 	function __construct($connection, $table){
 		$this->conn = $connection;
@@ -408,6 +409,7 @@ class SuppleResultset {
 		$this->limitCount = 0; // Implica poner todos.
 		$this->limitStart = 0; 
 		$this->reverse = false;
+		$this->random = false;
 		
 		$this->clear();
 		$this->reset();

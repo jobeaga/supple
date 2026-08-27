@@ -496,6 +496,13 @@ class SuppleDBManager {
 					$rel['relationship_field_a'] = 'id_a';
 					$rel['relationship_field_b'] = 'id_b';
 				}
+
+				if (!isset($rel['relationship_field_a'])){
+					$rel['relationship_field_a'] = '';
+				}
+				if (!isset($rel['relationship_field_b'])){
+					$rel['relationship_field_b'] = '';
+				}
 				
 				$this->rel_cache[$rel_table][$table_a] = array(
 					'final_table' => $table_b,
