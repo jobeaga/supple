@@ -2,35 +2,33 @@
 
 require_once('include/SuppleApplication.php');
 
-abstract class SuppleObject {
+abstract class SuppleObject implements IteratorAggregate {
 
-	public $db;
-	private array $propiedades = [];
+    public $db;
+    private array $_properties = [];
 
-	function __construct(){
-
-		$this->db = SuppleApplication::getdb();
-
-	}	
-
-    public function __set(string $nombre, mixed $valor): void
-    {
-        $this->propiedades[$nombre] = $valor;
+    function __construct() {
+        $this->db = SuppleApplication::getdb();
     }
 
-    public function __get(string $nombre): mixed
-    {
-        return $this->propiedades[$nombre] ?? '';
+    public function __set(string $name, mixed $value): void {
+        $this->_properties[$name] = $value;
     }
 
-    public function __isset(string $nombre): bool
-    {
-        return isset($this->propiedades[$nombre]);
+    public function __get(string $name): mixed {
+        return $this->_properties[$name] ?? '';
     }
 
-    public function __unset(string $nombre): void
-    {
-        unset($this->propiedades[$nombre]);
+    public function __isset(string $name): bool {
+        return isset($this->_properties[$name]);
+    }
+
+    public function __unset(string $name): void {
+        unset($this->_properties[$name]);
+    }
+
+    public function getIterator(): Traversable {
+        return new ArrayIterator($this->_properties);
     }
 
 }

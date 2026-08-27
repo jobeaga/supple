@@ -13,7 +13,7 @@ class SuppleBean extends SuppleObject {
 	public $_isnew = true;
 	public $_update_metadata = false;
 	public $_fetched_row = array();
-	public $id;
+	// public $id;
 	
 
 	public static function getBean($table, $id = '', $light = false){
