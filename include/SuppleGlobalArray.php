@@ -38,7 +38,8 @@ class SuppleGlobalArray extends SuppleGlobal {
 		if (file_exists($custom_file_name)){
 			$custom_values = readArray($custom_file_name, $this->name);
 			foreach ($custom_values as $att => $val){
-				$this->setValue($att, $val);
+				//$this->setValue($att, $val);
+				$this->values[$att] = $val;
 			}
 		}
 
