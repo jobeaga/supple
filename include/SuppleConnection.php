@@ -564,10 +564,12 @@ class SuppleResultset {
 		foreach ($entities as $ent){
 			$fields = $con->from('_fields')->where(array('parent' => $ent['id'], 'type' => 14))->getArray();
 			foreach ($fields as $field){
-				foreach ($data as $i => $row){
-					foreach ($row as $f => $v){
-						if ($f == $field['name'] && (!empty($v))){
-							$data[$i][$f . "_value"] = translateOptions(chr($field['sep2']), chr($field['sep1']), $field['options'], $v );
+				if (isset($field['sep1']) && isset($field['sep2']) && isset($field['options'])){
+					foreach ($data as $i => $row){
+						foreach ($row as $f => $v){
+							if ($f == $field['name'] && (!empty($v))){
+								$data[$i][$f . "_value"] = translateOptions(chr($field['sep2']), chr($field['sep1']), $field['options'], $v );
+							}
 						}
 					}
 				}

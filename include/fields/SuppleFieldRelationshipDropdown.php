@@ -42,7 +42,7 @@ class SuppleFieldRelationshipDropdown extends SuppleField {
                 $db = SuppleApplication::getdb();
                 $subrow = $db->from($this->related_table)->where(array('id' => $value))->getRow(); // getBean here causes infinite recursion
                 $name = $subrow[$this->related_field];
-                $name_lang = $subrow[$this->related_field.'_'.SuppleLanguage::getLanguage()];
+                $name_lang = $subrow[$this->related_field.'_'.SuppleLanguage::getLanguage()] ?? null;
                 if ($name != null){
                     $this->row[$this->name.'_'.$this->related_field] = $name;
                 } else if ($name_lang != null) {
