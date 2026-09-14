@@ -729,7 +729,7 @@ function loadView(entity_id, view_id, record_id, filter, offset, dont_push_state
 		//console.log(entity.default_filter);
 		if (record_id == undefined && entity.default_filter == undefined) filter = '';
 		if (record_id == undefined && entity.default_filter != undefined) filter = entity.default_filter;
-		if (record_id == undefined && entity.fixed_filter != undefined) {
+		if (record_id == undefined && entity.fixed_filter != undefined && entity.fixed_filter != '') {
 			if (filter == ''){
 				filter = entity.fixed_filter;
 			} else {
@@ -737,6 +737,14 @@ function loadView(entity_id, view_id, record_id, filter, offset, dont_push_state
 			}
 		}
 		if (record_id != undefined) filter = 'id='+record_id;
+	} else {
+		if (entity.fixed_filter != undefined && entity.fixed_filter != '') {
+			if (filter == ''){
+				filter = entity.fixed_filter;
+			} else {
+				filter += '&' + entity.fixed_filter;
+			}
+		}
 	}
 	if (record_id == undefined) record_id = '';
 	if (view_id == undefined) return false;
