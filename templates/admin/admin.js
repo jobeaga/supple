@@ -729,6 +729,13 @@ function loadView(entity_id, view_id, record_id, filter, offset, dont_push_state
 		//console.log(entity.default_filter);
 		if (record_id == undefined && entity.default_filter == undefined) filter = '';
 		if (record_id == undefined && entity.default_filter != undefined) filter = entity.default_filter;
+		if (record_id == undefined && entity.fixed_filter != undefined) {
+			if (filter == ''){
+				filter = entity.fixed_filter;
+			} else {
+				filter += '&' + entity.fixed_filter;
+			}
+		}
 		if (record_id != undefined) filter = 'id='+record_id;
 	}
 	if (record_id == undefined) record_id = '';
@@ -2789,13 +2796,24 @@ function restoreSearchformBackup(parent_element_id, searchform_backup){
 
 function search_do(parent_element_id) {
 
+	var entity = metadata._entities[this_status[parent_element_id].entity_id];
+
 	var searchform_backup = getSearchformBackup(parent_element_id);
 
 	// BUILD filter
 	var filter = getSearchFilter(parent_element_id);
 
+	// ADD FIXED FILTER
+	if (entity.fixed_filter != undefined && entity.fixed_filter != ''){
+		if (filter == ''){
+			filter = entity.fixed_filter;
+		} else {
+			filter += '&' + entity.fixed_filter;
+		}
+	}
+
 	// loadView with that filter
-	loadView(this_status[parent_element_id].entity_id, this_status[parent_element_id].view_id, '', filter, 0, false, function (){
+	loadView(entity.id, this_status[parent_element_id].view_id, '', filter, 0, false, function (){
 		restoreSearchformBackup(parent_element_id, searchform_backup);
 	}, undefined, parent_element_id, this_status[parent_element_id].order);
 
