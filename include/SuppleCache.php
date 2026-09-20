@@ -48,6 +48,10 @@ class SuppleCache {
 				if ($cache_filename /*&& is_writable($cache_filename)*/){
 					$content = '<?php $cache = '.var_export($c, true).'; /* DATE: '.date('Y-m-d H:i:s').' */ ?>';
 					file_put_contents($cache_filename, $content);
+					// INVALIDATE CACHE
+					if (function_exists('opcache_invalidate')) {
+						opcache_invalidate($cache_filename, true); 
+					}
 				}
 			}
 		}
@@ -155,6 +159,10 @@ class SuppleCache {
 			return '{}';
 		} else {
 			file_put_contents($metadata_cache_file, '1');
+			// INVALIDATE CACHE
+			if (function_exists('opcache_invalidate')) {
+				opcache_invalidate($metadata_cache_file, true); 
+			}
 			global $db;
 			$maps = $db->mappings['PhpArrayConnection']['metadata']['tables'];
 			$metadata = array();
@@ -168,6 +176,9 @@ class SuppleCache {
 			}
 			$je_metadata = json_encode($metadata);
 			file_put_contents($metadata_cache_file, $je_metadata);
+			if (function_exists('opcache_invalidate')) {
+				opcache_invalidate($metadata_cache_file, true); 
+			}
 			
 			// return $je_metadata;
 			return '{}';

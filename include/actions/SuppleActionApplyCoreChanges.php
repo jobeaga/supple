@@ -59,6 +59,9 @@ class SuppleActionApplyCoreChanges extends SuppleAction {
                 $filename = 'phpArrayDBcore/'.$table.'.php';
                 require($filename);
                 file_put_contents($filename, '<?php $'.$table.' = '.var_export($$table, true).'; ?>');
+                if (function_exists('opcache_invalidate')) {
+                    opcache_invalidate($filename, true); 
+                }
             }
         }
 

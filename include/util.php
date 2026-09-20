@@ -159,6 +159,11 @@ function writeString($filename, $string){
 		}
 	}
 
+	// INVALIDATE CACHE
+	if (function_exists('opcache_invalidate')) {
+		opcache_invalidate($filename, true); 
+	}
+
 	return $returnvalue;
 }
 
@@ -1449,6 +1454,9 @@ function preg_match_all_recursive($pattern, $subject, $offset = 0) {
 function set_progress($description = '', $progress = 0) {
 	$progress = array('description' => $description, 'progress' => $progress);
 	file_put_contents('cache/progress.txt', json_encode($progress));
+	if (function_exists('opcache_invalidate')) {
+		opcache_invalidate('cache/progress.txt', true); 
+	}
 }
 
 function cleanHTML($value){

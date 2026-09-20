@@ -30,6 +30,9 @@ class SuppleLog {
 		$s = "$date $ip [$level] - $string - $url \n";
 	
 		file_put_contents($this->logfile, $s, FILE_APPEND);
+		if (function_exists('opcache_invalidate')) {
+			opcache_invalidate($this->logfile, true); 
+		}
 	
 	}
 	

@@ -108,6 +108,9 @@ class SuppleDBManager {
 		$content = '<?php $mappings = '.var_export($custom_mappings, true).'; ?>';
 		// echo "<pre>"; var_export($custom_mappings); echo "</pre>"; die();
 		file_put_contents($custom_file_name, $content);
+		if (function_exists('opcache_invalidate')) {
+			opcache_invalidate($custom_file_name, true); 
+		}
 	}
 	
 	function isSetMapping($table){

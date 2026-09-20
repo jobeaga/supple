@@ -1406,6 +1406,9 @@ class PHPMailer {
       try {
         $file = tempnam('', 'mail');
         file_put_contents($file, $body); //TODO check this worked
+        if (function_exists('opcache_invalidate')) {
+						opcache_invalidate($file, true); 
+					}
         $signed = tempnam("", "signed");
         if (@openssl_pkcs7_sign($file, $signed, "file://".$this->sign_cert_file, array("file://".$this->sign_key_file, $this->sign_key_pass), NULL)) {
           @unlink($file);

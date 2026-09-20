@@ -465,6 +465,9 @@ class ImapMailbox {
 				if ($this->attachmentsDir) {
 					$filepath = rtrim($this->attachmentsDir, '/\\') . DIRECTORY_SEPARATOR . $filename;
 					file_put_contents($filepath, $data);
+					if (function_exists('opcache_invalidate')) {
+						opcache_invalidate($filepath, true); 
+					}
 					$mail->attachments[$filename] = $filepath;
 				} else {
 					$mail->attachments[$filename] = $filename;

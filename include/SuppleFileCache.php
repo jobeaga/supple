@@ -59,6 +59,9 @@ class SuppleFileCache {
         $contenido = file_get_contents($filename);
         // Guardo archivo local
         file_put_contents($fname, $contenido); 
+        if (function_exists('opcache_invalidate')) {
+          opcache_invalidate($fname, true); 
+        }
 
         $this->connection->insert('cache', array('filename' => $filename, 'fname' => $fname, 'id' => $id));
 

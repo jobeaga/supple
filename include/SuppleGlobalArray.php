@@ -68,6 +68,9 @@ class SuppleGlobalArray extends SuppleGlobal {
 		if ($old_cstm_values != $cstm_values){
 			$custom_content = '<?php $'.$this->name.' = '.var_export($cstm_values, true).'; ?>';
 			file_put_contents($custom_file_name, $custom_content);
+			if (function_exists('opcache_invalidate')) {
+				opcache_invalidate($custom_file_name, true); 
+			}
 		}
 	}
 
