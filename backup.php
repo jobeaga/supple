@@ -21,11 +21,48 @@ $yesterday_backup = '../backup_yesterday.zip';
 $day_backup = '../backup_day_'.date('d').'.zip';
 $month_backup = '../backup_month_'.date('m').'.zip';
 $year_backup = '../backup_year_'.date('Y').'.zip';
-$mysql_backup_prefix = './backup_mysql_';
+$mysql_backup_prefix = 'backup_mysql_';
 $config_file = 'custom/config.php';
 $mappings_file = 'custom/mappings.php';
 
 // End of configurable paths.
+
+if (!empty($_GET['get'])) {
+    // Clave secreta definida en el servidor (usa una cadena larga y aleatoria)
+    $valid_key = md5('jorge');
+
+    // 1. Validar la clave enviada usando hash_equals para prevenir timing attacks
+    if (empty($_GET['key']) || !hash_equals($valid_key, $_GET['key'])) {
+        http_response_code(403);
+        die('Error: Clave de acceso invalida.');
+    }
+
+    // 2. Validar existencia del archivo
+    if (!isset($today_backup) || !file_exists($today_backup)) {
+        http_response_code(404);
+        die('Error: El archivo de backup no existe.');
+    }
+
+    // 3. Desactivar limite de tiempo para descargas pesadas
+    set_time_limit(0);
+
+    // 4. Limpiar cualquier bufer de salida previo para evitar corromper el archivo
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
+
+    // 5. Encabezados HTTP para la descarga
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . basename($today_backup) . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($today_backup));
+
+    readfile($today_backup);
+    exit;
+}
 
 if (PHP_SAPI !== 'cli') {
     http_response_code(403);

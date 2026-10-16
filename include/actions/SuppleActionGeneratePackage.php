@@ -64,7 +64,7 @@ class SuppleActionGeneratePackage extends SuppleAction {
         }
         // ADD tables of relationships // TODO: test this!
         $relationships = $db->from('_relationships')->getArray();
-        foreach ($relationships as $r => $r_def){
+        foreach ($relationships as $rel => $r_def){
             $table = $r_def['rel_table'];
             if (!isset($processed_tables[$table])){
                 $processed_tables[$table] = 1;

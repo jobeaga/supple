@@ -15,16 +15,19 @@ class SuppleMail {
 	public $smtp_from_name;
 
 	function __construct(){
+		global $config;
 	
 		// Get config
 		$params = array('smtp_host', 'smtp_secure', 'smtp_auth', 'smtp_port', 'smtp_username', 'smtp_password', 'smtp_from', 'smtp_from_name');
 		foreach ($params as $param){
-			$this->$param = SuppleApplication::getconfig()->getValue($param);
+			$this->$param = $config->getValue($param);
 		}
 	
 	}
 	
 	function simpleSendWith($destination, $destination_name, $subject, $body, $attachments = array(), $smtp_auth, $smtp_secure, $smtp_host, $smtp_port, $smtp_username, $smtp_password, $smtp_from, $smtp_from_name, $bcc = array()){
+		global $config;
+		
 		// Create the object?!
 		$mail             = new PHPMailer();
 		
@@ -51,7 +54,7 @@ class SuppleMail {
 		$mail->MsgHTML(utf8_decode($body));
 		
 		if ($_SERVER['HTTP_HOST'] == '127.0.0.1' || $_SERVER['HTTP_HOST'] == 'localhost'){
-			// $mail->AddAddress('developer@example.com', 'Dev Name');
+			$mail->AddAddress($config->getValue('to_email'), $config->getValue('to_name'));
 		} else {
 			if (is_array($destination)){
 				foreach ($destination as $d => $n){
