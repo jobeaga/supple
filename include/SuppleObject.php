@@ -11,12 +11,16 @@ abstract class SuppleObject implements IteratorAggregate {
         $this->db = SuppleApplication::getdb();
     }
 
-    public function __set(string $name, mixed $value): void {
-        $this->_properties[$name] = $value;
-    }
+    public function __set(string $name, $value): void {
+    $this->_properties[$name] = $value;
+}
 
-    public function __get(string $name): mixed {
-        return $this->_properties[$name] ?? '';
+    public function &__get(string $name) {
+        if (!array_key_exists($name, $this->_properties)) {
+            $this->_properties[$name] = '';
+        }
+
+        return $this->_properties[$name];
     }
 
     public function __isset(string $name): bool {
