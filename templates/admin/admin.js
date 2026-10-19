@@ -1095,54 +1095,99 @@ var autoloading = 0;
 var autoload_enabled = 0;
 var autoload_offset;
 function autoload_next(){
-	if (autoloading == 0 && autoload_enabled == 1){
-		// console.log('reach');
-		autoloading = 1;
-	
-		var parent_element_id = 'main_body';
-		var entity_id = this_status[parent_element_id].entity_id;
-		var view_id = this_status[parent_element_id].view_id;
-		var filter = this_status[parent_element_id].filter;
-		var record_id = this_status[parent_element_id].record_id;
-		var order = this_status[parent_element_id].order;
+    if (autoloading != 0 || autoload_enabled != 1) return;
 
-		if (view_id != '' && entity_id != ''){
+    autoloading = 1;
 
-			var entity = metadata._entities[entity_id];
-			var view = metadata._viewdefs[view_id];
-			var fields = Object.values(searchInArray(searchInArray(metadata._fields, 'parent', entity_id), 'view'+ view_id, '1')).sort(function (a, b) { return a.order - b.order; });
+    var parent_element_id = 'main_body';
 
-			// view.class + 'Form'
-			
-			// NEXT OFFSET:
-			autoload_offset = autoload_offset + parseInt(view.records);
+    try {
+        var status = this_status[parent_element_id];
 
-			if (order == undefined) {
-				order = entity.listview_order;
-			}
+        if (status == undefined) {
+            autoloading = 0;
+            return;
+        }
 
-			// GET DATA
-			getData(entity.table, filter, autoload_offset, view.records, order, function (data){
-				var html = '';
-				// RENDER DATA
-				// console.log(data);
-				$.each(data, function (i, row){
-					// CHECK FOR DUPLICATED RECORDS
-					if (document.querySelectorAll('#' + parent_element_id + ' #' + view.class + 'Form #record'+row.id).length == 0){
-						html +=  renderViewBodyRecord(row.id, row, view, fields, entity, parent_element_id);
-					}
-				});
-				$('#' + parent_element_id + ' #' + view.class + 'Form').append(html);
-				// Stop when the end is reached:
-				if (data.length < view.records){
-					autoload_enabled = 0;
-				}
-				// And enable the next:
-				autoloading = 0;
-			});
-		}
+        var entity_id = status.entity_id;
+        var view_id = status.view_id;
+        var filter = status.filter;
+        var order = status.order;
 
-	}
+        if (view_id == '' || entity_id == '') {
+            autoloading = 0;
+            return;
+        }
+
+        var entity = metadata._entities[entity_id];
+        var view = metadata._viewdefs[view_id];
+
+        if (entity == undefined || view == undefined) {
+            autoloading = 0;
+            return;
+        }
+
+        var fields = Object.values(
+            searchInArray(
+                searchInArray(metadata._fields, 'parent', entity_id),
+                'view' + view_id,
+                '1'
+            )
+        ).sort(function (a, b) {
+            return a.order - b.order;
+        });
+
+        var next_offset = autoload_offset + parseInt(view.records);
+
+        if (!Number.isFinite(next_offset) ||
+            !Number.isFinite(parseInt(view.records)) ||
+            parseInt(view.records) <= 0) {
+            autoloading = 0;
+            return;
+        }
+
+        if (order == undefined) {
+            order = entity.listview_order;
+        }
+
+        getData(entity.table, filter, next_offset, view.records, order, function (data) {
+                try {
+                    var html = '';
+
+                    $.each(data, function (i, row) {
+                        if (document.querySelectorAll(
+                            '#' + parent_element_id + ' #' +
+                            view.class + 'Form #record' + row.id
+                        ).length == 0) {
+                            html += renderViewBodyRecord(
+                                row.id, row, view, fields,
+                                entity, parent_element_id
+                            );
+                        }
+                    });
+
+                    $('#' + parent_element_id + ' #' +
+                        view.class + 'Form').append(html);
+
+                    autoload_offset = next_offset;
+
+                    if (data.length < view.records) {
+                        autoload_enabled = 0;
+						console.log('data.length < view.records');
+                    }
+                } catch (error) {
+                    console.error('Error processing autoload:', error);
+                    autoloading = 0;
+                } finally {
+                    autoloading = 0;
+                }
+            }
+        );
+
+    } catch (error) {
+        console.error('Error in autoload_next:', error);
+        autoloading = 0;
+    }
 }
 
 $(window).scroll(function() {

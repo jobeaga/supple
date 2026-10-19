@@ -161,6 +161,8 @@ class SuppleActionRead extends SuppleAction {
 
 			if (!empty($order)){ $q->orderBy($order); }
 
+			$q->orderBy('id'); // bugfix del problema del paginado: cuando no hay criterio de orden, o el criterio de orden empata, desempata el id.
+
 			if (!empty($reverse)){ $q->reverse(); }
 
 			$beans = $q->getBeans(true);
