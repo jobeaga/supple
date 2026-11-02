@@ -17,69 +17,87 @@ function entityFieldCreate(name, id, value, field_def, table, record_id){
 	// Create dropdown entity_select
 	extra = '';
 	if (parent == '') extra = 'selected=selected';
-	$('#'+entity_select_id).append('<OPTION value="" table="" '+extra+'> -- '+ global.lang.LBL_NONE +' -- </OPTION>');
-	$.each(sortData(metadata._entities, 'name', false), function (i, rr){
+	getEl(entity_select_id, function(el) {
+		el.innerHTML = '<OPTION value="" table="" '+extra+'> -- '+ global.lang.LBL_NONE +' -- </OPTION>';
+	});
+	forEachObject(sortData(metadata._entities, 'name', false), function (i, rr){
 		if (rr['id'] == parent) {
 			extra = 'selected=selected';
 		} else {
 			extra = '';
 		}
-		$('#'+entity_select_id).append('<OPTION value="' + rr['id'] + '" table="' + rr['table'] + '" '+extra+'>'+ rr['name'] +'</OPTION>');
+		getEl(entity_select_id, function(el) {
+			el.innerHTML += '<OPTION value="' + rr['id'] + '" table="' + rr['table'] + '" '+extra+'>'+ rr['name'] +'</OPTION>';
+		});
 	});
 	// Create dropdown of fields
 	extra = '';
 	if (value == '') extra = 'selected=selected';
-	$('#'+id).append('<OPTION value="" table="" '+extra+'> -- '+ global.lang.LBL_NONE +' -- </OPTION>');
-	$.each(sortData(metadata._fields, 'name', false), function (i, rr){
+	getEl(id, function(el) {
+		el.innerHTML = '<OPTION value="" table="" '+extra+'> -- '+ global.lang.LBL_NONE +' -- </OPTION>';
+	});
+	forEachObject(sortData(metadata._fields, 'name', false), function (i, rr){
 		if (rr['id'] == value) {
 			extra = 'selected=selected';
 		} else {
 			extra = '';
 		}
-		$('#'+id).append('<OPTION value="' + rr['id'] + '" parent="' + rr['parent'] + '" '+extra+'>'+ rr['name'] +'</OPTION>');
+		getEl(id, function(el) {
+			el.innerHTML += '<OPTION value="' + rr['id'] + '" parent="' + rr['parent'] + '" '+extra+'>'+ rr['name'] +'</OPTION>';
+		});
 	});
 	// Fill hiddens
 	if (field_def.field_name_field != ''){
-		$('#'+field_def.field_name_field).val(row[field_def.field_name_field]);
+		getEl(field_def.field_name_field, function(el) {
+			el.value = row[field_def.field_name_field];
+		});
 	}
 	if (field_def.table_name_field != ''){
-		$('#'+field_def.table_name_field).val(row[field_def.table_name_field]);
+		getEl(field_def.table_name_field, function(el) {
+			el.value = row[field_def.table_name_field];
+		});
 	}
 	// Event listeners
-	$('#'+entity_select_id).change(function(){
+	getEl(entity_select_id, function(el) {
+		el.addEventListener('change', function(){
 		entityFieldChange(entity_select_id, id);
+		});
 	});
 	entityFieldChange(entity_select_id, id);
 
-	$('#'+id).change(function(){
+	getEl(id, function(el) {
+		el.addEventListener('change', function(){
 		saveOptionName(id,field_def.field_name_field);
+		});
 	});
 	saveOptionName(id,field_def.field_name_field);
 	setTimeout(function(){ saveOptionName(id,field_def.field_name_field); }, 1000);
 
 	if (field_def.table_name_field != ''){
-		$('#'+entity_select_id).change(function(){
+		getEl(entity_select_id, function(el) {
+			el.addEventListener('change', function(){
 			saveOptionAttribute(entity_select_id,field_def.table_name_field, 'table');
+			});
 		});
 		saveOptionAttribute(entity_select_id,field_def.table_name_field, 'table');
 	}
 }
 
 function entityFieldChange(parent_field, child_field) {
-	var parent = $('.record #'+parent_field).val();
+	var parent = query('.record #' + parent_field).value;
 	entityFieldChangeFor(parent, child_field);
 }
 
 function entityFieldChangeFor(parent, child_field) {
-	$('.record #'+child_field+' option').each(function (i, e){ 
-		if ($(e).attr('parent') == parent){
-			$(e).show();
+	queryAll('.record #' + child_field + ' option').forEach(function (e){
+		if (e.getAttribute('parent') == parent){
+			e.style.display = '';
 		} else {
-			$(e).hide();
+			e.style.display = 'none';
 		}
 	});
-	if ($('.record #'+child_field+' option:selected').attr('parent') != parent){
-		$('.record #'+child_field).val('');
+	if (query('.record #' + child_field + ' option:selected').getAttribute('parent') != parent){
+		query('.record #' + child_field).value = '';
 	}
 }
 // SIMPLE DROPDOWN
@@ -90,7 +108,7 @@ function createOptions(element_id, list_id, selected){
 	r += '<option value=""></option> '; // TODO: option to skip empty value
 
 	var s = '';
-	$(options).each(function (i,e){
+	options.forEach(function (e){
 		if (e.key == selected){
 			s = " SELECTED";
 		} else {
@@ -99,13 +117,17 @@ function createOptions(element_id, list_id, selected){
 
 		r += '<option value="' + e.key + '" ' + s + '>' + e.value + '</option> ';
 	});
-	document.querySelectorAll('[id="'+element_id+'"]').forEach(function (e){ e.innerHTML = r; });
+	queryAll('[id="'+element_id+'"]').forEach(function (e){
+		e.innerHTML = r;
+	});
 	// console.log(element_id);
-	// $('#'+element_id).html(r);
+	// getEl(element_id)?.innerHTML = r;
 }
 
 function translateOptions(element_id, list_id, selected){
-	$('#'+element_id).html(translateValue(list_id, selected));
+	getEl(element_id, function(el) {
+		el.innerHTML = translateValue(list_id, selected);
+	});
 }
 
 function translateValueFromList(list_name, value){
@@ -120,7 +142,7 @@ function translateValue(list_id, value){
 	var options = searchInArray(metadata._dropdown_options, 'list', list_id);
 	options = sortData(options, 'order'); // Converts to Array
 	var r = '';
-	$(options).each(function (i,e){
+	options.forEach(function(e){
 		if (e.key == value){
 			r = e.value;
 		} 
@@ -135,10 +157,11 @@ function createRelatedDropdown(element_id, value, related_table, related_field, 
 		if (filter_to != undefined && filter_to != ''){
 			if (metadata._fields[filter_to] != undefined){
 				var v = '';
-				if (document.getElementById(filter_from) != undefined && document.getElementById(filter_from).value != undefined){
-					// Obtener valor para el primer filtro
-					v = document.getElementById(filter_from).value;
-				}
+				getEl(filter_from, function (el){
+					if  (el.value != undefined){
+						v = el.value;
+					}					
+				});
 				filter = metadata._fields[filter_to].name + '=' + v;
 			}
 		}
@@ -150,22 +173,23 @@ function createRelatedDropdown(element_id, value, related_table, related_field, 
 			}
 		}
 		getData(related_table, filter, 0, 10000, order_field, function(data){
-			// $('#'+element_id).html('<OPTION value=""> -- '+ global.lang.LBL_NONE+' -- </option>');
-			$('#'+element_id).html('<OPTION value=""></option>');
-			$.each(data, function (i, row){
+			// query('#'+element_id).innerHTML = '<OPTION value=""> -- '+ global.lang.LBL_NONE+' -- </option>';
+			getEl(element_id, function(el) {
+				el.innerHTML = '<OPTION value=""></option>';
+				data.forEach(function (row){
+					if (row['id'] == value) {
+						extra = 'selected=selected';
+					} else {
+						extra = '';
+					}
 
-				if (row['id'] == value) {
-					extra = 'selected=selected';
-				} else {
-					extra = '';
-				}
+					el.innerHTML += '<OPTION value="' + row['id'] + '" '+extra+'>'+ row[related_field] +'</option>';
 
-				$('#'+element_id).append('<OPTION value="' + row['id'] + '" '+extra+'>'+ row[related_field] +'</option>');
-
+				});
 			});
-			// $('#'+element_id).change();
+			
 			const e = new Event("change");
-			const element = document.querySelector('#'+element_id);
+			const element = getEl(element_id);
 			element.dispatchEvent(e);
 		});
 	}
@@ -173,35 +197,48 @@ function createRelatedDropdown(element_id, value, related_table, related_field, 
 	// Ejecutar una vez el handler ni bien se crea el campo.
 	onchange_handler();
 	// Y ejecutar también cada vez que el filtro cambie:
-	if (filter_to != undefined && filter_to != '' && metadata._fields[filter_to] != undefined && document.getElementById(filter_from) != undefined && document.getElementById(filter_from).value != undefined){
-		document.getElementById(filter_from).addEventListener('change', function(){ 
-			if (document.getElementById(element_id) != undefined && document.getElementById(element_id).value != undefined && document.getElementById(element_id).value != ''){
-				value = document.getElementById(element_id).value;
-			}			
-			onchange_handler(); 
+	if (filter_to != undefined && filter_to != '' && metadata._fields[filter_to] != undefined) {
+		getEl(filter_from, function(el) {
+			if (el.value != undefined) {
+				el.addEventListener('change', function() {
+					getEl(element_id, function(el) {
+						if (el.value != undefined && el.value != '') {
+							value = el.value;
+						}
+					});
+					onchange_handler();
+				});
+			}
 		});
 	}
-
 }
 // LAS USAN EntityField, RelationshipDropdown, Field y FlexRelationshipDropdown
 function saveOptionName(option_id, hidden_name){
 	// WHAT IF NONE SELECTED???
 	if (option_id == '' || hidden_name == '') return;
-	var value = $('.record #'+option_id+' option:selected').val();
+	var value = query('.record #'+option_id+' option:selected').value;
 	if (value == ''){
-		$('.record #'+hidden_name).val('');
+		getEl(hidden_name, function(el) {
+			el.value = '';
+		});
 	} else {
-		$('.record #'+hidden_name).val($('.record #'+option_id+' option:selected').html());
+		getEl(hidden_name, function(el) {
+			el.value = query('.record #'+option_id+' option:selected').innerHTML;
+		});
 	}
 }
 
 function saveOptionAttribute(option_id, hidden_name, attribute){
 	// console.log('saveOptionAttribute: ' + option_id + ' - ' + hidden_name + ' - ' + attribute);
-	var value = $('.record #'+option_id+' option:selected').val();
+	var value = query('.record #'+option_id+' option:selected').value;
 	if (value == ''){
-		$('.record #'+hidden_name).val('');
+		getEl(hidden_name, function(el) {
+			el.value = '';
+		});
 	} else {
-		$('.record #'+hidden_name).val($('.record #'+option_id+' option:selected').attr(attribute));
+		getEl(hidden_name, function(el) {
+			el.value = query('.record #'+option_id+' option:selected').getAttribute(attribute);
+		});
 	}
 }
 
@@ -233,7 +270,9 @@ function renderRelationshipLinkTo(related_entity, view_id, related_id, table, re
 					//console.log(data[related_name]); 
 					// console.log(data, related_name);
 					while_selector('#'+placeholder_id, function(){
-						document.getElementById(placeholder_id).innerHTML = data[related_name];
+						getEl(placeholder_id, function(el) {
+							el.innerHTML = data[related_name];
+						});
 					});					
 				});
 			}
@@ -252,26 +291,28 @@ function getBeanFunctionData(table, field_name, record_id, element_id, value){
 	if (value === ''){
 		executeData(table, [field_name], 'id='+record_id, '', function(data){ 
 			setHtml('_bean_function_' + element_id, data[0][field_name]);
-			if (document.getElementById(element_id) != null){
-				document.getElementById(element_id).value = data[0][field_name];
-			}
+			getEl(element_id, function (el){
+				el.value = data[0][field_name];
+			});
 		});
 	}
 }
 
 function generateCopyButton(element_id){
 	var button_html = '<input type=button value="' + global.lang.LBL_COPY + '" class="button copy_button" onclick="copyToClipboardValue(\''+ element_id + '\')">';
+	getEl(element_id, function (el){
+		if (el.parentNode.tagName.toUpperCase() == 'A'){
+			el.parentNode.parentNode.innerHTML += button_html;
+		} else {
+			el.parentNode.innerHTML += button_html;
+		}
+	});
 	
-	if (document.getElementById(element_id).parentNode.tagName.toUpperCase() == 'A'){
-		document.getElementById(element_id).parentNode.parentNode.innerHTML += button_html;
-	} else {
-		document.getElementById(element_id).parentNode.innerHTML += button_html;
-	}
 	
 }
 function copyToClipboardValue(element_id){
 	/* Get the text field */
-	var copyText = document.getElementById(element_id).value;
+	var copyText = getEl(element_id).value;
 
 	// Create dummy textarea
 	const textarea = document.createElement('textarea');
@@ -296,13 +337,13 @@ function copyToClipboardValue(element_id){
 // ORDER DATATYPE: old
 function order_swap_next(id, fname) {
 	var order_next_id;
-	order_next_id = $('#_ordernext'+fname+id).val();
+	order_next_id = getEl('_ordernext'+fname+id).value;
 	order_swap(id, order_next_id, fname);
 }
 
 function order_swap_previous(id, fname) {
 	var order_previous_id;
-	order_previous_id = $('#_orderprevious'+fname+id).val();
+	order_previous_id = getEl('_orderprevious'+fname+id).value;
 	order_swap(id, order_previous_id, fname);
 }
 
@@ -319,89 +360,89 @@ function order_swap(from_id, to_id, fname) {
 	var table;
 
 	// Target out of the screen?
-	if ($('#_order'+fname+to_id).length == 0) return false;
+	if (queryAll('#_order'+fname+to_id).length == 0) return false;
 
 	// GET VALUES
-	from_value = $('#_order'+fname+from_id).val();
-	from_prev = $('#_orderprevious'+fname+from_id).val();
-	from_next = $('#_ordernext'+fname+from_id).val();
+	from_value = getEl('_order'+fname+from_id).value;
+	from_prev = getEl('_orderprevious'+fname+from_id).value;
+	from_next = getEl('_ordernext'+fname+from_id).value;
 	
-	to_value = $('#_order'+fname+to_id).val();
-	to_prev = $('#_orderprevious'+fname+to_id).val();
-	to_next = $('#_ordernext'+fname+to_id).val();
+	to_value = getEl('_order'+fname+to_id).value;
+	to_prev = getEl('_orderprevious'+fname+to_id).value;
+	to_next = getEl('_ordernext'+fname+to_id).value;
 
-	table = $('#_ordertable'+fname+to_id).val();
+	table = getEl('_ordertable'+fname+to_id).value;
 
 	// CHANGE AT DB
 	save_do(fname+'='+to_value, table, from_id, function (r){
 		// Evitar el doble/multiple mensaje de guardado
-		$('#message').html('');
+		setHtml('message', '');
 	});
 	save_do(fname+'='+from_value, table, to_id);
 
 	// CHANGE AT CLIENT: swapped elements
-	$('#_order'+fname+from_id).val(to_value); // 
+	getEl('_order'+fname+from_id).value = to_value;
 	if (to_prev == from_id){
-		$('#_orderprevious'+fname+from_id).val(to_id);
+		getEl('_orderprevious'+fname+from_id).value = to_id;
 	} else {
-		$('#_orderprevious'+fname+from_id).val(to_prev);
+		getEl('_orderprevious'+fname+from_id).value = to_prev;
 	}
 	if (to_next == from_id){
-		$('#_ordernext'+fname+from_id).val(to_id);
+		getEl('_ordernext'+fname+from_id).value = to_id;
 	} else {
-		$('#_ordernext'+fname+from_id).val(to_next);
+		getEl('_ordernext'+fname+from_id).value = to_next;
 	}
 	
-	$('#_order'+fname+to_id).val(from_value); //
+	getEl('_order'+fname+to_id).value = from_value;
 	if (from_prev == to_id){
-		$('#_orderprevious'+fname+to_id).val(from_id);
+		getEl('_orderprevious'+fname+to_id).value = from_id;
 	} else {
-		$('#_orderprevious'+fname+to_id).val(from_prev);
+		getEl('_orderprevious'+fname+to_id).value = from_prev;
 	}
 	if (from_next == to_id){
-		$('#_ordernext'+fname+to_id).val(from_id);
+		getEl('_ordernext'+fname+to_id).value = from_id;
 	} else {
-		$('#_ordernext'+fname+to_id).val(from_next);
+		getEl('_ordernext'+fname+to_id).value = from_next;
 	}
 
 	// CHANGE AT CLIENT: adjacent elements
-	from_prev = $('#_orderprevious'+fname+from_id).val();
-	from_next = $('#_ordernext'+fname+from_id).val();
-	to_prev = $('#_orderprevious'+fname+to_id).val();
-	to_next = $('#_ordernext'+fname+to_id).val();
+	from_prev = getEl('_orderprevious'+fname+from_id).value;
+	from_next = getEl('_ordernext'+fname+from_id).value;
+	to_prev = getEl('_orderprevious'+fname+to_id).value;
+	to_next = getEl('_ordernext'+fname+to_id).value;
 
-	if (from_prev != ''){ $('#_ordernext'+fname+from_prev).val(from_id); }
-	if (from_next != ''){ $('#_orderprevious'+fname+from_next).val(from_id); }
-	if (to_prev != ''){ $('#_ordernext'+fname+to_prev).val(to_id); }
-	if (to_next != ''){ $('#_orderprevious'+fname+to_next).val(to_id); }
+	if (from_prev != ''){ getEl('_ordernext'+fname+from_prev).value = from_id; }
+	if (from_next != ''){ getEl('_orderprevious'+fname+from_next).value = from_id; }
+	if (to_prev != ''){ getEl('_ordernext'+fname+to_prev).value = to_id; }
+	if (to_next != ''){ getEl('_orderprevious'+fname+to_next).value = to_id; }
 
 	// view: order value
-	$('#_orderv'+fname+from_id).html(to_value);
-	$('#_orderv'+fname+to_id).html(from_value);
+	setHtml('_orderv'+fname+from_id, to_value);
+	setHtml('_orderv'+fname+to_id, from_value);
 
 	// view: buttons	
-	if ($('#_orderprevious'+fname+from_id).val() == ''){
-		$('#_orderbutprevious'+fname+from_id).attr('disabled','disabled');
+	if (getEl('_orderprevious'+fname+from_id).value == ''){
+		setDisabled('_orderbutprevious'+fname+from_id, true);
 	} else {
-		$('#_orderbutprevious'+fname+from_id).removeAttr('disabled');
+		setDisabled('_orderbutprevious'+fname+from_id, false);
 	}
 	
-	if ($('#_ordernext'+fname+from_id).val() == ''){
-		$('#_orderbutnext'+fname+from_id).attr('disabled','disabled');
+	if (getEl('_ordernext'+fname+from_id).value == ''){
+		setDisabled('_orderbutnext'+fname+from_id, true);
 	} else {
-		$('#_orderbutnext'+fname+from_id).removeAttr('disabled');
+		setDisabled('_orderbutnext'+fname+from_id, false);
 	}
 
-	if ($('#_orderprevious'+fname+to_id).val() == ''){
-		$('#_orderbutprevious'+fname+to_id).attr('disabled','disabled');
+	if (getEl('_orderprevious'+fname+to_id).value == ''){
+		setDisabled('_orderbutprevious'+fname+to_id, true);
 	} else {
-		$('#_orderbutprevious'+fname+to_id).removeAttr('disabled');
+		setDisabled('_orderbutprevious'+fname+to_id, false);
 	}
 	
-	if ($('#_ordernext'+fname+to_id).val() == ''){
-		$('#_orderbutnext'+fname+to_id).attr('disabled','disabled');
+	if (getEl('_ordernext'+fname+to_id).value == ''){
+		setDisabled('_orderbutnext'+fname+to_id, true);
 	} else {
-		$('#_orderbutnext'+fname+to_id).removeAttr('disabled');
+		setDisabled('_orderbutnext'+fname+to_id, false);
 	}
 
 	// view: swap records (not cells!)
@@ -416,60 +457,88 @@ function order_swap(from_id, to_id, fname) {
 
 	// view: animate
 	// HIDE ORIGINAL: this keeps the space
-	frow.css('opacity', 0);
-	trow.css('opacity', 0);
+	frow.style.opacity = 0;
+	trow.style.opacity = 0;
 
 	// CREATE COPIES: this shows the ghosts
-	from_clone = frow.clone();
-	to_clone = trow.clone();
-	parent = frow.parent();
+	from_clone = frow.cloneNode(true);
+	to_clone = trow.cloneNode(true);
+	parent = frow.parentNode;
 
 	// style
-	if (trow.offset().top < frow.offset().top){
+	if (trow.offsetTop < frow.offsetTop){
 		if (parseInt(to_value) < parseInt(from_value)){
-			from_clone.css('opacity', '0.5').css('position', 'absolute').offset({top: trow.offset().top + frow.height() - 6});
-			to_clone.css('opacity', '0.5').css('position', 'absolute').offset({top: trow.offset().top - 6});
+			from_clone.style.opacity = '0.5';
+			from_clone.style.position = 'absolute';
+			from_clone.style.top = (trow.offsetTop + frow.offsetHeight - 6) + 'px';
+			to_clone.style.opacity = '0.5';
+			to_clone.style.position = 'absolute';
+			to_clone.style.top = (trow.offsetTop - 6) + 'px';
 		} else {
-			from_clone.css('opacity', '0.5').css('position', 'absolute').offset({top: trow.offset().top - 6});
-			to_clone.css('opacity', '0.5').css('position', 'absolute').offset({top: trow.offset().top + frow.height() - 6});
+			from_clone.style.opacity = '0.5';
+			from_clone.style.position = 'absolute';
+			from_clone.style.top = (trow.offsetTop - 6) + 'px';
+			to_clone.style.opacity = '0.5';
+			to_clone.style.position = 'absolute';
+			to_clone.style.top = (trow.offsetTop + frow.offsetHeight - 6) + 'px';
 		}
 	} else {
 		if (parseInt(to_value) < parseInt(from_value)){
-			from_clone.css('opacity', '0.5').css('position', 'absolute').offset({top: frow.offset().top + trow.height() - 6});
-			to_clone.css('opacity', '0.5').css('position', 'absolute').offset({top: frow.offset().top - 6});
+			from_clone.style.opacity = '0.5';
+			from_clone.style.position = 'absolute';
+			from_clone.style.top = (frow.offsetTop + trow.offsetHeight - 6) + 'px';
+			to_clone.style.opacity = '0.5';
+			to_clone.style.position = 'absolute';
+			to_clone.style.top = (frow.offsetTop - 6) + 'px';
 		} else {
-			from_clone.css('opacity', '0.5').css('position', 'absolute').offset({top: frow.offset().top - 6});
-			to_clone.css('opacity', '0.5').css('position', 'absolute').offset({top: frow.offset().top + trow.height() - 6});
+			from_clone.style.opacity = '0.5';
+			from_clone.style.position = 'absolute';
+			from_clone.style.top = (frow.offsetTop - 6) + 'px';
+			to_clone.style.opacity = '0.5';
+			to_clone.style.position = 'absolute';
+			to_clone.style.top = (frow.offsetTop + trow.offsetHeight - 6) + 'px';
 		}
 	}
 
 	// append
-	parent.append(from_clone);
-	parent.append(to_clone);
+	parent.appendChild(from_clone);
+	parent.appendChild(to_clone);
 	
 	// AND ANIMATE!!!
-	var op1 = '+='+trow.height();
-	var op2 = '-='+trow.height();
-	if (frow.offset().top < trow.offset().top){
-		op1 = '-='+frow.height();
-		op2 = '+='+frow.height();
+	var op1 = '+='+trow.offsetHeight;
+	var op2 = '-='+trow.offsetHeight;
+	if (frow.offsetTop < trow.offsetTop){
+		op1 = '-='+frow.offsetHeight;
+		op2 = '+='+frow.offsetHeight;
 	}
 
-	$(from_clone).animate({
-			top: op1,
-		}, 300, function(){
-			from_clone.remove();
-			frow.css('opacity', '1');
-		}
-	); 
-	$(to_clone).animate({
-			top: op2,
-		}, 300, function(){
-			to_clone.remove();
-			trow.css('opacity', '1');
-		}
-	); 
+	// Using requestAnimationFrame for animation
+	function animate(element, property, from, to, duration, callback) {
+		var start = performance.now();
+		var range = to - from;
 
+		function step(now) {
+			var elapsed = now - start;
+			var progress = Math.min(elapsed / duration, 1);
+			element.style[property] = (from + range * progress) + 'px';
+			if (progress < 1) {
+				requestAnimationFrame(step);
+			} else if (callback) {
+				callback();
+			}
+		}
+		requestAnimationFrame(step);
+	}
+
+	animate(from_clone, 'top', parseInt(from_clone.style.top), parseInt(from_clone.style.top) + (op1 === '+='+trow.offsetHeight ? trow.offsetHeight : -frow.offsetHeight), 300, function(){
+			from_clone.remove();
+		frow.style.opacity = '1';
+	});
+
+	animate(to_clone, 'top', parseInt(to_clone.style.top), parseInt(to_clone.style.top) + (op2 === '+='+frow.offsetHeight ? frow.offsetHeight : -trow.offsetHeight), 300, function(){
+			to_clone.remove();
+		trow.style.opacity = '1';
+	});
 }
 
 // ORDER DATATYPE: new
@@ -658,26 +727,22 @@ function orderGetTableName(){
 
 function orderClearStyle(){
 	if (order_drag.element != null){
-		document.querySelectorAll(order_drag.tableSelector + ' .record').forEach(function (tr){ tr.classList.remove('drag_target_bottom'); tr.classList.remove('drag_target_top'); });
+		queryAll(order_drag.tableSelector + ' .record').forEach(function (tr){
+			tr.classList.remove('drag_target_bottom');
+			tr.classList.remove('drag_target_top');
+		});
 	}
 }
 
 // DATATYPE PARAMETERS:
 function populateDataTypeParameters(){
 	// REMOVE PREVIOUS PARAMETERS
-	/* $('form .parameter').each(function (i,e){
-		$(e).detach().appendTo('#parameters');
-	});*/
 	document.querySelectorAll('form .parameter').forEach(function (e){
 		e.remove();
 	});
 	// ADD PARAMETERS OF TYPE
-	var type = $('#type').val();
+	var type = query('#type').value;
 	if (type != ''){
-		// OLD!
-		/* $('#parameters .parameter[parent='+type+']').each(function (i,e){
-			$(e).detach().insertBefore('.post.buttons');
-		});*/
 		var field_id = document.querySelector('form.record').attributes['record_id'].value;
 		var field;
 		if (field_id != undefined && field_id != '') 
@@ -712,7 +777,9 @@ function populateDataTypeParameters(){
 				}
 				// console.log('VALOR:'+v);
 				// document.getElementById('parameter_'+f.name).innerHTML = renderBasicSingleFieldFor(f.type, f.name, f.name, 1, v, f, 9);
-				$('#parameter_'+f.name).append(renderBasicSingleFieldFor(f.type, f.name, f.name, 1, v, f, 9));
+				getEl('parameter_'+f.name, function(el) {
+					el.innerHTML = renderBasicSingleFieldFor(f.type, f.name, f.name, 1, v, f, 9);
+				});
 			}
 		},1);
 
@@ -722,10 +789,13 @@ function populateDataTypeParameters(){
 function getIPinfo(value, field_id){
 	var url = 'http://ip-api.com/json/' + value;
 	if (value != ''){
-		$.get(url, '', function(data){
+		fetch(url)
+			.then(function(response){ return response.json(); })
+			.then(function(data){
 			var popup_content = data.country + '<br>' + data.regionName + '<br>' + data.city + '<br>ISP: ' + data.isp;
 			create_popup(popup_content, field_id);
-		}, 'json');
+			})
+			.catch(function(error){ console.error('getIPinfo error:', error); });
 	}
 	return false;
 }

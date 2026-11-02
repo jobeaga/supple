@@ -340,14 +340,9 @@ $($f.save_related_name)[
 <script>saveOptionName(&#039;$_name&#039;, &#039;$f.save_related_name&#039;);</script>
 ]', 'id' => 26)
 , '26' => array('typename' => 'Color', 'viewtemplate' => '<div style="width:50px;height:24px;background-color: #$_value;border:1px solid black"></div>
-<input type=hidden name="$_name" value="$_value" id="$_name">', 'edittemplate' => '<input type=text size="10" name="$_name" value="$_value" id="$_name">
-<script>
-jQuery(&#039;#$_name&#039;).colpick({color:&#039;$_value&#039;, onSubmit: function (hsb, cal) { jQuery(&#039;#$_name&#039;).val(cal); jQuery(&#039;.colpick&#039;).hide(); }});
-</script>', 'date_entered' => '2016-08-13 14:53', 'created_by' => '2', 'date_modified' => '2019-04-20 01:22', 'modified_by' => 1, 'id' => 27, 'js_viewtemplate' => '<div style="width:50px;height:24px;background-color: #{{value}};border:1px solid black; margin-top: 8px; margin-bottom: 8px;"></div>
-<input type=hidden name="{{name}}" value="{{value}}" id="{{id}}">', 'js_edittemplate' => '<input type=text size="10" name="{{name}}" value="{{value}}" id="{{id}}">
-<script>
-jQuery(&#039;#{{id}}&#039;).colpick({color:&#039;{{value}}&#039;, onSubmit: function (hsb, cal) { jQuery(&#039;#{{id}}&#039;).val(cal); jQuery(&#039;.colpick&#039;).hide(); }});
-</script>')
+<input type=hidden name="$_name" value="$_value" id="$_name">', 'edittemplate' => '', 'date_entered' => '2016-08-13 14:53', 'created_by' => '2', 'date_modified' => '2019-04-20 01:22', 'modified_by' => 1, 'id' => 27, 'js_viewtemplate' => '<div style="width:50px;height:24px;background-color: #{{value}};border:1px solid black; margin-top: 8px; margin-bottom: 8px;"></div>
+<input type=hidden name="{{name}}" value="{{value}}" id="{{id}}">', 'js_edittemplate' => '<input type=text size=10 maxlength=6 name="{{name}}" id="{{id}}" value="{{value}}" pattern="[0-9a-fA-F]{6}"><input type=color id="{{id}}_picker" style="width:40px;height:28px;padding:0;vertical-align:middle;"><div id="{{id}}_preview" style="display:inline-block;width:50px;height:24px;background-color:#{{value}};border:1px solid black;vertical-align:middle;"></div>
+<script>colorpicker_init(&#039;{{id}}&#039;);</script>')
 )
 ; ?><?php 
 

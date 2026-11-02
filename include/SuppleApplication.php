@@ -505,26 +505,26 @@ class SuppleApplication {
 		$js = glob('include/js/*.js');
 		$i = array_search('include/js/jquery.min.js', $js);
 		if ($i !== false){
-			$r .= '<script type="text/javascript" src="'.$js[$i].'"></script>';
+			$r .= '<script type="text/javascript" src="'.$js[$i].'"></script>'."\n";
 			unset($js[$i]);
 		}
 		foreach ($js as $js_file){
-			$r .= '<script type="text/javascript" src="'.$js_file.'"></script>';
+			$r .= '<script type="text/javascript" src="'.$js_file.'"></script>'."\n";
 		}
 		
 		$css = glob('include/js/*.css');
 		foreach ($css as $css_file){
-			$r .= '<link href="'.$css_file.'" rel="stylesheet" type="text/css">';
+			$r .= '<link href="'.$css_file.'" rel="stylesheet" type="text/css">'."\n";
 		}
 
 		// CUSTOM!!!
 		$js = glob('custom/js/*.js');
 		foreach ($js as $js_file){
-			$r .= '<script type="text/javascript" src="'.$js_file.'"></script>';
+			$r .= '<script type="text/javascript" src="'.$js_file.'"></script>'."\n";
 		}
 		$css = glob('custom/js/*.css');
 		foreach ($css as $css_file){
-			$r .= '<link href="'.$css_file.'" rel="stylesheet" type="text/css">';
+			$r .= '<link href="'.$css_file.'" rel="stylesheet" type="text/css">'."\n";
 		}
 
 		return $r;
