@@ -20,7 +20,7 @@ function entityFieldCreate(name, id, value, field_def, table, record_id){
 	getEl(entity_select_id, function(el) {
 		el.innerHTML = '<OPTION value="" table="" '+extra+'> -- '+ global.lang.LBL_NONE +' -- </OPTION>';
 	});
-	forEachObject(sortData(metadata._entities, 'name', false), function (i, rr){
+	each(sortData(metadata._entities, 'name', false), function (i, rr){
 		if (rr['id'] == parent) {
 			extra = 'selected=selected';
 		} else {
@@ -36,7 +36,7 @@ function entityFieldCreate(name, id, value, field_def, table, record_id){
 	getEl(id, function(el) {
 		el.innerHTML = '<OPTION value="" table="" '+extra+'> -- '+ global.lang.LBL_NONE +' -- </OPTION>';
 	});
-	forEachObject(sortData(metadata._fields, 'name', false), function (i, rr){
+	each(sortData(metadata._fields, 'name', false), function (i, rr){
 		if (rr['id'] == value) {
 			extra = 'selected=selected';
 		} else {

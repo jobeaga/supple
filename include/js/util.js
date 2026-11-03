@@ -423,14 +423,16 @@ function createLink(text, onclick, attrs = {}) {
 /**
  * Itera sobre un array u objeto (sustituto de $.each).
  */
-function forEachObject(obj, callback) {
-	if (Array.isArray(obj)) {
-		obj.forEach(callback);
-	} else if (obj && typeof obj === 'object') {
-		Object.entries(obj).forEach(function(pair) {
-			callback(pair[0], pair[1]);
-		});
-	}
+function each(col, callback) {
+    if (Array.isArray(col)) {
+        col.forEach((element, index) => {
+            callback(index, element);
+        });
+    } else if (col && typeof col === 'object') {
+        Object.entries(col).forEach(function(pair) {
+            callback(pair[0], pair[1]);
+        });
+    }
 }
 
 /**

@@ -56,7 +56,7 @@ function renderSearchForm(parent_element_id, search_fields) {
 	html +=  '<div class="panel container">';
 
 	// FIELDS
-	forEachObject(search_fields, function (i, field){
+	each(search_fields, function (i, field){
 		html +=  '<div class="view row searchfield' + e + '"><div class="view three columns label">' + field.label + '</div><div class="view five columns">';
 		e = '';
 
@@ -66,7 +66,7 @@ function renderSearchForm(parent_element_id, search_fields) {
 			var first_so;
 			// Construir un desplegable de opciones
 			html += '<div class="search_op" id="search_op_'+field.id+'"><select name="_op_'+ field.name +'" id="_op_'+ field.name +'" onchange="renderSearchFieldChange(\''+ field.id + '\', this.value);">';
-			forEachObject(dt.search_ops, function (i, so_id){
+			each(dt.search_ops, function (i, so_id){
 				var so = metadata._search_ops[so_id];
 				if (first_so == undefined) first_so = so;
 				if (field.multiple == 0 || so.code != 'empty'){
@@ -242,14 +242,14 @@ function getSearchformBackup(parent_element_id){
 }
 
 function restoreSearchformBackup(parent_element_id, searchform_backup){
-	forEachObject(searchform_backup.name, function (name, value){
+	each(searchform_backup.name, function (name, value){
 		var el = query('#'+parent_element_id+' .searchform [name="'+ name +'"]');
 		if (el) {
 			el.value = value;
 			el.dispatchEvent(new Event('change'));
 		}
 	});
-	forEachObject(searchform_backup.id, function (id, value){
+	each(searchform_backup.id, function (id, value){
 		var el = query('#'+parent_element_id+' .searchform [id="'+ id +'"]');
 		if (el) {
 			el.value = value;

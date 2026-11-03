@@ -4,21 +4,21 @@ function renderRelationships(entity_id, record_id, row){
 	html = '<div class="subpanels">';
 	var rels_a = searchInArray(metadata._relationships, 'id_b', entity_id);
 	var rels_b = searchInArray(metadata._relationships, 'id_a', entity_id);
-	forEachObject(rels_a, function (r){
+	each(rels_a, function (i,r){
 		// Si es una relacion de la misma entidad y lleva el mismo nombre de subpanel de ambos lados, es de equivalencia (se procesa diferente)
 		// De lo contrario, se procesa igual que cualquier relacion.
 		if ((r.id_a != r.id_b || r.label_a != r.label_b) && r.label_a != ''){
 			html += renderRelationship(r.id, record_id, r.id_a, r.rel_table, r.entity_a_field, r.entity_b_field, r.label_a, r.button_a, r.remove_a, r.limit_a, r.selector_a, r.search_a, r.filter_a, r.type, 'id_b', row, false);
 		}
 	});
-	forEachObject(rels_b, function (r){
+	each(rels_b, function (i,r){
 		// idem.... IDEM?
 		if ((r.id_a != r.id_b || r.label_a != r.label_b) && r.label_b != ''){
 			html += renderRelationship(r.id, record_id, r.id_b, r.rel_table, r.entity_b_field, r.entity_a_field, r.label_b, r.button_b, r.remove_b, r.limit_b, r.selector_b, r.search_b, r.filter_b, r.type, 'id_a', row, false);
 		}
 	});
 	// TODO: RELACIONES DE LA MISMA ENTIDAD: Son de equivalencia cuando tienen el mismo label, por ende utilizan solo un subpanel. (deben tener label no vacio)
-	forEachObject(rels_a, function (r){
+	each(rels_a, function (i,r){
 		// Si es una relacion de la misma entidad y lleva el mismo nombre de subpanel de ambos lados, es de equivalencia (se procesa diferente)
 		if ((r.id_a == r.id_b && r.label_a == r.label_b) && r.label_a != ''){
 			html += renderRelationship(r.id, record_id, r.id_a, r.rel_table, r.entity_a_field, r.entity_b_field, r.label_a, r.button_a, r.remove_a, r.limit_a, r.selector_a, r.search_a, r.filter_a, r.type, 'id_a', row, true);

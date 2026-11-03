@@ -488,7 +488,7 @@ function renderViewBody(parent_element_id, entity_id, view_id, data, pre_filled,
 	// RECORDS
 	//html +=  '<div class="records">';
 	var count = 0;
-	forEachObject(data, function (i, row){
+	each(data, function (i, row){
 		html +=  renderViewBodyRecord(row.id, row, view, fields, entity, parent_element_id, checkboxes, search_result, undefined, undefined);
 		count++;
 	});
@@ -607,7 +607,7 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 	var field_groups = searchInArray(metadata._field_groups, 'entity_id', entity.id);
 	var max_type = 0;
 	var max_order = 0;
-	forEachObject(field_groups, function (i,e){
+	each(field_groups, function (i,e){
 		max_type = Math.max(e.type, max_type);
 		max_order = Math.max(e.order, max_order);
 		e.fields_html = undefined;
@@ -869,7 +869,7 @@ function renderExtendViews(entity_id, view_id, position, record_id){
 		// START 'extend_views'+ position
 		html +=  '<span id="extend_views'+ position +'" class="extend_view">'; 
 		// TODO: enclose each extend_view in a single span. For renderParsed place a  inside initially.
-		forEachObject(extend_views, function (i, extend){
+		each(extend_views, function (i, extend){
 			// START 'extend_view'+ extend.id
 			html +=  '<span id="extend_view'+ extend.id +'">'; 
 			if (extend.type == 0){
@@ -925,7 +925,7 @@ function renderViewButtons(view_id, entity_id) {
 	var entity = metadata._entities[entity_id];
 	var html = '';
 	var href = '';
-	forEachObject(buttons, function (i, button){
+	each(buttons, function (i, button){
 		if (button.target_view == '' || entity['view'+button.target_view] == 1){
 			if (button.js_code == undefined || button.js_code == ''){
 				// loadView(entity_id, button.target_view, '', button.filter);
