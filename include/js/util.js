@@ -33,15 +33,26 @@ function getUrlAjax(url, target, post_data, loading_text, unk, callback){
 function setHtml(target, html){
 	if (target != ''){
 		getEl(target, function (el){
-			el.innerHTML = html;
+			setHtmlTo(el, html);
 		});
 	}
 }
 
-function appendHtml(target, html, prepend = false){
-	if (target === '') return;
+function setHtmlTo(el, html){
+	el.innerHTML = '';
+	appendHtmlTo(el, html);
+}
 
-	var targetEl = document.getElementById(target);
+function appendHtml(target, html, prepend = false){
+	if (target != ''){
+		getEl(target, function(el){
+			appendHtmlTo(el, html, prepend);
+		});
+	}
+}
+
+function appendHtmlTo(targetEl, html, prepend = false){
+	
 	if (!targetEl) return;
 
 	var temp = document.createElement('div');
@@ -75,6 +86,10 @@ function appendHtml(target, html, prepend = false){
 
 function prependHtml(target, html){
 	appendHtml(target, html, true);
+}
+
+function prependHtmlTo(el, html){
+	appendHtmlTo(el, html, true);
 }
 
 function moveHtml(source, target){
@@ -124,8 +139,7 @@ function refresh(){
 }
 
 function setValue(value, target){
-	var el = document.getElementById(target);
-	if (el) el.value = value;
+	getEl(target, function (el){ el.value = value; });
 }
 
 function getValue(target){
@@ -167,7 +181,7 @@ function setAttr(target, attribute, value){
 }
 
 function safetextarea(){
-	document.querySelectorAll('textarea').forEach(function(t){
+	queryAll('textarea').forEach(function(t){
 		t.value = t.value.replace(/\/safetextarea/g, '/textarea');
 	});
 }
@@ -236,7 +250,7 @@ function unserialize(str){
 
 function while_selector(selector, callback){
 	var i = setInterval(function (){
-		if (document.querySelectorAll(selector).length > 0){
+		if (queryAll(selector).length > 0){
 			clearInterval(i);
 			callback();
 		}

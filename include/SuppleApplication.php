@@ -503,18 +503,17 @@ class SuppleApplication {
 		$r = '';
 
 		$js = glob('include/js/*.js');
-		$i = array_search('include/js/jquery.min.js', $js);
-		if ($i !== false){
-			$r .= '<script type="text/javascript" src="'.$js[$i].'"></script>'."\n";
-			unset($js[$i]);
-		}
 		foreach ($js as $js_file){
 			$r .= '<script type="text/javascript" src="'.$js_file.'"></script>'."\n";
 		}
-		
 		$css = glob('include/js/*.css');
 		foreach ($css as $css_file){
 			$r .= '<link href="'.$css_file.'" rel="stylesheet" type="text/css">'."\n";
+		}
+		// Includes adicionales
+		$inc = glob('include/js/*.inc');
+		foreach ($inc as $inc_file){
+			$r .= file_get_contents($inc_file)."\n";
 		}
 
 		// CUSTOM!!!
@@ -525,6 +524,11 @@ class SuppleApplication {
 		$css = glob('custom/js/*.css');
 		foreach ($css as $css_file){
 			$r .= '<link href="'.$css_file.'" rel="stylesheet" type="text/css">'."\n";
+		}
+		// Includes adicionales
+		$inc = glob('custom/js/*.inc');
+		foreach ($inc as $inc_file){
+			$r .= file_get_contents($inc_file)."\n";
 		}
 
 		return $r;

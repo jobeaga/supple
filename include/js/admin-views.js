@@ -85,7 +85,7 @@ function loadView(entity_id, view_id, record_id, filter, offset, dont_push_state
 		
 		// PRE-FILLED:
 		if (pre_filled != undefined)
-			$.each(pre_filled, function (f, v){
+			each(pre_filled, function (f, v){
 				if (f != 'entity' && f != 'view' && f != 'id') url = url + '&'+ f +'=' + v;
 			});
 		history.pushState(this_status[parent_element_id], document.title, url);
@@ -97,7 +97,7 @@ function loadView(entity_id, view_id, record_id, filter, offset, dont_push_state
 		}
 	}
 
-	document.getElementById('menuselector').value = entity_id;
+	setValue(entity_id, 'menuselector');
 
 	showRibbon(entity_id);
 
@@ -304,7 +304,7 @@ function renderView(entity_id, view_id, data, record_id, pre_filled, offset, par
 
 	html +=  '</span>';
 
-	$('#' + parent_element_id).html(html);
+	setHtml(parent_element_id, html);
 
 	// AND SCROLL TO THE TOP
 	window.scrollTo(0,0);
@@ -384,7 +384,7 @@ function autoload_next(){
                 try {
                     var html = '';
 
-                    $.each(data, function (i, row) {
+                    each(data, function (i, row) {
                         if (document.querySelectorAll(
                             '#' + parent_element_id + ' #' +
                             view.class + 'Form #record' + row.id
@@ -396,8 +396,7 @@ function autoload_next(){
                         }
                     });
 
-                    $('#' + parent_element_id + ' #' +
-                        view.class + 'Form').append(html);
+                    appendHtml(view.class + 'Form', html);
 
                     autoload_offset = next_offset;
 
@@ -504,7 +503,6 @@ function renderViewBody(parent_element_id, entity_id, view_id, data, pre_filled,
 
 	if (view.editable == 0) {
 		html +=  '</form>';
-		html +=  "<script> $('#" + view.class + "').ajaxForm(); </script>";
 	} else {
 		html +=  '</div>';
 	}
@@ -516,7 +514,7 @@ function renderViewBody(parent_element_id, entity_id, view_id, data, pre_filled,
 function getEmptyRecord(entity_id, view_id, pre_filled){
 	var fields = Object.values(searchInArray(searchInArray(metadata._fields, 'parent', entity_id), 'view'+ view_id, '1')).sort(function (a, b) { return a.order - b.order; });
 	var empty_row = {};
-	$.each(fields, function (i,f) {
+	each(fields, function (i,f) {
 		// SET pre-filled DATA
 		if (pre_filled != undefined && pre_filled[f.name] != undefined) {
 			empty_row[f.name] = pre_filled[f.name];
@@ -763,8 +761,8 @@ function renderViewBodyRecord(id, row, view, fields, entity, parent_element_id, 
 	if (view.editable == 1 && editable == 1 && search_result == undefined){
 		html +=  renderExtendViews(entity.id, view.id, 2, id);
 		html +=  '</form>';
-		html +=  "<script> $('#record" + id + "').ajaxForm(); </script>";
-		html +=  "<script> $('#record" + id + "').submit(function (e){ save_form(this, '" + parent_element_id + "'); e.preventDefault(); }); </script>";
+		// html +=  "<script> $('#record" + id + "').ajaxForm(); </script>";
+		html +=  "<script> getEl('record" + id + "').addEventListener('submit', function(e) { e.preventDefault(); save_form(this, '" + parent_element_id + "'); }); </script>";		
 	} else {
 		html +=  '</div>';
 	}
@@ -907,11 +905,10 @@ function renderParsed(table, field, template_id, entity_id, view_id, record_id, 
 	submitLockStart();
 
 	ajaxPost(url + '&' + extra_data, '', function (response) {
-		if (override == undefined){
-			$('#'+target_element_id).append(response.parsed);
-		} else {
-			$('#'+target_element_id).html(response.parsed);
+		if (override != undefined && override == true){
+			setHtml(target_element_id, '');
 		}
+		appendHtml(target_element_id, response.parsed);
 		submitLockEnd();
 		if (callback != undefined) callback();
 	});
@@ -1002,7 +999,7 @@ function renderCustomView(parent_element_id, custom_view_id, entity_id, view_id,
 			html += '<span id="'+ parent_element_id + '_custom_view"><span class="loader"></span></span>';
 		}
 
-		$('#'+parent_element_id).html(html);
+		setHtml(parent_element_id, html);
 
 		if (custom_view.type == 1){
 			// PARSE TEMPLATE
@@ -1023,13 +1020,13 @@ function renderCustomEntity(parent_element_id, entity_id){
 	}
 	// Placeholder for parsed content
 	html += '<span id="'+ parent_element_id + '_custom_view"><span class="loader"></span></span>';
-	$('#'+parent_element_id).html(html);
+	setHtml(parent_element_id, html);
 	
 	if (metadata._entities[entity_id].template.indexOf('$') >= 0){
 		// PARSE TEMPLATE
 		renderParsed('_entities', 'template', entity_id, entity_id, '', '', parent_element_id + '_custom_view', true);
 	} else {
-		$('#'+parent_element_id + '_custom_view').html(metadata._entities[entity_id].template);
+		setHtml(parent_element_id + '_custom_view', metadata._entities[entity_id].template);
 	}
 }
 
@@ -1083,8 +1080,8 @@ function getUrlAjaxLV(url, post_data, loading_text){
 			setHtml('_load_more_result', data);
 
 			var table = document.querySelector('#listViewForm table');
-			var result = document.getElementById('_load_more_result');
-			var span = document.getElementById('_load_more_span');
+			var result = getEl('_load_more_result');
+			var span = getEl('_load_more_span');
 
 			if (result && table) {
 				var rows = result.querySelectorAll('tr');
@@ -1102,7 +1099,7 @@ function getUrlAjaxLV(url, post_data, loading_text){
 }
 
 function listViewToggleSelectAll(){
-	var selectAll = document.getElementById('select_all');
+	var selectAll = getEl('select_all');
 	var val = selectAll ? selectAll.checked : false;
 	document.querySelectorAll('input[name="id[]"]').forEach(function(input){
 		input.checked = val;

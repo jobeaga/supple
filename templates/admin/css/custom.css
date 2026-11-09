@@ -132,10 +132,6 @@ button.trumbowyg-viewHTML-button, .button.trumbowyg-viewHTML-button {
 	background-color: white !important;
 }
 
-.colpick {
-	margin-bottom: 50px;
-}
-
 .field span {
 	vertical-align: middle;
 }
@@ -1579,10 +1575,6 @@ input.order_previous {
 
 .trumbowyg-box, .trumbowyg-editor {
 	margin-top: 0 !important;
-}
-
-.colpick {
-	z-index: 99;
 }
 
 /* expand-collapse subpanel */

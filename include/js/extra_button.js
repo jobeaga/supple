@@ -29,7 +29,7 @@ function extra_button_click(button, record_id){
 
 function remove_extra_button(close_button, record_id){
     var p = close_button.parentNode;
-    var r = document.getElementById('record'+record_id);
+    var r = getEl('record'+record_id);
     var pb = r.querySelector('.post.buttons');
     r.removeChild(pb);
     p.querySelectorAll('.field').forEach(function (f){

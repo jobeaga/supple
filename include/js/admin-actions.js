@@ -65,17 +65,19 @@ function save_form(form, parent_element_id) {
 }
 
 function showFieldError(field_name, message){
-	var c = document.getElementById(field_name);
-	c.setCustomValidity(message);
-	c.oninput = function(e) { e.target.setCustomValidity(""); };
-	c.form.reportValidity();
+	getEl(field_name, function (c){
+		c.setCustomValidity(message);
+		c.oninput = function(e) { e.target.setCustomValidity(""); };
+		c.form.reportValidity();
+	});	
 }
 
 function showFieldErrors(messages, form){
 	for (const field_name in messages){
-		var c = document.getElementById(field_name);
-		c.setCustomValidity(messages[field_name]);
-		c.oninput = function(e) { e.target.setCustomValidity(""); };
+		getEl(field_name, function (c){
+			c.setCustomValidity(messages[field_name]);
+			c.oninput = function(e){ e.target.setCustomValidity(""); };
+		});
 	}
 	form.reportValidity();
 }
@@ -154,23 +156,27 @@ function save_do(form, table, record_id, callback) {
 
 	var befores = function (){
 		// console.log('0%');
-		var sl = document.getElementById('_screen_lock');
-		var slp = document.createElement('span');
-		slp.id = '_screen_lock_progress';
-		slp.innerHTML = '0%';
-		sl.appendChild(slp);
+		getEl('_screen_lock', function (sl){
+			var slp = createEl('span', {
+				id: '_screen_lock_progress',
+				innerHTML: '0%'
+			});
+			sl.appendChild(slp);
+		});
 	};
 	var uploads = function(event, position, total, percentComplete) {
 		var percentVal = percentComplete + '%';
 		// console.log(percentVal);
-		var slp = document.getElementById('_screen_lock_progress');
-		slp.innerHTML = percentVal;
+		getEl('_screen_lock_progress', function (slp){
+			slp.innerHTML = percentVal;
+		});
 	};
 	var completes = function (){
 		// console.log('100%');
-		var slp = document.getElementById('_screen_lock_progress');
-		slp.innerHTML = '100%';
-		slp.remove();
+		getEl('_screen_lock_progress', function (slp){
+			slp.innerHTML = '100%';
+			slp.remove();
+		});		
 	};
 
 	if (typeof(form) == 'string'){
@@ -216,14 +222,19 @@ function save_do(form, table, record_id, callback) {
 			completes();
 			err(xhr, 'error', '');
 		};
-		
+
+		xhr.onabort = function() {
+			completes();
+			err(xhr, 'abort', '');
+		};
+
 		xhr.send(formData);
 	}
 
 }
 
 function save_field(element_id, field_name, table, record_id){
-	var e = document.getElementById(element_id);
+	var e = getEl(element_id);
 	var p = e.parentNode;
 	while (p.classList != undefined && p.classList.contains('field') == false && p != null){
 		p = p.parentNode;
@@ -272,7 +283,9 @@ function apply_do(){
 		record_id = '';
 	}
 
-	var form = document.getElementById('record'+record_id);
+	var form = getEl('record'+record_id);
+
+	if (!form) return;
 	
 	// BLOCK SCREEN
 	block_screen();
@@ -411,8 +424,9 @@ function delete_do(id, table, view_id, entity_id){
 				
 				// LOAD VIEW
 				if (view.records > 1){
-					var el = document.getElementById('record' + response.id);
-					if (el) el.remove();
+					getEl('record' + response.id, function (el){
+						el.remove();
+					});					
 					unblock_screen();
 				} else {
 					menugoto(entity_id, function(){
@@ -438,8 +452,9 @@ function listview_delete(id, table, confirm_msg){
 	if (confirm(confirm_msg)){
 		var url = 'admin.php?action=remove&id='+ id +'&table='+table;
 		fetch(url);
-		var el = document.getElementById('_record'+id);
-		if (el) el.remove();
+		getEl('_record'+id, function(el){
+			el.remove();
+		});
 
 		// get entity_id using table
 		const entity_id = Object.keys(searchInArray(metadata._entities, 'table', table))[0];

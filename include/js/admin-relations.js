@@ -322,30 +322,27 @@ function renderRelationshipSubpanel(rel_id, record_id, rtable, rfilter, r_entity
         // expand-collapse subpanel
         if (parseInt(resp_count) > parseInt(global.config.subpanel_autocollapse_count)) {
             while_selector('#relationship_'+ rel_id, function() {
-                var rsp = document.getElementById('relationship_'+ rel_id);
-                if (rsp) {
+                getEl('relationship_'+ rel_id, function(rsp) {
                     rsp.classList.add('collapsed_panel');
                     rsp.addEventListener('click', function() {
                         this.classList.remove('collapsed_panel');
                     });
-                }
+                });
             });
 
             while_selector('#rel_title_'+ rel_id, function() {
-                var rst = document.getElementById('rel_title_'+ rel_id);
-                if (rst) {
+                getEl('rel_title_'+ rel_id, function(rst) {
                     rst.style.cursor = 'pointer';
                     rst.addEventListener('click', function() {
-                        var rsp = document.getElementById('relationship_'+ rel_id);
-                        if (rsp) {
+                        getEl('relationship_'+ rel_id, function(rsp) {
                             if (rsp.classList.contains('collapsed_panel')) {
                                 rsp.classList.remove('collapsed_panel');
                             } else {
                                 rsp.classList.add('collapsed_panel');
                             }
-                        }
+                        });
                     });
-                }
+                });
             });
         }
 
@@ -358,10 +355,9 @@ function renderRelationshipSubpanel(rel_id, record_id, rtable, rfilter, r_entity
 
             getData(rent.table, filter, 0, 1000, rent.listview_order, function(tdata) {
                 var body = renderViewBody('relationship_'+ rel_id, r_entity_id, '2', tdata, undefined, checkboxes, undefined);
-                var relEl = document.getElementById('relationship_'+ rel_id);
-                if (relEl) {
+                getEl('relationship_'+ rel_id, function(relEl) {
                     relEl.innerHTML = body;
-                }
+                });
 
                 // ADD LISTENERS TO CHECKBOXES!
                 var checkboxInputs = document.querySelectorAll('#relationship_'+ rel_id+' .checkboxes input');
@@ -407,10 +403,9 @@ function renderRelationshipSubpanel(rel_id, record_id, rtable, rfilter, r_entity
             }, true);
         } else {
             var body = renderViewBody('relationship_'+ rel_id, r_entity_id, '2', data, undefined, undefined, undefined);
-            var relEl = document.getElementById('relationship_'+ rel_id);
-            if (relEl) {
+            getEl('relationship_'+ rel_id, function(relEl) {
                 relEl.innerHTML = body;
-            }
+            });
 
             // Adjust Remove button
             renderRelationshipRemoveButton(rel_id, record_id, rel_table, remove_button, selector, type, side);

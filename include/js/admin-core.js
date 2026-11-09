@@ -38,13 +38,15 @@ function getLanguageCodes() {
 
 // BLOCK SCREEN
 function block_screen(){
-	var el = document.getElementById('_screen_lock');
-	if (el) fadeIn(el, 500);
+	// var el = document.getElementById('_screen_lock');
+	// if (el) fadeIn(el, 500);
+	getEl('_screen_lock', function(el){ fadeIn(el, 500); });
 }
 
 function unblock_screen(){
-	var el = document.getElementById('_screen_lock');
-	if (el) fadeOut(el, 100);
+	// var el = document.getElementById('_screen_lock');
+	// if (el) fadeOut(el, 100);
+	getEl('_screen_lock', function(el){ fadeOut(el, 100); });
 }
 
 // MESSAGES
@@ -54,27 +56,38 @@ function show_message(str, time){
 	var html = '<div class="message" id="' + id + '" style="display:none;"><a class="message_close" onclick="this.parentNode.remove()">&times;</a>' + str + '</div>';
 	appendHtml('message', html);
 
-	var el = document.getElementById(id);
-	if (el) {
+	// var el = document.getElementById(id);
+	// if (el) {
+	//     fadeIn(el, 500);
+	//     ...
+	// }
+	getEl(id, function(el){
 		fadeIn(el, 500);
 		setTimeout(function(){
 				fadeOut(el, 500, function(){
 					el.remove();
 			});
 		}, time);
-	}
+	});
 }
 
 function show_progress(){
 	var time = 1000;
 	var id = 'message_progress';
-	var existing = document.getElementById(id);
-	if (existing != null){
+	
+	// var existing = document.getElementById(id);
+	// if (existing != null){
+	//     existing.remove();
+	// }
+	getEl(id, function(existing){
 		existing.remove();
-	}
+	});
+	
 	appendHtml('message', '<div class="message" id="' + id + '" style="display:none;">0%</div>');
-	var el = document.getElementById(id);
-	if (el) fadeIn(el, 500);
+	
+	// var el = document.getElementById(id);
+	// if (el) fadeIn(el, 500);
+	getEl(id, function(el){ fadeIn(el, 500); });
 	
 	var i = setInterval(function(){
 		var p = 0;
@@ -87,23 +100,35 @@ function show_progress(){
 				r = JSON.parse(this.responseText);
 				if (typeof(r) != 'undefined' && r.description != undefined && r.progress != undefined){
 					p = parseInt(r.progress);
-					// update on UI
-					var currentEl = document.getElementById(id);
-					if (currentEl) currentEl.innerHTML = r.description + ' ' + p + '%';
+					
+					// var currentEl = document.getElementById(id);
+					// if (currentEl) currentEl.innerHTML = r.description + ' ' + p + '%';
+					getEl(id, function(currentEl){
+						currentEl.innerHTML = r.description + ' ' + p + '%';
+					});
+					
 					// terminate
 					if (p == 100){
-						if (currentEl) {
+						// if (currentEl) {
+						//     fadeOut(currentEl, 500, function(){
+						//         currentEl.remove();
+						//         clearInterval(i);
+						//     });
+						// } else {
+						//     clearInterval(i);
+						// }
+						// LOGICA: Si el elemento ya fue eliminado manualmente o no existe, el callback de getEl no se ejecutará, por lo que debemos asegurar que clearInterval se llame en ambos casos (dentro y fuera) o gestionar la lógica de cierre.
+						getEl(id, function(currentEl){
 							fadeOut(currentEl, 500, function(){
 								currentEl.remove();
-								clearInterval(i);
 							});
-						} else {
-							clearInterval(i);
-						}
+						});
+						clearInterval(i);
 					}
 				}
 			}
 		};
+		
 		xhttp.open('GET', 'cache/progress.txt');
 		xhttp.send();
 		
@@ -178,10 +203,15 @@ function create_popup(content, relative_to_id) {
 	if (isCentered) {
 		document.body.appendChild(popup);
 	} else {
-		var relEl = document.getElementById(relative_to_id);
-		if (relEl && relEl.parentElement) {
-			relEl.parentElement.appendChild(popup);
-		}
+		// var relEl = document.getElementById(relative_to_id);
+		// if (relEl && relEl.parentElement) {
+		//     relEl.parentElement.appendChild(popup);
+		// }
+		getEl(relative_to_id, function(relEl){
+			if (relEl.parentElement) {
+				relEl.parentElement.appendChild(popup);
+			}
+		});
 	}
 }
 

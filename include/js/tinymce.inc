@@ -1,0 +1,1 @@
+<script type="text/javascript" src="include/tinymce/tinymce.min.js"></script>

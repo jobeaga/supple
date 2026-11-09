@@ -177,7 +177,7 @@ function renderSearchField(field, search_op){
 		// html += 'MULTI FIELD ' + field.name; // TODO!
 		var prev_count = 0;
 		var remove_button;
-		remove_button = renderLink('-', "jQuery(this).parent().html(''); multi_count['" + field.id + "']--; return false;", true, undefined, false, 'multi_sub');
+		remove_button = renderLink('-', "this.parentElement.innerHTML = ''; multi_count['" + field.id + "']--; return false;", true, undefined, false, 'multi_sub');
 
 		if (multi_count[field.id] != undefined){
 			prev_count = multi_count[field.id];
@@ -196,10 +196,10 @@ function renderSearchField(field, search_op){
 		}
 		html += '</span>';
 
-		$('.search_op').each(function(i,e){ $(e).css('height', $(e).parent().height() + 'px'); });
+		queryAll('.search_op').forEach(function(e){ e.style.height = e.parentElement.offsetHeight + 'px'; });
 
 	 	setTimeout(function (){
-			$('.search_op').each(function(i,e){ $(e).css('height', $(e).parent().height() + 'px'); });
+			queryAll('.search_op').forEach(function(e){ e.style.height = e.parentElement.offsetHeight + 'px'; });
 		}, 10);
 	}
 
@@ -210,16 +210,16 @@ function addMultiSearch(field_id){
 	var html = '';
 	var remove_button;
 	var field = metadata._fields[field_id];
-	remove_button = renderLink('-', "jQuery(this).parent().html(''); multi_count['" + field.id + "']--; return false;", true, undefined, false, 'multi_sub');
+	remove_button = renderLink('-', "this.parentElement.innerHTML = ''; multi_count['" + field.id + "']--; return false;", true, undefined, false, 'multi_sub');
 
 	multi_count[field_id]++;
 	var suffix = '_' + multi_count[field_id] + '_';
 
 	html = '<span>' + renderBasicSingleField(field_id, 1, '', suffix, suffix) + remove_button + '<br></span>';
 
-	$('#_new_' + field_id).append(html);
+	appendHtml('_new_' + field_id, html);
 
-	$('.search_op').each(function(i,e){ $(e).css('height', $(e).parent().height() + 'px'); });
+	queryAll('.search_op').forEach(function(e){ e.style.height = e.parentElement.offsetHeight + 'px'; });
 
 	return false;
 }
@@ -301,7 +301,7 @@ function search_clear(parent_element_id) {
 	// RENDER CLEAR FORM
 	var search_fields = searchInArray(searchInArray(metadata._fields, 'parent', this_status[parent_element_id].entity_id), 'view6', '1');
 	var html = renderSearchForm(parent_element_id, search_fields);
-	$('#'+parent_element_id+' .searchform').html(html);
+	query('#'+parent_element_id+' .searchform').innerHTML = html;
 	search_do(parent_element_id); // DO de search
 	return false;
 }
