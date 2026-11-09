@@ -202,7 +202,7 @@ function renderRelationshipSearchSelector(rel_id, record_id, rel_table, r_entity
 	var rent = metadata._entities[r_entity_id];
 	html += '<div class="panel selector">';
 
-	eachObject(search, function (i, search_id){
+	each(search, function (i, search_id){
 		var search_field = metadata._fields[search_id];
 		if (search_field !== undefined){
 			var input_id_name = search_field.name + '_' + rel_id;
@@ -220,7 +220,7 @@ function renderRelationshipSearchSelector(rel_id, record_id, rel_table, r_entity
 		var search_callback = function (){
 			var f = filter || '';
 
-			eachObject(search, function (j, sf_id){
+			each(search, function (j, sf_id){
 				var sf = metadata._fields[sf_id];
 				var iin = sf.name + '_' + rel_id;
 				var v = getEl(iin)?.value?.trim() || '';
@@ -254,7 +254,7 @@ function renderRelationshipSearchSelector(rel_id, record_id, rel_table, r_entity
 						getData(st, sf + '=' + sr, 0, limit + 1, '', function (selected_data){
 							var selected_count = selected_data.length;
 							var is_selected = false;
-							eachObject(selected_data, function (i,e){
+							each(selected_data, function (i,e){
 								if (e.id == selected_id) is_selected = true;
 							});
 							
